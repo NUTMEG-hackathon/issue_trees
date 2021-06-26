@@ -29,7 +29,8 @@ services:
     build: ./view
     container_name: "issue-trees-VIEW"
     ports:
-      - "8000:8000"
+      - "8080:8080"
+    command: npm run serve
     volumes:
       - ./view:/app
     stdin_open: true
