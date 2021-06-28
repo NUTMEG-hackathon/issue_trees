@@ -7,9 +7,10 @@ RUN mkdir -p $APP_HOME
 WORKDIR $APP_HOME
 
 RUN npm install -g @vue/cli
-COPY ./vue-project/package*.json /app/vue-project/
-COPY ./vue-project/ /app/vue-project/
+COPY ./package*.json /app/
+COPY ./ /app/
 RUN npm install
+
 
 # RUN npm install --save axios
 
