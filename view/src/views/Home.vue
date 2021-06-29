@@ -1,15 +1,12 @@
 <template>
-  <hello-world />
+  <div class="card">
+    <h1>aaaaaaaaaaaaaaaaasaaaaaaa</h1>
+  </div>
 </template>
 
-<script>
-  import HelloWorld from '../components/HelloWorld'
-
-  export default {
-    name: 'Home',
-
-    components: {
-      HelloWorld,
-    },
+<style>
+  .card{
+    box-shadow: -2px -2px 5px rgba(255, 255, 255, 1),
+                 3px 3px 5px rgba(0, 0, 0, 0.1);
   }
-</script>
+</style>
