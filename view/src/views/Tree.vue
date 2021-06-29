@@ -9,8 +9,7 @@
         layoutType="vertical"
         strokeWidth="5"
         linkLayout="orthogonal"
-        radius="6"
-        nodeTextMargin=""
+        radius="10"
         Duration="0"
         style="max-width: 90%; max-height: 500px"
       ></tree>
