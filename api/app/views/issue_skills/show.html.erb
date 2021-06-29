@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Issue:</strong>
+  <%= @issue_skill.issue_id %>
+</p>
+
+<p>
+  <strong>Skill:</strong>
+  <%= @issue_skill.skill_id %>
+</p>
+
+<%= link_to 'Edit', edit_issue_skill_path(@issue_skill) %> |
+<%= link_to 'Back', issue_skills_path %>
