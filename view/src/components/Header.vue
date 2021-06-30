@@ -3,7 +3,7 @@
   <v-app>
     <v-app-bar
       app
-      color="red"
+      color="#91BA58"
       dark
       clipped-left
       >
