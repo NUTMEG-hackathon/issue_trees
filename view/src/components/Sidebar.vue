@@ -1,7 +1,7 @@
 <template>
 <v-container>
   <v-app>
-    <v-navigation-drawer fixed permanent clipped app>
+    <v-navigation-drawer fixed permanent clipped app color="#B4CF9B">
       <br>
       <v-row>
         <v-col cols="1"></v-col>
@@ -45,9 +45,11 @@
       <v-card-text>追加と削除を行いましょう</v-card-text>
       <v-card-aptions>
         <v-layout align-center justify-center>
-          <v-btn color="red" flat="flat" @click="dialog = true">追加</v-btn>
-          <v-spacer></v-spacer>
-          <v-btn color="blue" flat="flat" @click="project = false">削除</v-btn>
+          <v-spacer />
+          <v-btn color="#91BA58" flat="flat" @click="dialog = true">追加</v-btn>
+          <v-spacer />
+          <v-btn color="#74905D" flat="flat" @click="project = false">削除</v-btn>
+          <v-spacer />
         </v-layout>
       </v-card-aptions>
     </v-card>
@@ -89,9 +91,11 @@
         </v-container>
       <v-card-actions>
         <v-layout align-center justify-center>
+          <v-spacer />
           <v-btn color="red" flat="flat" @click="dialog = true">決定</v-btn>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <v-btn color="blue" flat="flat" @click="project = false">取り消し</v-btn>
+          <v-spacer />
         </v-layout>
       </v-card-actions>
     </v-card>
