@@ -1,0 +1,27 @@
+<%= form_with(model: issue_skill) do |form| %>
+  <% if issue_skill.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(issue_skill.errors.count, "error") %> prohibited this issue_skill from being saved:</h2>
+
+      <ul>
+        <% issue_skill.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :issue_id %>
+    <%= form.text_field :issue_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :skill_id %>
+    <%= form.text_field :skill_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

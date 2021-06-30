@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Information from '../views/Information.vue'
 import Logout from '../views/Logout.vue'
+import Tree from '../views/Tree'
 
 
 Vue.use(VueRouter)
@@ -30,7 +31,12 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+  },
+  {
+    path: '/tree',
+    name: 'Tree',
+    component: Tree
+  },
 ]
 
 const router = new VueRouter({
