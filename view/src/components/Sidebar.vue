@@ -1,0 +1,112 @@
+<template>
+<v-container>
+  <v-app>
+    <v-navigation-drawer fixed permanent clipped app>
+      <br>
+      <v-row>
+        <v-col cols="1"></v-col>
+        <v-col cols="10">
+          <v-card
+            @click="project=true"
+          >
+            <v-card-title>プロジェクト追加・削除</v-card-title>
+          </v-card>
+        </v-col>
+        <v-col cols="1"></v-col>
+      </v-row>
+      <br>
+      <v-row>
+        <v-col cols="1"></v-col>
+        <v-col cols="10">
+          <v-card>
+            <v-card-title>詳細</v-card-title>
+          </v-card>
+        </v-col>
+        <v-col cols="1"></v-col>
+      </v-row>
+      <br>
+      <v-row>
+        <v-col cols="1"></v-col>
+        <v-col cols="10">
+          <v-card>
+            <v-card-title>Member</v-card-title>
+          </v-card>
+        </v-col>
+        <v-col cols="1"></v-col>
+      </v-row>
+    </v-navigation-drawer>
+  </v-app>
+
+  <v-dialog
+    v-model="project"
+    max-width="290">
+    <v-card>
+      <v-card-title>project追加・削除</v-card-title>
+      <v-card-text>追加と削除を行いましょう</v-card-text>
+      <v-card-aptions>
+        <v-layout align-center justify-center>
+          <v-btn color="red" flat="flat" @click="dialog = true">追加</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="blue" flat="flat" @click="project = false">削除</v-btn>
+        </v-layout>
+      </v-card-aptions>
+    </v-card>
+  </v-dialog>
+
+  <v-dialog
+    v-model="dialog"
+    max-width="290">
+    <v-card>
+      <v-card-title>project追加</v-card-title>
+      <v-card-text>追加の手続きを行います</v-card-text>
+        <v-container class="justify-content-center">
+          <v-row>
+            <v-col cols="1"></v-col>
+            <v-col cols="10" align="center">
+              <v-card-text>
+                <v-form ref="form">
+                  <v-text-field
+                    label="project_name"
+                    v-model="name"
+                    text
+                    outlined
+                    clearable
+                  ></v-text-field>
+                  <v-text-field
+                  label="Member"
+                  ref="cooking"
+                  v-model="cooking"
+                  :items="this.cooking_list"
+                  item-text="name"
+                  item-value="id"
+                  outlined
+                  ></v-text-field>
+                </v-form>
+              </v-card-text>
+            </v-col>
+            <v-col cols="1"></v-col>
+          </v-row>
+        </v-container>
+      <v-card-actions>
+        <v-layout align-center justify-center>
+          <v-btn color="red" flat="flat" @click="dialog = true">決定</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="blue" flat="flat" @click="project = false">取り消し</v-btn>
+        </v-layout>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
+</v-container>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      project: false,
+      dialog: false
+    }
+  }
+}
+</script>

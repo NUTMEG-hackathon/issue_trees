@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Information from '../views/Information.vue'
+import Logout from '../views/Logout.vue'
 import Tree from '../views/Tree'
+
 
 Vue.use(VueRouter)
 
@@ -10,6 +13,16 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/information',
+    name: 'Information',
+    component: Information
+  },
+  {
+    path: '/logout',
+    name: 'Logout',
+    component: Logout
   },
   {
     path: '/about',
