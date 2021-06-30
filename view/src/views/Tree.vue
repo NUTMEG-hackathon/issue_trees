@@ -12,6 +12,10 @@
         radius="10"
         Duration="0"
         style="max-width: 90%; max-height: 500px"
+        @clickedText="onClick"
+        @expand="onExpand"
+        @retract="onRetract"
+        @clickedNode="onClickNode"
       ></tree>
     </div>
   </div>
@@ -46,7 +50,42 @@ export default {
           },
         ],
       },
+      event: [],
+      events: [],
     };
+  },
+  methods: {
+    getId(node) {
+      return node.id;
+    },
+    onClick(evt) {
+      this.onEvent("clickedText", evt);
+      console.log("click text");
+      console.log(this.events);
+      this.events = [];
+    },
+    onClickNode(evt) {
+      this.onEvent("clickedNode", evt);
+      console.log("click node");
+      console.log(typeof this.events[0]);
+      console.log(this.events[0].data);
+      this.events = [];
+    },
+    onExpand(evt) {
+      this.onEvent("onExpand", evt);
+      console.log("enpand");
+      console.log(this.events);
+      this.events = [];
+    },
+    onRetract(evt) {
+      this.onEvent("onRetract", evt);
+      console.log("retract");
+      console.log(this.events);
+      this.events = [];
+    },
+    onEvent(eventName, data) {
+      this.events.push({ eventName, data: data.data });
+    },
   },
 };
 </script>
