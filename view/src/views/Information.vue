@@ -2,7 +2,33 @@
 <div>
   <v-container>
     <v-card>
-      <v-card-title>test</v-card-title>
+      <v-layout>
+      <v-row>
+        <v-card-title>
+          Personal Page
+        </v-card-title>
+      </v-row>
+      <v-row>
+        <v-card-text>
+          個人情報
+        </v-card-text>
+      </v-row>
+      <v-row>
+        <v-card-text>
+          MySkill
+        </v-card-text>
+      </v-row>
+      <v-row>
+        <v-card-text>
+          参加project
+        </v-card-text>
+      </v-row>
+      <v-row>
+        <v-card-text>
+          My issue
+        </v-card-text>
+      </v-row>
+      </v-layout>
     </v-card>
   </v-container>
 </div>
