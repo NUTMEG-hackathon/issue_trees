@@ -5,6 +5,7 @@ import Information from '../views/Information.vue'
 import Logout from '../views/Logout.vue'
 import Tree from '../views/Tree'
 import Welcome from '../pages/Welcome.vue'
+import MyPage from '../views/MyPage.vue'
 
 
 Vue.use(VueRouter)
@@ -42,6 +43,11 @@ const routes = [
     path: '/welcome',
     name: 'Welcome',
     component: Welcome
+  },
+  {
+    path: '/mypage',
+    name: 'MyPage',
+    component: MyPage
   },
 ]
 

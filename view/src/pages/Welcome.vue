@@ -1,140 +1,126 @@
 <template>
-  <v-container>
-
-    <v-row>
-      <v-col cols="3"></v-col>
-      <v-col cols="6">
-        <v-card
-          @click="SignUp=true"
-        >
-        <v-img
-         src="../assets/Tree1.png"
-        >
-          <p class="font">SignUp</p>
-        </v-img>
-        </v-card>
-      </v-col>
-      <v-col cols="3"></v-col>
-    </v-row>
-
-    <br><br>
-
-    <v-row>
-      <v-col cols="3"></v-col>
-      <v-col cols="6">
-        <v-card
-          @click="SignIn=true"
-        >
-          <v-img
-          src="../assets/Tree2.png"
-          >
-            <p class="font">SignIn</p>
-          </v-img>
-        </v-card>
-      </v-col>
-      <v-col cols="3"></v-col>
-    </v-row>
-
-  <v-dialog
-    v-model="SignUp"
-    max-width="600">
-    <v-card>
-      <v-layout align-center justify-center>
-        <v-card-title>SignUp</v-card-title>
-      </v-layout>
-      <v-row>
-        <v-col cols="1"></v-col>
-        <v-col cols="10">
-          <v-text-field
-            label="name"
-            v-model="name"
-            text
-            outlined
-            clearable
-          ></v-text-field>
-          <v-text-field
-            label="email"
-            v-model="email"
-            text
-            outlined
-            clearable
-          ></v-text-field>
-        </v-col>
-        <v-col cols="1"></v-col>
-      </v-row>
-      <v-card-aptions>
-        <v-layout align-center justify-center>
-          <v-spacer />
-          <v-btn class="dialog_font" color="#91BA58" flat="flat" @click="dialog = true">追加</v-btn>
-          <v-spacer />
-          <v-btn class="dialog_font" color="#74905D" flat="flat" @click="SignUp = false">削除</v-btn>
-          <v-spacer />
-        </v-layout>
-      </v-card-aptions>
-    </v-card>
-  </v-dialog>
-
-
-    <v-dialog
-      v-model="SignIn"
-      max-width="600">
-      <v-card>
-        <v-layout align-center justify-center>
-          <v-card-title>SignIn</v-card-title>
-        </v-layout>
-        <v-row>
-          <v-col cols="1"></v-col>
-          <v-col cols="10">
-            <v-text-field
-              label="name"
-              v-model="name"
-              text
-              outlined
-              clearable
-            ></v-text-field>
-            <v-text-field
-              label="email"
-              v-model="email"
-              text
-              outlined
-              clearable
-            ></v-text-field>
+  <div v-if="windowWidth > 700">
+    <div class="background" id="container">
+      <div>
+        <br><br><br>
+        <v-row class="hero-header">
+          <v-col cols="7"></v-col>
+          <v-col cols="5 pl-15 pr-5">
+            <v-card flat class="card-color">
+              <br>
+              <div class="text-center" v-show="show">
+                <Signup />
+                <a @click="toggle_show">ログインはこちら</a>
+              </div>
+              <div class="text-center" v-show="!show">
+                <Signin />
+                <a @click="toggle_show">新規登録はこちら</a>
+              </div>
+              <br>
+            </v-card>
           </v-col>
-          <v-col cols="1"></v-col>
         </v-row>
-        <v-card-aptions>
-          <v-layout align-center justify-center>
-            <v-spacer />
-            <v-btn class="dialog_font" color="#91BA58" flat @click="dialog = true">追加</v-btn>
-            <v-spacer />
-            <v-btn class="dialog_font" color="#74905D" flat @click="SignIn = false">削除</v-btn>
-            <v-spacer />
-          </v-layout>
-        </v-card-aptions>
-      </v-card>
-    </v-dialog>
-
-
-  </v-container>
+      </div>
+    </div>
+    <WelcomeDetail v-if="this.isStep == 1"/>
+    <WelcomeDetailStep v-if="this.isStep == 2"/>
+    <div class="text-center">
+      <v-btn @click="change" text>登録の手順はこちら</v-btn>
+    </div>
+  </div>
+  <div v-else>
+    <div class="background">
+      <div>
+        <v-row class="hero-header">
+          <v-col>
+            <v-card flat class="card-color">
+              <br>
+              <div class="text-center" v-show="show">
+                <MobileSignUp />
+                <a @click="toggle_show">ログインはこちら</a>
+              </div>
+              <div class="text-center" v-show="!show">
+                <MobileSignIn />
+                <a @click="toggle_show">新規登録はこちら</a>
+              </div>
+              <br>
+            </v-card>
+          </v-col>
+        </v-row>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import Signup from '../components/SignUp.vue'
+import Signin from '../components/SignIn.vue'
 export default {
-  data () {
+  name: "Welcome",
+  components: {
+    Signup,
+    Signin,
+  },
+  data() {
     return {
-      SignUp: false,
-      SignIn: false
+      show: true,
+      isStep: 1,
+      windowWidth: window.innerWidth,
+    }
+  },
+  mounted() {
+    window.addEventListener('resize', this.calculateWindowWidth);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.calculateWindowWidth);
+  },
+  methods: {
+    toggle_show() {
+      this.show = !this.show
+    },
+    change(){
+      if(this.isStep == 1){
+        this.isStep = 2
+      }else if(this.isStep == 2){
+        this.isStep = 1
+      }
+    },
+    calculateWindowWidth() {
+      this.windowWidth = window.innerWidth;
+      console.log(this.windowWidth);
     }
   }
 }
 </script>
 
+
 <style>
-  .font{
-    color: white;
-    font-size: 500%;
-  }
-  .dialog_font{
-    color: white!important;
-  }
+v-sheet{
+  color: black;
+}
+
+.text-label{
+  opacity: 0.5;
+  text-align: center;
+}
+
+.background{
+  background-image: url("~@/assets/Tree1.png");
+  background-size: cover;
+  min-height: 80vh;
+  background-position: center center;  
+}
+
+.text-label{
+  font-size: 45px;
+  text-align: center;
+}
+
+.card-color {
+  background-color: rgba(255,255,255,0.5) !important;
+  border-color: white !important;
+}
+.logo {
+  fill: #FFFFFF;
+}
 </style>
