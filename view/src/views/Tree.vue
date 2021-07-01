@@ -52,6 +52,9 @@ export default {
       },
       event: [],
       events: [],
+      nodeName: [],
+      children: [],
+      childrenNodeName: [],
     };
   },
   methods: {
@@ -67,9 +70,28 @@ export default {
     onClickNode(evt) {
       this.onEvent("clickedNode", evt);
       console.log("click node");
-      console.log(typeof this.events[0]);
-      console.log(this.events[0].data);
+
+      if (this.events[0].data.children) {
+        console.log("children name");
+        for (let step = 0; step < this.events[0].data.children.length; step++) {
+          console.log(this.events[0].data.children[step].name);
+          this.childrenNodeName.push(this.events[0].data.children[step].name);
+        }
+      }
+
+      // console.log(this.events[0].data);
+      this.children.push(this.events[0].data.children);
+      this.nodeName.push(this.events[0].data.name);
+
+      console.log("node name");
+      console.log(this.nodeName);
+      console.log("children");
+      console.log(this.children);
+      console.log(this.childrenNodeName);
       this.events = [];
+      this.nodeName = [];
+      this.children = [];
+      this.childrenNodeName = [];
     },
     onExpand(evt) {
       this.onEvent("onExpand", evt);
@@ -85,6 +107,7 @@ export default {
     },
     onEvent(eventName, data) {
       this.events.push({ eventName, data: data.data });
+      console.log(this.events);
     },
   },
 };
