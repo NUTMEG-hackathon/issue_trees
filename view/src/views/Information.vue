@@ -1,0 +1,9 @@
+<template>
+<div>
+  <v-container>
+    <v-card>
+      <v-card-title>test</v-card-title>
+    </v-card>
+  </v-container>
+</div>
+</template>

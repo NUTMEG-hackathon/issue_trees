@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <h1>aaaaaaaaaaaaaaaaasaaaaaaa</h1>
+    <h1>MyPage</h1>
   </div>
 </template>
 
