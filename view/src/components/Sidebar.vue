@@ -1,6 +1,5 @@
 <template>
-<v-container>
-  <v-app>
+<div>
     <v-navigation-drawer fixed permanent clipped app color="#B4CF9B">
       <br>
       <v-row>
@@ -35,7 +34,6 @@
         <v-col cols="1"></v-col>
       </v-row>
     </v-navigation-drawer>
-  </v-app>
 
   <v-dialog
     v-model="dialog"
@@ -83,7 +81,7 @@
     </v-card>
   </v-dialog>
 
-</v-container>
+</div>
 </template>
 
 <script>

@@ -1,14 +1,16 @@
 <template>
-      <v-app>
-          <Header />
-          <Sidebar />
-          <v-main class=main>
-            <transition mode="out-in">
-              <router-view />
-            </transition>
-          </v-main>
-          <Footer />
-      </v-app>
+  <v-app>
+    <Header />
+      <Sidebar />
+      <v-main class=main>
+        <transition mode="out-in">
+        <v-layout align-center justify-center>
+          <router-view />
+        </v-layout>
+        </transition>
+      </v-main>
+      <Footer />
+  </v-app>
 </template>
 
 <script>
@@ -29,4 +31,3 @@ export default {
   }),
 }
 </script>
-

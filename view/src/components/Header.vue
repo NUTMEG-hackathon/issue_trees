@@ -1,6 +1,4 @@
 <template>
-<v-container>
-  <v-app>
     <v-app-bar
       app
       color="#91BA58"
@@ -57,10 +55,7 @@
                 </v-list-item>
               </v-list>
             </v-menu>
-
     </v-app-bar>
-  </v-app>
-</v-container>
 </template>
 
 <script>
