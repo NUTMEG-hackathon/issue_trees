@@ -1,14 +1,14 @@
 <template>
-      <v-app>
-          <Header />
-          <Sidebar />
-          <v-main class=main>
-            <transition mode="out-in">
-              <router-view />
-            </transition>
-          </v-main>
-          <Footer />
-      </v-app>
+  <v-app>
+      <Header />
+      <Sidebar />
+      <v-main class=main>
+        <transition mode="out-in">
+          <router-view />
+        </transition>
+      </v-main>
+      <Footer />
+  </v-app>
 </template>
 
 <script>
