@@ -1,6 +1,6 @@
 class Issue < ApplicationRecord
   has_many :issue_skills
-  belongs_to :project
+  belongs_to :client
   belongs_to :user
   
 end
