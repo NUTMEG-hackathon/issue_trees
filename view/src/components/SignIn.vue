@@ -119,7 +119,7 @@ export default {
           localStorage.setItem('client', response.headers['client'])
           localStorage.setItem('uid', response.headers['uid'])
           localStorage.setItem('token-type', response.headers['token-type'])
-          this.$router.push('MyPage')
+          this.$router.push('information')
         },
         (error) => {
           this.message = 'ログインに失敗しました。<br>Failed to SignIn'

@@ -446,6 +446,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import { tree, popUpOnHoverText } from "vued3tree";
 import data from "../../data/data";
 import { getGremlin } from "./gremlinConfiguration";
@@ -481,6 +482,7 @@ export default {
   name: "app",
   data() {
     return {
+      users: [],
       Graph: {
         tree: {
           name: "project",
@@ -637,6 +639,21 @@ export default {
       this.horde = horde;
       this.isUnderGremlinsAttack = true;
     },
+  },
+  mounted() {
+    const url = process.env.VUE_APP_URL + "/api/v1/users/show";
+    axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("access-token"),
+          client: localStorage.getItem("client"),
+          uid: localStorage.getItem("uid"),
+        },
+      })
+      .then((response) => {
+        this.users = response.data.data;
+      });
   },
 };
 </script>
