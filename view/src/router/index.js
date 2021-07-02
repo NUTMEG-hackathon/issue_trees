@@ -5,7 +5,6 @@ import Information from '../views/Information.vue'
 import Tree from '../views/Tree'
 import Welcome from '../views/Welcome.vue'
 
-
 Vue.use(VueRouter)
 
 const routes = [
