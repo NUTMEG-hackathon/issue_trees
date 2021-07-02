@@ -12,17 +12,46 @@
         radius="10"
         Duration="0"
         style="max-width: 90%; max-height: 500px"
+        contextMenuPlacement="bottom-start"
         @clickedText="onClick"
         @expand="onExpand"
         @retract="onRetract"
         @clickedNode="onClickNode"
-      ></tree>
+      >
+        <template #popUp="{ data, node }">
+          <div class="btn-group-vertical">
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="addFor(data)"
+              data-toggle="tooltip"
+              title="Add children"
+            >
+              <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              @click="remove(data, node)"
+              data-toggle="tooltip"
+              title="Remove node"
+            >
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </template>
+      </tree>
     </div>
   </div>
 </template>
 
+
+
 <script>
+import { createPopper } from "../popUp";
 import { tree } from "vued3tree";
+
+const popUpClass = "pop-up-tree";
 
 export default {
   name: "App",
@@ -41,11 +70,9 @@ export default {
           {
             name: "backend",
             children: [
-              {
-                name: "issue3",
-                children: [{ name: "issue4" }, { name: "issue5" }],
-              },
-              { name: "issue6" },
+              { name: "issue3" },
+              { name: "issue4" },
+              { name: "issue5" },
             ],
           },
         ],
@@ -58,8 +85,26 @@ export default {
     };
   },
   methods: {
-    getId(node) {
-      return node.id;
+    getNode(node) {
+      console.log("-----");
+      console.log(node);
+      return node.data;
+    },
+    getTarget(node) {
+      console.log(node.target);
+      return node.target;
+    },
+    setPopUp({ element, target }) {
+      const { contextMenu, popUpPlacement } = this;
+      contextMenu.node = element;
+      createPopper({
+        target,
+        element: this.$el.querySelector(`.${popUpClass}`),
+        placement: popUpPlacement,
+        styleCallback: (style) => {
+          contextMenu.style = style;
+        },
+      });
     },
     onClick(evt) {
       this.onEvent("clickedText", evt);
