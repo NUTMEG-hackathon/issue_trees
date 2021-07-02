@@ -2,16 +2,15 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Information from '../views/Information.vue'
-import Logout from '../views/Logout.vue'
 import Tree from '../views/Tree'
-import Welcome from '../pages/Welcome.vue'
+import Welcome from '../views/Welcome.vue'
 
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'Home',
     component: Home
   },
@@ -19,11 +18,6 @@ const routes = [
     path: '/information',
     name: 'Information',
     component: Information
-  },
-  {
-    path: '/logout',
-    name: 'Logout',
-    component: Logout
   },
   {
     path: '/about',
@@ -39,7 +33,7 @@ const routes = [
     component: Tree
   },
   {
-    path: '/welcome',
+    path: '/',
     name: 'Welcome',
     component: Welcome
   },
