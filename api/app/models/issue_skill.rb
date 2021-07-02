@@ -1,4 +1,4 @@
 class IssueSkill < ApplicationRecord
-  belongs_to : skill
-  belongs_to : issue
+  belongs_to :skill
+  belongs_to :issue
 end
