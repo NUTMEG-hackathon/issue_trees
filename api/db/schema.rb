@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_30_075723) do
+ActiveRecord::Schema.define(version: 2021_07_02_053220) do
+
+  create_table "clients", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.integer "project_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "issue_skills", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "issue_id"
@@ -22,7 +29,6 @@ ActiveRecord::Schema.define(version: 2021_06_30_075723) do
   create_table "issues", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "ancestry"
-    t.integer "project_id"
     t.integer "user_id"
     t.text "description"
     t.integer "level"
