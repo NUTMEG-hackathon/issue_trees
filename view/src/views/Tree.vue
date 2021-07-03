@@ -83,7 +83,15 @@
         <v-dialog persistent v-model="addIssue" width="500">
           <v-card>
             <v-card-title class="text-h4 light-green justify-center lighten-2">
-              add issue
+              <v-row>
+                <v-col cols="3" />
+                <v-col cols="6"> add issues </v-col>
+                <v-col cols="3" class="text-end">
+                  <v-btn text @click="addIssue = false">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
             </v-card-title>
             <v-card-title
               class="text-h5 justify-center text-decoration-underline"
@@ -95,7 +103,11 @@
             >
               issue details
             </v-card-title>
-            <v-card-text> write issue details </v-card-text>
+            <v-textarea
+              solo
+              name="input-7-4"
+              label="Solo textarea"
+            ></v-textarea>
             <v-card-title
               class="text-h5 justify-center text-decoration-underline"
             >
@@ -159,7 +171,15 @@
         <v-dialog persistent v-model="issueDetails" width="500">
           <v-card>
             <v-card-title class="text-h4 light-green justify-center lighten-2">
-              issue details
+              <v-row>
+                <v-col cols="3" />
+                <v-col cols="6">issue details </v-col>
+                <v-col cols="3" class="text-end">
+                  <v-btn text @click="issueDetails = false">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
             </v-card-title>
             <v-card-title
               class="text-h5 justify-center text-decoration-underline"
