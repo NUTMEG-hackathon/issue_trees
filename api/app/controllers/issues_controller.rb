@@ -4,6 +4,7 @@ class IssuesController < ApplicationController
   # GET /issues or /issues.json
   def index
     @issues = Issue.all
+    render json: @issues
   end
 
   # GET /issues/1 or /issues/1.json
