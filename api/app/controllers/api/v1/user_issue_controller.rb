@@ -1,0 +1,20 @@
+class Api::V1::UserIssueController < ApplicationController
+  #before_action :authenticate_api_user!
+
+  def get_user_issues
+    @user = current_api_user
+    issues = @user.issues
+    userIssues = []
+    for issue in issues do
+      name = issue.name
+      description = issue.description
+      level = issue.level
+      userIssues << {
+        name: name,
+        description: description,
+        level: level
+      }
+    end
+  render json:userIssues
+
+end
