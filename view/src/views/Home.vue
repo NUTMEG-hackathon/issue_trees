@@ -1,12 +1,36 @@
 <template>
-  <div class="card">
-    <h1>aaaaaaaaaaaaaaaaasaaaaaaa</h1>
-  </div>
+  <v-container>
+    <v-card>
+      <h1>{{users}}</h1>
+    </v-card>
+  </v-container>
 </template>
 
-<style>
-  .card{
-    box-shadow: -2px -2px 5px rgba(255, 255, 255, 1),
-                 3px 3px 5px rgba(0, 0, 0, 0.1);
-  }
-</style>
+<script>
+import axios from 'axios'
+export default {
+  components:{
+  },
+  data() {
+    return {
+      users: [],
+    };
+  },
+  mounted() {
+    const url = "http://localhost:3000" + "/api/v1/users/index";
+    axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("access-token"),
+          client: localStorage.getItem("client"),
+          uid: localStorage.getItem("uid"),
+        },
+      })
+      .then((response) => {
+        this.users = response.data.data;
+        console.log(this.users)
+      });
+  },
+};
+</script>
