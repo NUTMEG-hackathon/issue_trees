@@ -15,10 +15,25 @@
         <v-row>
           <v-card-text> 個人情報 </v-card-text>
           <v-layout align-center justify-center>
-            <v-btn @click="edit = true" color="#91BA58">
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs  }">
+                  <v-btn
+                      fab
+                      text
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="send">
+                      <v-icon>mdi-pencil</v-icon>
+                  </v-btn>
+              </template>
+              <span>ユーザー情報を編集する</span>
+            </v-tooltip>
           </v-layout>
+            <EditUser ref="editdialog"
+                :name="users.name"
+                :email="users.email"
+                >
+            </EditUser>
         </v-row>
 
         <v-row>
@@ -88,35 +103,6 @@
         </v-card>
       </v-dialog>
 
-      <v-dialog v-model="edit" max-width="600" persistent>
-        <v-card>
-          <v-card-title>個人情報の編集</v-card-title>
-          <v-container class="justify-content-center">
-            <v-text-field label="name" v-model="name" text outlined clearable />
-            <v-text-field
-              label="email"
-              v-model="name"
-              text
-              outlined
-              clearable
-            />
-          </v-container>
-          <v-card-actions>
-            <v-layout align-center justify-center>
-              <v-spacer />
-              <v-btn color="#91BA58" flat="flat" @click="dialog = true"
-                >登録</v-btn
-              >
-              <v-spacer />
-              <v-btn color="#74905D" flat="flat" @click="edit = false"
-                >取り消し</v-btn
-              >
-              <v-spacer />
-            </v-layout>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
       <v-dialog v-model="password" max-width="600" persistent>
         <v-card>
           <v-card-title>パスワードの変更</v-card-title>
@@ -163,8 +149,12 @@
 </template>
 
 <script>
-import axios from "axios";
+import EditUser from '@/components/edit_user.vue'
+import axios from 'axios'
 export default {
+  components:{
+    EditUser,
+  },
   data() {
     return {
       users: [],
@@ -196,6 +186,11 @@ export default {
       .then((response) => {
         this.users = response.data.data;
       });
+  },
+  methods:{
+    send: function(){
+      this.$refs.editdialog.edit = true
+    },
   },
 };
 </script>
