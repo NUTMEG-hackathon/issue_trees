@@ -5,7 +5,7 @@ Issue.seed( :id,
     client_id: 1,
     user_id: 3,
     description: "nobitaの仕事,バックエンド",
-    level: 1
+    level: 3
   },
   {
   id:2, 
@@ -13,7 +13,7 @@ Issue.seed( :id,
   client_id: 1,
   user_id: 1,
   description: "fujisakiの仕事,バックエンド",
-  level: 1
+  level: 3
   },
   {
   id:3,
@@ -21,7 +21,7 @@ Issue.seed( :id,
   client_id: 2,
   user_id: 1,
   description: "nobitaの仕事,バックエンド",
-  level: 1
+  level: 3
   },
   {
   id:4,
@@ -29,7 +29,7 @@ Issue.seed( :id,
   client_id: 2,
   user_id: 1,
   description: "doraemonの仕事,フロントエンド",
-  level: 5 
+  level: 3 
   },
   {
   id:5,
@@ -37,7 +37,7 @@ Issue.seed( :id,
   client_id: 3,
   user_id: 4,
   description: "ouraの仕事,サーバー",
-  level: 2
+  level: 3
   },
   {
   id:6,
@@ -45,7 +45,7 @@ Issue.seed( :id,
   client_id: 2,
   user_id: 1,
   description: "fujisakiの仕事,backend",
-  level: 2
+  level: 3
   },
   {
   id:7,
@@ -53,7 +53,7 @@ Issue.seed( :id,
   client_id: 1,
   user_id: 1,
   description: "fujisakiの仕事,backend",
-  level: 2
+  level: 3
   },
   {
   id:8,
@@ -61,7 +61,7 @@ Issue.seed( :id,
   client_id: 2,
   user_id: 2,
   description: "doraemonの仕事,backend",
-  level: 2
+  level: 3
   },
   {
   id:9,
@@ -69,7 +69,7 @@ Issue.seed( :id,
   client_id: 1,
   user_id: 3,
   description: "nobitaの仕事,backend",
-  level: 2
+  level: 3
   },
   {
   id:10,
@@ -77,6 +77,6 @@ Issue.seed( :id,
   client_id: 1,
   user_id: 3,
   description: "nobitaの仕事,backend",
-  level: 1
+  level: 3
   }
 )
