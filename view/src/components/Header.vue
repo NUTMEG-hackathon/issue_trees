@@ -57,7 +57,7 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-item @click="logout = true">
+            <v-list-item @click="logout=true">
               <v-list-item-content>
                 <v-list-item-title class="font-weight-bold">
                   <v-icon large>mdi-lock-reset</v-icon>
@@ -78,7 +78,7 @@
                 <v-spacer />
                 <v-btn class="error" flat @click="logout=false">取り消し</v-btn>
                 <v-spacer />
-                <v-btn class="primary" flat @click="logout=false" to="/">決定</v-btn>
+                <v-btn class="primary" flat @click="ok">決定</v-btn>
                 <v-spacer />
               </v-layout>
             </v-card-actions>
@@ -120,6 +120,26 @@ export default {
       .then((response) => {
         this.users = response.data.data;
       });
+  },
+  methods: {
+    ok: function () {
+      axios
+        .delete("http://localhost:3000/api/auth/sign_out", {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then(
+          this.$router.push("/"),
+          this.logout=false,
+          localStorage.removeItem("access-token"),
+          localStorage.removeItem("client"),
+          localStorage.removeItem("uid")
+        );
+    },
   },
 };
 </script>

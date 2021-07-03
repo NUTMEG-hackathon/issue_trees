@@ -1,5 +1,5 @@
 <template>
-  <div v-if="windowWidth > 700">
+  <div>
     <div class="background" id="container">
       <div>
         <br /><br /><br />
@@ -22,32 +22,7 @@
         </v-row>
       </div>
     </div>
-    <WelcomeDetail v-if="this.isStep == 1" />
-    <WelcomeDetailStep v-if="this.isStep == 2" />
     <div class="text-center">
-      <v-btn @click="change" text>登録の手順はこちら</v-btn>
-    </div>
-  </div>
-  <div v-else>
-    <div class="background">
-      <div>
-        <v-row class="hero-header">
-          <v-col>
-            <v-card flat class="card-color">
-              <br />
-              <div class="text-center" v-show="show">
-                <MobileSignUp />
-                <a @click="toggle_show">ログインはこちら</a>
-              </div>
-              <div class="text-center" v-show="!show">
-                <MobileSignIn />
-                <a @click="toggle_show">新規登録はこちら</a>
-              </div>
-              <br />
-            </v-card>
-          </v-col>
-        </v-row>
-      </div>
     </div>
   </div>
 </template>
