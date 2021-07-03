@@ -7,6 +7,16 @@
         <div class="panel-body">
           <div class="form-horizontal">
             <div class="form-group">
+              <label for="type" class="control-label col-sm-3">type</label>
+              <div class="col-sm-9">
+                <select id="type" class="form-control" v-model="type">
+                  <option>tree</option>
+                  <option>cluster</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
               <label for="layout-type" class="control-label col-sm-3"
                 >layoutType</label
               >
@@ -22,21 +32,6 @@
                 </select>
               </div>
             </div>
-            <div class="form-group">
-              <label for="layout-type" class="control-label col-sm-3"
-                >linkLayout</label
-              >
-              <div class="col-sm-9">
-                <select
-                  id="layout-type"
-                  class="form-control"
-                  v-model="linkLayout"
-                >
-                  <option>bezier</option>
-                  <option>orthogonal</option>
-                </select>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -47,7 +42,8 @@
         <div class="panel-body log">
           <div v-for="(event, index) in events" :key="index">
             <p>
-              <b>Name:</b> {{ event.eventName }} <b>Data:</b>{{ event.data }}
+              <b>Name:</b> {{ event.eventName }} <b>Data:</b
+              >{{ event.data.text }}
             </p>
           </div>
         </div>
@@ -56,13 +52,24 @@
 
     <div class="col-md-9 panel panel-default">
       <tree
+        ref="tree"
         v-model="currentData"
+        :nodeTextDisplay="nodeTextDisplay"
         :identifier="getId"
-        :data="Graph.tree"
+        :nodeTextMargin="nodeTextMargin"
+        :zoomable="zoomable"
+        :data="tree"
+        :leafTextMargin="leafTextMargin"
         :node-text="nodeText"
+        :margin-x="Marginx"
+        :margin-y="Marginy"
         :radius="radius"
+        :type="type"
         :layout-type="layoutType"
         :linkLayout="linkLayout"
+        :duration="duration"
+        :minZoom="minZoom"
+        :maxZoom="maxZoom"
         contextMenuPlacement="bottom-start"
         class="tree"
         @clickedText="onClick"
@@ -70,9 +77,6 @@
         @retract="onRetract"
         @clickedNode="onClickNode"
       >
-        <template #behavior="{ on, actions }">
-          <popUpOnHoverText v-bind="{ on, actions }" />
-        </template>
       </tree>
 
       <div class="text-center">
@@ -196,48 +200,49 @@
 </template>
 
 <script>
-import { tree, popUpOnHoverText } from "vued3tree";
+import { tree } from "vued3tree";
 import data from "../../data/data";
 import { getGremlin } from "./gremlinConfiguration";
-const removeElement = (arr, element) => {
-  const index = arr.indexOf(element);
-  if (index === -1) {
-    return;
-  }
-  arr.splice(index, 1);
-};
 Object.assign(data, {
   type: "tree",
   layoutType: "horizontal",
-  radius: 6,
+  duration: 750,
+  Marginx: 30,
+  Marginy: 30,
+  radius: 10,
+  leafTextMargin: 6,
+  nodeTextMargin: 6,
   nodeText: "name",
   currentData: null,
+  zoomable: true,
   isLoading: false,
   isUnderGremlinsAttack: false,
+  nodeTextDisplay: "all",
   linkLayout: "bezier",
+  minZoom: 0.8,
+  maxZoom: 9,
+  events: [],
 });
 export default {
-  name: "app",
+  name: "App",
   data() {
     return {
-      Graph: {
-        tree: {
-          name: "project",
-          children: [
-            {
-              name: "frontend",
-              children: [{ name: "issue1" }, { name: "issue2" }],
-            },
-            {
-              name: "backend",
-              children: [
-                { name: "issue3" },
-                { name: "issue4" },
-                { name: "issue5" },
-              ],
-            },
-          ],
-        },
+      tree: {
+        name: "project",
+        children: [
+          {
+            name: "frontend",
+            children: [{ name: "issue1" }, { name: "issue2" }],
+          },
+          {
+            name: "backend",
+            children: [
+              { name: "issue3" },
+              { name: "issue4" },
+              { name: "issue5" },
+            ],
+          },
+        ],
       },
       addIssue: false,
       issueDetails: false,
@@ -263,14 +268,13 @@ export default {
       ],
     };
   },
-
-  onTextClick() {
-    this.$element("apiMenu").show({ x: 280, y: 120 });
-  },
+  // onTextClick() {
+  //   this.$element("apiMenu").show({ x: 280, y: 120 });
+  // },
   components: {
     tree,
-    popUpOnHoverText,
   },
+
   methods: {
     async do(action) {
       if (this.currentData) {
@@ -322,10 +326,6 @@ export default {
       } else {
         this.isChildNode = true;
       }
-    },
-    remove(data, node) {
-      const parent = node.parent.data;
-      removeElement(parent.children, data);
     },
     gremlins() {
       if (this.isUnderGremlinsAttack) {
@@ -414,13 +414,5 @@ export default {
   overflow-y: auto;
   overflow: auto;
   text-align: left;
-}
-.container {
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-}
-.title-text {
-  margin: 20px;
 }
 </style>
