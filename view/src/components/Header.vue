@@ -2,31 +2,30 @@
   <div
     v-if="this.$route.path === '/tree' ||
           this.$route.path === '/information' ||
-          this.$route.path === '/about'
-  ">
-    <v-container>
-      <v-app-bar app color="#91BA58" dark clipped-left>
-        <v-row align="center">
-          <v-col cols="4"></v-col>
-          <v-col cols="4">
-            <v-select
-              label="カテゴリ"
-              ref="groupCategory"
-              v-model="groupCategoryId"
-              :items="groupCategories"
-              :menu-props="{
-                top: true,
-                offsetY: true,
-              }"
-              item-text="name"
-              item-value="id"
-              outlined
-            />
-          </v-col>
-          <v-col cols="4"></v-col>
-        </v-row>
+          this.$route.path === '/about'">
+    <v-app-bar app color="#aed581" dark clipped-left>
+      <v-row>
+        <v-col cols="4">
+        </v-col>
 
-        <v-menu open-on-hover offset-y>
+        <v-col cols="4" >
+          <v-select
+            label="カテゴリ"
+            ref="groupCategory"
+            v-model="groupCategoryId"
+            :items="groupCategories"
+            :menu-props="{
+              top: true,
+              offsetY: true,
+            }"
+            item-text="name"
+            item-value="id"
+            outlined
+          />
+        </v-col>
+
+        <v-col cols="4" class="text-end">
+          <v-menu open-on-hover offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               x-large
@@ -37,55 +36,60 @@
               <v-icon large>mdi-home-circle</v-icon>
             </v-btn>
           </template>
-
           <v-list dense>
             <v-list-item to="/tree">
               <v-list-item-content>
-                <v-list-item-title class="font-weight-bold">
-                  <v-icon large>mdi-file-tree</v-icon>
+                <v-list-item class="font-weight-bold">
+                  <v-icon large class="pr-3">mdi-file-tree</v-icon>
                   ツリー構造
-                </v-list-item-title>
+                </v-list-item>
               </v-list-item-content>
             </v-list-item>
 
             <v-list-item to="/information">
               <v-list-item-content>
-                <v-list-item-title class="font-weight-bold">
-                  <v-icon large>mdi-account-box</v-icon>
+                <v-list-item class="font-weight-bold">
+                  <v-icon large class="pr-3">mdi-account-box</v-icon>
                   ユーザー情報詳細
-                </v-list-item-title>
+                </v-list-item>
               </v-list-item-content>
             </v-list-item>
 
             <v-list-item @click="logout=true">
               <v-list-item-content>
-                <v-list-item-title class="font-weight-bold">
-                  <v-icon large>mdi-lock-reset</v-icon>
+                <v-list-item class="font-weight-bold">
+                  <v-icon large class="pr-3">mdi-lock-reset</v-icon>
                   ログアウト
-                </v-list-item-title>
+                </v-list-item>
               </v-list-item-content>
             </v-list-item>
           </v-list>
-        </v-menu>
-      </v-app-bar>
+          </v-menu>
+        </v-col>
+        
+      </v-row>
+      
 
-      <v-dialog v-model="logout" max-width="600">
-        <v-card>
-          <v-card-title class="text-h4 justify-center light-green lighten-2 lighten-2">logout</v-card-title>
-          <v-container class="justify-content-center">
-            <v-card-actions>
-              <v-layout align-center justify-center>
-                <v-spacer />
-                <v-btn class="error" flat @click="logout=false">取り消し</v-btn>
-                <v-spacer />
-                <v-btn class="primary" flat @click="ok">決定</v-btn>
-                <v-spacer />
-              </v-layout>
-            </v-card-actions>
-          </v-container>
-        </v-card>
-      </v-dialog>
-    </v-container>
+        
+
+
+    <v-dialog v-model="logout" max-width="600">
+      <v-card>
+        <v-card-title class="text-h4 justify-center light-green lighten-2 lighten-2">logout</v-card-title>
+        <v-container class="justify-content-center">
+          <v-card-actions>
+            <v-layout align-center justify-center>
+              <v-spacer />
+              <v-btn class="error" flat @click="logout=false">取り消し</v-btn>
+              <v-spacer />
+              <v-btn class="primary" flat @click="ok">決定</v-btn>
+              <v-spacer />
+            </v-layout>
+          </v-card-actions>
+        </v-container>
+      </v-card>
+    </v-dialog>
+    </v-app-bar>
   </div>
 </template>
 
