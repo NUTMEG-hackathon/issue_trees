@@ -5,7 +5,31 @@
           this.$route.path === '/about'
   ">
     <v-container>
-      <v-navigation-drawer fixed permanent clipped app color="#B4CF9B">
+      <v-navigation-drawer fixed permanent clipped app color="#FFF">
+        <v-sheet>
+          <v-list>
+            <v-list-item @click="dialog=true" class="font-weight-bold py-1">
+              <v-icon class="pr-3" color="#7da453">
+                mdi-text-box-plus-outline
+              </v-icon>
+              Add Project
+            </v-list-item>
+            <v-list-item @click="dialog=true" class="font-weight-bold py-1">
+              <v-icon class="pr-3" color="#7da453">
+                mdi-information-variant
+              </v-icon>
+              Details
+            </v-list-item>
+            <v-list-item @click="dialog=true" class="font-weight-bold py-1">
+              <v-icon class="pr-3" color="#7da453">
+                mdi-account
+              </v-icon>
+              Member
+            </v-list-item>
+          
+          </v-list>
+        </v-sheet>
+        <!--
         <br />
         <v-row>
           <v-col cols="1"></v-col>
@@ -36,6 +60,7 @@
           </v-col>
           <v-col cols="1"></v-col>
         </v-row>
+        -->
       </v-navigation-drawer>
 
       <v-dialog v-model="dialog" max-width="600" persistent>
