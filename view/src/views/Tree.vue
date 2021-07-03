@@ -319,13 +319,14 @@ export default {
       this.do("show");
     },
     onClick(evt) {
+      console.log("onclick text");
       this.onEvent("clickedText", evt);
       if (this.isChildNode) {
         this.addIssue = true;
       } else {
         this.issueDetails = true;
       }
-      // this.events = [];
+      this.events = [];
     },
     onClickNode(evt) {
       this.onEvent("clickedNode", evt);
@@ -346,6 +347,10 @@ export default {
       } else {
         this.isChildNode = true;
       }
+      console.log("on Event");
+      console.log(this.isChildNode);
+      console.log(this.addIssue);
+      console.log(this.issueDetails);
     },
     gremlins() {
       if (this.isUnderGremlinsAttack) {
