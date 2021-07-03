@@ -1,108 +1,104 @@
 <template>
-  <div>
-    <div class="background" id="container">
-      <div>
-        <br /><br /><br />
-        <v-row class="hero-header">
-          <v-col cols="7"></v-col>
-          <v-col cols="5 pl-15 pr-5">
-            <v-card flat class="card-color">
-              <br />
-              <div class="text-center" v-show="show">
-                <Signup />
-                <a @click="toggle_show">ログインはこちら</a>
-              </div>
-              <div class="text-center" v-show="!show">
-                <Signin />
-                <a @click="toggle_show">新規登録はこちら</a>
-              </div>
-              <br />
+  <v-container>
+    <v-parallax src="../assets/Tree1.png">
+      <v-row align="center" justify="center">
+        <v-col cols="12">
+          <br />
+          <h1 class="text-h1 font-weight-bold mb-4">
+            Efficientree
+          </h1>
+          <br />
+          <h3 class="text-h2 font-weight-bold mb-4">
+            Streamline development
+          </h3>
+        </v-col>
+      </v-row>
+    </v-parallax>
+
+    <v-row justify="center">
+      <v-col cols="4">
+        <v-menu open-on-hover offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-card rounded v-bind="attrs" v-on="on">
+              <br /><br />
+              <v-card-title  class="text-h4 justify-center light-green lighten-2 lighten-2">
+                <v-icon x-large>mdi-lock-reset</v-icon>
+                SignUp
+              </v-card-title>
+              <br /><br />
             </v-card>
-          </v-col>
-        </v-row>
-      </div>
-    </div>
-    <div class="text-center">
-    </div>
-  </div>
+          </template>
+          <v-list>
+            <v-list-item>
+              <v-list-item-title>
+                <Signup />
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-col>
+
+      <v-col cols="4">
+        <v-menu open-on-hover offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-card rounded v-bind="attrs" v-on="on">
+              <br /><br />
+              <v-card-title  class="text-h4 justify-center light-green lighten-2 lighten-2">
+                <v-icon x-large>mdi-lock-reset</v-icon>
+                SignIn
+              </v-card-title>
+              <br /><br />
+            </v-card>
+          </template>
+          <v-list>
+            <v-list-item>
+              <v-list-item-title>
+                <Signin />
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-col>
+
+      <v-col cols="4">
+        <v-menu open-on-hover offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-card rounded v-bind="attrs" v-on="on">
+              <br /><br />
+              <v-card-title  class="text-h4 justify-center light-green lighten-2 lighten-2">
+                <v-icon x-large>mdi-lock-reset</v-icon>
+                instruction manual
+              </v-card-title>
+              <br /><br />
+            </v-card>
+          </template>
+          <v-list>
+            <v-list-item>
+              <v-list-item-title>
+                <Homepage />
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-col>
+    </v-row>
+
+  </v-container>
 </template>
 
 <script>
 import Signup from "../components/SignUp.vue";
 import Signin from "../components/SignIn.vue";
+import Homepage from "../components/Homepage.vue";
 export default {
-  name: "Welcome",
   components: {
     Signup,
     Signin,
+    Homepage,
   },
   data() {
     return {
-      show: true,
-      isStep: 1,
-      windowWidth: window.innerWidth,
     };
-  },
-  mounted() {
-    window.addEventListener("resize", this.calculateWindowWidth);
-  },
-  beforeDestroy() {
-    window.removeEventListener("resize", this.calculateWindowWidth);
-  },
-  methods: {
-    toggle_show() {
-      this.show = !this.show;
-    },
-    change() {
-      if (this.isStep == 1) {
-        this.isStep = 2;
-      } else if (this.isStep == 2) {
-        this.isStep = 1;
-      }
-    },
-    calculateWindowWidth() {
-      this.windowWidth = window.innerWidth;
-      console.log(this.windowWidth);
-    },
   },
 };
 </script>
-
-
-<style>
-.font {
-  color: white;
-  font-size: 500%;
-}
-.dialog_font {
-  color: white !important;
-}
-v-sheet {
-  color: black;
-}
-
-.text-label {
-  opacity: 0.5;
-  text-align: center;
-}
-
-.background {
-  background-image: url("~@/assets/Tree1.png");
-  background-size: cover;
-  min-height: 80vh;
-  background-position: center center;
-}
-
-.text-label {
-  font-size: 45px;
-  text-align: center;
-}
-
-.card-color {
-  background-color: rgba(255, 255, 255, 0.5) !important;
-  border-color: white !important;
-}
-.logo {
-  fill: #ffffff;
-}
-</style>

@@ -14,13 +14,7 @@
               </v-icon>
               Add Project
             </v-list-item>
-            <v-list-item @click="dialog=true" class="font-weight-bold py-1">
-              <v-icon class="pr-3" color="#7da453">
-                mdi-information-variant
-              </v-icon>
-              Details
-            </v-list-item>
-            <v-list-item @click="dialog=true" class="font-weight-bold py-1">
+            <v-list-item class="font-weight-bold py-1">
               <v-icon class="pr-3" color="#7da453">
                 mdi-account
               </v-icon>
@@ -29,39 +23,9 @@
           
           </v-list>
         </v-sheet>
-        <!--
-        <br />
-        <v-row>
-          <v-col cols="1"></v-col>
-          <v-col cols="10">
-            <v-card @click="dialog = true">
-              <v-card-title>プロジェクト追加</v-card-title>
-            </v-card>
-          </v-col>
-          <v-col cols="1"></v-col>
-        </v-row>
-        <br />
-        <v-row>
-          <v-col cols="1"></v-col>
-          <v-col cols="10">
-            <v-card>
-              <v-card-title>詳細</v-card-title>
-            </v-card>
-          </v-col>
-          <v-col cols="1"></v-col>
-        </v-row>
-        <br />
-        <v-row>
-          <v-col cols="1"></v-col>
-          <v-col cols="10">
-            <v-card>
-              <v-card-title>参加メンバー</v-card-title>
-            </v-card>
-          </v-col>
-          <v-col cols="1"></v-col>
-        </v-row>
-        -->
       </v-navigation-drawer>
+
+
 
       <v-dialog v-model="dialog" max-width="600" persistent>
         <v-card>
@@ -121,6 +85,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+
     </v-container>
   </div>
 </template>
