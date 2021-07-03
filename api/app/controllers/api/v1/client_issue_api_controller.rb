@@ -13,6 +13,6 @@ class Api::V1::ClientIssuesApiController < ApplicationController
         description: description
       }
     end
-    render json:clientissues
+    render json :clientissues
   end
 end
