@@ -1,4 +1,4 @@
-class Api::V1::UserSkillController < ApplicationController
+class Api::V1::UserSkillApiController < ApplicationController
 
   def get_user_skills
     @user = current_api_user
@@ -13,6 +13,7 @@ class Api::V1::UserSkillController < ApplicationController
         status: status,
         level: level
       }
+    end
+    render json:skills
   end
-  render json:skills
 end

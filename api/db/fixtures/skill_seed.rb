@@ -18,7 +18,7 @@ Skill.seed( :id,
   level: 3
 },
 {
-  id;:4,
+  id:4,
   name: "Nginx",
   status: "server",
   level:3

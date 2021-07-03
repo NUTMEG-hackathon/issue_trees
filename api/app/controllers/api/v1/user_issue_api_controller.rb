@@ -1,4 +1,4 @@
-class Api::V1::UserIssueController < ApplicationController
+class Api::V1::UserIssueApiController < ApplicationController
   #before_action :authenticate_api_user!
 
   def get_user_issues
@@ -15,6 +15,6 @@ class Api::V1::UserIssueController < ApplicationController
         level: level
       }
     end
-  render json:userIssues
-
+    render json:userIssues
+  end
 end

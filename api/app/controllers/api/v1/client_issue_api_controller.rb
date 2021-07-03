@@ -1,4 +1,4 @@
-class Api::V1::ClientIssueController < ApplicationController
+class Api::V1::ClientIssuesApiController < ApplicationController
   #before_action :authenticate_api_user!
 
   def get_client_issue
@@ -9,10 +9,10 @@ class Api::V1::ClientIssueController < ApplicationController
       name = issue.name
       description = issue.description
       clientissues<< {
-        name: name
+        name: name,
         description: description
       }
     end
-  render json:clientissues
-
+    render json:clientissues
+  end
 end

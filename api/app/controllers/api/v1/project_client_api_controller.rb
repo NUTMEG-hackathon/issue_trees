@@ -1,4 +1,4 @@
-class Api::V1::ProjectClientController < ApplicationController
+class Api::V1::ProjectClientsApiController < ApplicationController
   #before_action :authenticate_api_user!
 
   def get_project_client
@@ -11,6 +11,6 @@ class Api::V1::ProjectClientController < ApplicationController
         name: name
       }
     end
-  render json:projectclients
-
+    render json:projectclients
+  end
 end
