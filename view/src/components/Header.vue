@@ -7,12 +7,14 @@
     "
   >
     <v-container>
-      <v-app-bar app color="#91BA58" dark clipped-left>
-        <v-row>
-          <v-col cols="11"></v-col>
-          <v-col cols="1">
+      <v-app-bar app color="#91BA58" dark clipped-left> 
+              <v-btn x-large to = "/tree" fab text v-bind="attrs" v-on="on">
+                 <v-icon large >mdi-family-tree</v-icon>        
+              </v-btn>
+              <v-spacer>
+              </v-spacer>
             <v-menu open-on-hover offset-y>
-              <template v-slot:activator="{ on, attrs }">
+              <template v-slot:activator="{ on, attrs }">  
                 <v-btn x-large fab text v-bind="attrs" v-on="on">
                   <v-icon large>mdi-account-circle</v-icon>
                 </v-btn>
@@ -47,8 +49,6 @@
                 </v-list-item>
               </v-list>
             </v-menu>
-          </v-col>
-        </v-row>
       </v-app-bar>
 
       <v-dialog v-model="logout" max-width="600">
