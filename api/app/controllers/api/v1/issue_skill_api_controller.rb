@@ -1,7 +1,7 @@
-class Api::V1::IssueSkillsApiController < ApplicationController
+class Api::V1::IssueSkillApiController < ApplicationController
   #before_action :authenticate_api_user!
   
-  def get_issue_skills
+  def get_issue_skill
     @issue = current_api_issue
     issue_skills = @issue.issue_skill
     issueskills = []
