@@ -15,12 +15,11 @@ Rails.application.routes.draw do
       get "users/show" => "users#show"
 
       get "get_client_issue" => "client_issue_api#get_client_issue"
-      get "get_issue_skill" => "issue_skill_api#get_issue_skill"
+      get "get_issue_skill" => "issue_skill_api#get_issue_skills"
       get "get_project_client" => "project_client_api#get_project_client"
       get "get_project_user" => "project_user_api#get_project_user"
       get "get_user_issue" => "user_issue_api#get_user_issues"
-      get "get_user_skill" => "user_skill_api#get_user_skill"
-      get "get_client_name" => "client_issue_api#get_client_name"
+      get "get_user_skill" => "user_skill_api#get_user_skills"
     end
   end
   namespace :api do
