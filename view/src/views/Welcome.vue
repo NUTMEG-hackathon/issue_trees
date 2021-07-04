@@ -22,7 +22,7 @@
             <v-card rounded v-bind="attrs" v-on="on" :close-on-content-click="false" :close-on-click="false">
               <br /><br />
               <v-card-title  class="text-h4 justify-center light-green lighten-2 lighten-2">
-                <v-icon x-large>mdi-lock-reset</v-icon>
+                <v-icon x-large>mdi-text-box-plus</v-icon>
                 SignUp
               </v-card-title>
               <br /><br />
@@ -44,7 +44,7 @@
             <v-card rounded v-bind="attrs" v-on="on" :close-on-content-click="false" :close-on-click="false">
               <br /><br />
               <v-card-title  class="text-h4 justify-center light-green lighten-2 lighten-2">
-                <v-icon x-large>mdi-lock-reset</v-icon>
+                <v-icon x-large>mdi-login</v-icon>
                 SignIn
               </v-card-title>
               <br /><br />
@@ -66,7 +66,7 @@
             <v-card rounded v-bind="attrs" v-on="on" :close-on-content-click="false" :close-on-click="false">
               <br /><br />
               <v-card-title  class="text-h4 justify-center light-green lighten-2 lighten-2">
-                <v-icon x-large>mdi-lock-reset</v-icon>
+                <v-icon x-large>mdi-book-open-page-variant</v-icon>
                 instruction manual
               </v-card-title>
               <br /><br />

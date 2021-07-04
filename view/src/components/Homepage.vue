@@ -1,60 +1,49 @@
 <template>
-  <v-container>
-      <v-row justify="space-around">
-        <v-card width="300">
-          <v-img
-            height="300px"
-            src="../assets/Tree3.png"
-          >
-            <v-app-bar flat color="rgba(0, 0, 0, 0)">
-              <v-toolbar-title class="text-h5 white--text font-weight-bold">
-                Efficientree
-              </v-toolbar-title>
-              <v-spacer></v-spacer>
-            </v-app-bar>
-          </v-img>
-          <v-card-text>
-
-            <v-timeline align-top dense>
-              <v-timeline-item
-                v-for="message in messages"
-                :key="message.time"
-                :color="message.color"
-                small
-              >
-                <div>
-                  <div class="font-weight-normal">
-                    <strong>{{ message.from }}</strong> @{{ message.time }}
-                  </div>
-                  <div>{{ message.message }}</div>
-                </div>
-              </v-timeline-item>
-            </v-timeline>
-          </v-card-text>
-        </v-card>
+  <v-card max-width="375">
+    <v-img
+      src="../assets/Tree3.png"
+      height="300px"
+      dark
+    >
+      <v-row>
+      <v-layout align-center justify-center>
+        <v-card-title class="white--text text-h5 font-weight-bold">
+          長岡技大学-学園祭実行委員会（通称NUTMEG）
+        </v-card-title>
+      </v-layout>
       </v-row>
-  </v-container>
-</template>
+    </v-img>
 
-<script>
-  export default {
-    name: 'home',
-    data: () => ({
-      explain: false,
-      messages: [
-        {
-          message: `When you will start samething,`,
-          color: 'deep-purple lighten-1',
-        },
-        {
-          message: 'All you need is to make a plan.',
-          color: 'green',
-        },
-        {
-          message: 'Get the best with this app!',
-          color: 'deep-purple lighten-1',
-        },
-      ],
-    }),
-  }
-</script>
+    <v-list>
+
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title>参加団体管理アプリ ユーザー用</v-list-item-title>
+          <v-list-item-subtitle>https://group-manager.nutfes.net</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title>参加団体管理アプリ 管理者用</v-list-item-title>
+          <v-list-item-subtitle>http://133.125.44.106:8000</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title>Record</v-list-item-title>
+          <v-list-item-subtitle>?????????????????????</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title>Tracking Support</v-list-item-title>
+          <v-list-item-subtitle>?????????????????????</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+    </v-list>
+  </v-card>
+</template>
