@@ -1,44 +1,46 @@
 <template>
   <v-container>
-    <v-row justify="space-around">
-      <v-card width="400">
-        <v-img
-          height="300px"
-          src="../assets/Tree3.png"
-        >
-          <v-app-bar flat color="rgba(0, 0, 0, 0)">
-            <v-toolbar-title class="text-h5 white--text font-weight-bold">
-              Efficientree
-            </v-toolbar-title>
-            <v-spacer></v-spacer>
-          </v-app-bar>
-        </v-img>
-        <v-card-text>
+      <v-row justify="space-around">
+        <v-card width="300">
+          <v-img
+            height="300px"
+            src="../assets/Tree3.png"
+          >
+            <v-app-bar flat color="rgba(0, 0, 0, 0)">
+              <v-toolbar-title class="text-h5 white--text font-weight-bold">
+                Efficientree
+              </v-toolbar-title>
+              <v-spacer></v-spacer>
+            </v-app-bar>
+          </v-img>
+          <v-card-text>
 
-          <v-timeline align-top dense>
-            <v-timeline-item
-              v-for="message in messages"
-              :key="message.time"
-              :color="message.color"
-              small
-            >
-              <div>
-                <div class="font-weight-normal">
-                  <strong>{{ message.from }}</strong> @{{ message.time }}
+            <v-timeline align-top dense>
+              <v-timeline-item
+                v-for="message in messages"
+                :key="message.time"
+                :color="message.color"
+                small
+              >
+                <div>
+                  <div class="font-weight-normal">
+                    <strong>{{ message.from }}</strong> @{{ message.time }}
+                  </div>
+                  <div>{{ message.message }}</div>
                 </div>
-                <div>{{ message.message }}</div>
-              </div>
-            </v-timeline-item>
-          </v-timeline>
-        </v-card-text>
-      </v-card>
-    </v-row>
+              </v-timeline-item>
+            </v-timeline>
+          </v-card-text>
+        </v-card>
+      </v-row>
   </v-container>
 </template>
 
 <script>
   export default {
+    name: 'home',
     data: () => ({
+      explain: false,
       messages: [
         {
           message: `When you will start samething,`,

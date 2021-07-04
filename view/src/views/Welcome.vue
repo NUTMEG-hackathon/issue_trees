@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="terget">
     <v-parallax src="../assets/Tree1.png">
       <v-row align="center" justify="center">
         <v-col cols="12">
@@ -17,9 +17,9 @@
 
     <v-row justify="center">
       <v-col cols="4">
-        <v-menu open-on-hover offset-y>
-          <template v-slot:activator="{ on, attrs }">
-            <v-card rounded v-bind="attrs" v-on="on">
+        <v-menu open-on-hover offset-y bottom disable-keys :close-on-content-click="false" :close-on-click="false">
+          <template v-slot:activator="{ on, attrs }" :close-on-content-click="false" :close-on-click="false">
+            <v-card rounded v-bind="attrs" v-on="on" :close-on-content-click="false" :close-on-click="false">
               <br /><br />
               <v-card-title  class="text-h4 justify-center light-green lighten-2 lighten-2">
                 <v-icon x-large>mdi-lock-reset</v-icon>
@@ -39,9 +39,9 @@
       </v-col>
 
       <v-col cols="4">
-        <v-menu open-on-hover offset-y>
-          <template v-slot:activator="{ on, attrs }">
-            <v-card rounded v-bind="attrs" v-on="on">
+        <v-menu open-on-hover offset-y bottom disable-keys :close-on-content-click="false" :close-on-click="false">
+          <template v-slot:activator="{ on, attrs }" :close-on-content-click="false" :close-on-click="false">
+            <v-card rounded v-bind="attrs" v-on="on" :close-on-content-click="false" :close-on-click="false">
               <br /><br />
               <v-card-title  class="text-h4 justify-center light-green lighten-2 lighten-2">
                 <v-icon x-large>mdi-lock-reset</v-icon>
@@ -61,9 +61,9 @@
       </v-col>
 
       <v-col cols="4">
-        <v-menu open-on-hover offset-y>
-          <template v-slot:activator="{ on, attrs }">
-            <v-card rounded v-bind="attrs" v-on="on">
+        <v-menu open-on-hover offset-y bottom :close-on-content-click="false" :close-on-click="false" disable-keys>
+          <template v-slot:activator="{ on, attrs }" :close-on-content-click="false" :close-on-click="false">
+            <v-card rounded v-bind="attrs" v-on="on" :close-on-content-click="false" :close-on-click="false">
               <br /><br />
               <v-card-title  class="text-h4 justify-center light-green lighten-2 lighten-2">
                 <v-icon x-large>mdi-lock-reset</v-icon>
