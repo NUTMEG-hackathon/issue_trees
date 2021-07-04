@@ -1,6 +1,6 @@
 class Api::V1::UserSkillApiController < ApplicationController
 
-  def get_user_skill
+  def get_user_skills
     @user = current_api_user
     user_skills = @user.user_skills
     skills = []
