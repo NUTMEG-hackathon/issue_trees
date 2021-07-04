@@ -13,6 +13,9 @@ Rails.application.routes.draw do
       # resources :users
       get "users/index" => "users#index"
       get "users/show" => "users#show"
+      get "projects/index" => "projects#index"
+      get "projects/show" => "projects#show"
+      
 
       get "get_client_issue" => "client_issue_api#get_client_issue"
       get "get_issue_skill" => "issue_skill_api#get_issue_skills"
