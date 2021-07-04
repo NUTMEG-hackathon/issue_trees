@@ -2,7 +2,7 @@ class Api::V1::ProjectClientApiController < ApplicationController
   #before_action :authenticate_api_user!
 
   def get_project_client
-    @project= current_api_project
+    @project= Project.find(params[:id])
     clients = @project.clients
     projectclients = []
     for client in clients do
