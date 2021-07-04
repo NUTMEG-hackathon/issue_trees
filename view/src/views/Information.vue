@@ -2,15 +2,33 @@
   <div>
     <v-container>
       <v-card>
-        <v-card-title class="text-h3 justify-center">Personal Page</v-card-title>
-        <v-card-title class="text-h5 justify-center">Personal Information</v-card-title>
+        <v-card-title class="text-h3 justify-center font-weight-bold">Personal Page</v-card-title>
+        <v-card-title class="text-h5 justify-center font-weight-bold">Personal Information</v-card-title>
         <v-row>
           <v-layout align-center justify-center>
-            <v-list>
-              <v-list-title>
-                {{users}}
-              </v-list-title>
-            </v-list>
+            <template>
+              <v-list rounded>
+                <v-list-item-group>
+                  <v-list-item>
+                    <v-list-item-icon>
+                      <v-icon>mdi-account</v-icon>
+                    </v-list-item-icon>
+                      <v-list-item-title>
+                        name:{{users.name}}
+                      </v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-icon>
+                      <v-icon>mdi-email-open-outline</v-icon>
+                    </v-list-item-icon>
+                      <v-list-item-title>
+                        email:{{users.email}}
+                      </v-list-item-title>
+                  </v-list-item>
+                </v-list-item-group>
+              </v-list>
+            </template>
+
             <v-tooltip left>
               <template v-slot:activator="{ on, attrs  }">
                   <v-btn
@@ -48,9 +66,26 @@
             </EditUser>
         </v-row>
 
-        <v-card-title class="text-h5 justify-center">Myskill</v-card-title>
+        <v-card-title class="text-h5 justify-center font-weight-bold">Myskill</v-card-title>
         <v-row>
           <v-layout align-center justify-center>
+            <template>
+              <v-list rounded>
+                <v-list-item-group>
+                  <div v-for="skill in skills" :key="skill.id">
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon>mdi-certificate</v-icon>
+                        Skill
+                      </v-list-item-icon>
+                        <v-list-item-title>
+                          {{skill.name}}
+                        </v-list-item-title>
+                    </v-list-item>
+                  </div>
+                </v-list-item-group>
+              </v-list>
+            </template>
             <v-tooltip left>
               <template v-slot:activator="{ on, attrs  }">
                   <v-btn
@@ -68,8 +103,47 @@
         </v-row>
         <br />
 
-          <v-card-title class="text-h5 justify-center">参加project</v-card-title>
-          <v-card-title class="text-h5 justify-center">Myissue</v-card-title>
+          <v-card-title class="text-h5 justify-center font-weight-bold">参加project</v-card-title>
+          <v-layout align-center justify-center>
+            <template>
+              <v-list rounded>
+                <v-list-item-group>
+                  <div v-for="project in projects" :key="project.id">
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon>mdi-file-tree</v-icon>
+                        Project
+                      </v-list-item-icon>
+                        <v-list-item-title>
+                            {{project.name}}
+                        </v-list-item-title>
+                    </v-list-item>
+                  </div>
+                </v-list-item-group>
+              </v-list>
+            </template>
+          </v-layout>
+
+          <v-card-title class="text-h5 justify-center font-weight-bold">Myissue</v-card-title>
+          <v-layout align-center justify-center>
+            <template>
+              <v-list rounded>
+                <v-list-item-group>
+                  <div v-for="issue in issues" :key="issue.id">
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon>mdi-sync-alert</v-icon>
+                        Issue
+                      </v-list-item-icon>
+                      <v-list-item-title>
+                        {{issue.name}}
+                      </v-list-item-title>
+                    </v-list-item>
+                  </div>
+                </v-list-item-group>
+              </v-list>
+            </template>
+          </v-layout>
 
       </v-card>
 
