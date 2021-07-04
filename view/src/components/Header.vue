@@ -62,8 +62,7 @@
               <v-layout align-center justify-center>
                 <v-spacer />
                 <v-btn class="error" flat @click="logout = false"
-                  >取り消し</v-btn
-                >
+                  >取り消し</v-btn>
                 <v-spacer />
                 <v-btn class="primary" flat @click="ok">決定</v-btn>
                 <v-spacer />

@@ -1,26 +1,6 @@
 <template>
   <div id="app" class="container-fluid">
     <div class="panel panel-default">
-      <v-row align="center">
-        <v-col cols="4"></v-col>
-        <v-col cols="4">
-          <v-select
-            label="project"
-            ref="groupCategory"
-            v-model="Project"
-            :items="projects"
-            :menu-props="{
-              top: true,
-              offsetY: true,
-            }"
-            item-text="name"
-            item-value="id"
-            outlined
-            @click="getProject"
-          />
-        </v-col>
-        <v-col cols="4"></v-col>
-      </v-row>
       <v-row>
         <v-col cols="1" />
         <v-col cols="3">
