@@ -4,6 +4,7 @@ class IssueSkillsController < ApplicationController
   # GET /issue_skills or /issue_skills.json
   def index
     @issue_skills = IssueSkill.all
+    render json: @issue_skills
   end
 
   # GET /issue_skills/1 or /issue_skills/1.json

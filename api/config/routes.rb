@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :clients
   resources :project_users
   resources :user_skills
   resources :issues
@@ -12,6 +13,16 @@ Rails.application.routes.draw do
       # resources :users
       get "users/index" => "users#index"
       get "users/show" => "users#show"
+      get "projects/index" => "projects#index"
+      get "projects/show" => "projects#show"
+      
+
+      get "get_client_issue" => "client_issue_api#get_client_issue"
+      get "get_issue_skill" => "issue_skill_api#get_issue_skills"
+      get "get_project_client" => "project_client_api#get_project_client"
+      get "get_project_user" => "project_user_api#get_project_user"
+      get "get_user_issue" => "user_issue_api#get_user_issue"
+      get "get_user_skill" => "user_skill_api#get_user_skills"
     end
   end
   namespace :api do

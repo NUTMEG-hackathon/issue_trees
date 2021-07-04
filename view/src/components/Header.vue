@@ -1,81 +1,124 @@
 <template>
-<v-container>
-  <v-app>
-    <v-app-bar
-      app
-      color="#91BA58"
-      dark
-      clipped-left
-      >
-        <v-layout justify-center align-center>
-            <v-row>
-              <v-col cols="5"></v-col>
-              <v-col cols="2">
-                <v-select
-                  label="カテゴリ"
-                  ref="groupCategory"
-                  v-model="groupCategoryId"
-                  :items="groupCategories"
-                  :menu-props="{
-                    top: true,
-                    offsetY: true,
-                  }"
-                  item-text="name"
-                  item-value="id"
-                  outlined
-                ></v-select>
-              </v-col>
-              <v-col cols="5"></v-col>
-            </v-row>
-        </v-layout>
-
-            <v-menu
-              open-on-hover
-              offset-y
-            >
+  <div
+    v-if="
+      this.$route.path === '/tree' ||
+      this.$route.path === '/information' ||
+      this.$route.path === '/about'
+    "
+  >
+    <v-container>
+      <v-app-bar app color="#91BA58" dark clipped-left>
+        <v-row>
+          <v-col cols="11"></v-col>
+          <v-col cols="1">
+            <v-menu open-on-hover offset-y>
               <template v-slot:activator="{ on, attrs }">
-                <v-btn text color="yellow" dark v-bind="attrs" v-on="on">
-                  <v-icon large>mdi-home-circle</v-icon>
+                <v-btn x-large fab text v-bind="attrs" v-on="on">
+                  <v-icon large>mdi-account-circle</v-icon>
                 </v-btn>
               </template>
+
               <v-list dense>
-                <v-list-item to="/Information">
+                <v-list-item to="/tree">
                   <v-list-item-content>
                     <v-list-item-title class="font-weight-bold">
-                      <v-icon class="pr-2" size="30">mdi-account-box</v-icon>
-                        ユーザー情報詳細
+                      <v-icon large>mdi-file-tree</v-icon>
+                      ツリー構造
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
-                <v-list-item to="/Logout">
+
+                <v-list-item to="/information">
                   <v-list-item-content>
                     <v-list-item-title class="font-weight-bold">
-                      <v-icon class="pr-2" size="30">mdi-lock-reset</v-icon>
-                        ログアウト
+                      <v-icon large>mdi-account-box</v-icon>
+                      ユーザー情報詳細
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+
+                <v-list-item @click="logout = true">
+                  <v-list-item-content>
+                    <v-list-item-title class="font-weight-bold">
+                      <v-icon large>mdi-lock-reset</v-icon>
+                      ログアウト
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
             </v-menu>
+          </v-col>
+        </v-row>
+      </v-app-bar>
 
-    </v-app-bar>
-  </v-app>
-</v-container>
+      <v-dialog v-model="logout" max-width="600">
+        <v-card>
+          <v-card-title
+            class="text-h4 justify-center light-green lighten-2 lighten-2"
+            >logout</v-card-title
+          >
+          <v-container class="justify-content-center">
+            <v-card-actions>
+              <v-layout align-center justify-center>
+                <v-spacer />
+                <v-btn class="error" flat @click="logout = false"
+                  >取り消し</v-btn
+                >
+                <v-spacer />
+                <v-btn class="primary" flat @click="ok">決定</v-btn>
+                <v-spacer />
+              </v-layout>
+            </v-card-actions>
+          </v-container>
+        </v-card>
+      </v-dialog>
+    </v-container>
+  </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
-  data () {
+  data() {
     return {
-      groupCategories: [
-      { id: 1, name: 'この木なんの木きになる木' },
-      { id: 2, name: 'efficientree' },
-      { id: 3, name: 'ryusei' },
-      { id: 4, name: 'NUTMEG' },
-      { id: 5, name: 'yushiro' },
-      { id: 6, name: 'tomoe' }
-      ],
-    }
-  }
-}
+      users: [],
+      logout: false,
+    };
+  },
+  mounted() {
+    const url = process.env.VUE_APP_URL + "/api/v1/users/show";
+    axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("access-token"),
+          client: localStorage.getItem("client"),
+          uid: localStorage.getItem("uid"),
+        },
+      })
+      .then((response) => {
+        this.users = response.data.data;
+      });
+  },
+  methods: {
+    ok: function () {
+      axios
+        .delete("http://localhost:3000/api/auth/sign_out", {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then(
+          this.$router.push("/"),
+          (this.logout = false),
+          localStorage.removeItem("access-token"),
+          localStorage.removeItem("client"),
+          localStorage.removeItem("uid")
+        );
+    },
+  },
+};
 </script>

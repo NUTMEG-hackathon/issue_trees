@@ -4,6 +4,7 @@ class ProjectUsersController < ApplicationController
   # GET /project_users or /project_users.json
   def index
     @project_users = ProjectUser.all
+    render json: @project_users
   end
 
   # GET /project_users/1 or /project_users/1.json

@@ -1,116 +1,131 @@
 <template>
-<v-container>
-  <v-app>
-    <v-navigation-drawer fixed permanent clipped app color="#B4CF9B">
-      <br>
-      <v-row>
-        <v-col cols="1"></v-col>
-        <v-col cols="10">
-          <v-card
-            @click="project=true"
+  <div
+    v-if="
+      this.$route.path === '/tree' ||
+      this.$route.path === '/information' ||
+      this.$route.path === '/about'
+    "
+  >
+    <v-container>
+      <v-navigation-drawer fixed permanent clipped app color="#FFF">
+        <v-sheet>
+          <v-list>
+            <v-list-item @click="dialog = true" class="font-weight-bold py-1">
+              <v-icon class="pr-3" color="#7da453">
+                mdi-text-box-plus-outline
+              </v-icon>
+              Add Project
+            </v-list-item>
+            <v-list-item class="font-weight-bold py-1">
+              <v-icon class="pr-3" color="#7da453"> mdi-account </v-icon>
+              Member
+            </v-list-item>
+          </v-list>
+        </v-sheet>
+      </v-navigation-drawer>
+
+      <v-dialog v-model="dialog" max-width="600" persistent>
+        <v-card>
+          <v-card-title
+            class="text-h4 justify-center light-green lighten-2 lighten-2"
+            >プロジェクトの追加</v-card-title
           >
-            <v-card-title>プロジェクト追加・削除</v-card-title>
-          </v-card>
-        </v-col>
-        <v-col cols="1"></v-col>
-      </v-row>
-      <br>
-      <v-row>
-        <v-col cols="1"></v-col>
-        <v-col cols="10">
-          <v-card>
-            <v-card-title>詳細</v-card-title>
-          </v-card>
-        </v-col>
-        <v-col cols="1"></v-col>
-      </v-row>
-      <br>
-      <v-row>
-        <v-col cols="1"></v-col>
-        <v-col cols="10">
-          <v-card>
-            <v-card-title>Member</v-card-title>
-          </v-card>
-        </v-col>
-        <v-col cols="1"></v-col>
-      </v-row>
-    </v-navigation-drawer>
-  </v-app>
+          <v-container class="justify-content-center">
+            <v-card-title class="text-h5 justify-center"
+              >puroject名</v-card-title
+            >
+            <v-row>
+              <v-col cols="2"></v-col>
+              <v-col cols="8">
+                <v-text-field
+                  label="project_name"
+                  v-model="name"
+                  text
+                  outlined
+                  clearable
+                />
+              </v-col>
+              <v-col cols="2"></v-col>
+            </v-row>
 
-  <v-dialog
-    v-model="project"
-    max-width="290">
-    <v-card>
-      <v-card-title>project追加・削除</v-card-title>
-      <v-card-text>追加と削除を行いましょう</v-card-text>
-      <v-card-aptions>
-        <v-layout align-center justify-center>
-          <v-spacer />
-          <v-btn color="#91BA58" flat="flat" @click="dialog = true">追加</v-btn>
-          <v-spacer />
-          <v-btn color="#74905D" flat="flat" @click="project = false">削除</v-btn>
-          <v-spacer />
-        </v-layout>
-      </v-card-aptions>
-    </v-card>
-  </v-dialog>
-
-  <v-dialog
-    v-model="dialog"
-    max-width="290">
-    <v-card>
-      <v-card-title>project追加</v-card-title>
-      <v-card-text>追加の手続きを行います</v-card-text>
-        <v-container class="justify-content-center">
-          <v-row>
-            <v-col cols="1"></v-col>
-            <v-col cols="10" align="center">
-              <v-card-text>
-                <v-form ref="form">
-                  <v-text-field
-                    label="project_name"
-                    v-model="name"
-                    text
-                    outlined
-                    clearable
-                  ></v-text-field>
-                  <v-text-field
-                  label="Member"
-                  ref="cooking"
-                  v-model="cooking"
-                  :items="this.cooking_list"
+            <v-card-title class="text-h5 justify-center"
+              >参加メンバーの選択</v-card-title
+            >
+            <v-row>
+              <v-col cols="2"></v-col>
+              <v-col cols="8">
+                <v-select
+                  multiple
+                  v-model="selected"
+                  :options="options"
+                  :reduce="(options) => options.id"
+                  key="id"
+                  label="name"
+                  @input="onInput"
+                  placeholder="Filter Skills ..."
+                  :items="member"
+                  :menu-props="{
+                    top: true,
+                    offsetY: true,
+                  }"
                   item-text="name"
                   item-value="id"
                   outlined
-                  ></v-text-field>
-                </v-form>
-              </v-card-text>
-            </v-col>
-            <v-col cols="1"></v-col>
-          </v-row>
-        </v-container>
-      <v-card-actions>
-        <v-layout align-center justify-center>
-          <v-spacer />
-          <v-btn color="red" flat="flat" @click="dialog = true">決定</v-btn>
-          <v-spacer />
-          <v-btn color="blue" flat="flat" @click="project = false">取り消し</v-btn>
-          <v-spacer />
-        </v-layout>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-
-</v-container>
+                />
+              </v-col>
+              <v-col cols="2"></v-col>
+            </v-row>
+          </v-container>
+          <v-card-actions>
+            <v-layout align-center justify-center>
+              <v-spacer />
+              <v-btn class="error" flat="flat" @click="dialog = false"
+                >取り消し</v-btn
+              >
+              <v-spacer />
+              <v-btn class="primary" flat="flat" @click="dialog = true"
+                >決定</v-btn
+              >
+              <v-spacer />
+            </v-layout>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-container>
+  </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
-  data () {
+  data() {
     return {
-      project: false,
-      dialog: false
-    }
-  }
-}
+      dialog: false,
+      member: [
+        { id: 1, name: "yushiro" },
+        { id: 2, name: "ryusei" },
+        { id: 3, name: "tomoe" },
+        { id: 4, name: "99A" },
+        { id: 5, name: "mizu" },
+        { id: 6, name: "masi-" },
+        { id: 7, name: "masashi" },
+      ],
+    };
+  },
+  mounted() {
+    const url = process.env.VUE_APP_URL + "/api/v1/users/show";
+    axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("access-token"),
+          client: localStorage.getItem("client"),
+          uid: localStorage.getItem("uid"),
+        },
+      })
+      .then((response) => {
+        this.users = response.data.data;
+      });
+  },
+};
 </script>

@@ -4,6 +4,7 @@ class SkillsController < ApplicationController
   # GET /skills or /skills.json
   def index
     @skills = Skill.all
+    render json: @skills
   end
 
   # GET /skills/1 or /skills/1.json
