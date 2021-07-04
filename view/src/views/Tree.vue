@@ -1,6 +1,26 @@
 <template>
   <div id="app" class="container-fluid">
     <div class="panel panel-default">
+      <v-row align="center">
+        <v-col cols="4"></v-col>
+        <v-col cols="4">
+          <v-select
+            label="project"
+            ref="groupCategory"
+            v-model="Project"
+            :items="projects"
+            :menu-props="{
+              top: true,
+              offsetY: true,
+            }"
+            item-text="name"
+            item-value="id"
+            outlined
+            @click="getProject"
+          />
+        </v-col>
+        <v-col cols="4"></v-col>
+      </v-row>
       <v-row>
         <v-col cols="1" />
         <v-col cols="3">
@@ -230,44 +250,19 @@ export default {
           },
         ],
       },
-      issues: [],
       Details: "write issue descriptions",
       newNode: [],
       currentNodeName: [],
       currentNodeDetails: [],
-      name: [],
+      skillName: [],
+      status: [],
       email: [],
       addIssueDialog: false,
       issueDetails: false,
       isChildNode: false,
       event: [],
       events: [],
-      skills: [
-        { id: 1, name: "HTML", status: "frontend" },
-        { id: 2, name: "CSS", status: "frontend" },
-        { id: 3, name: "JavaScript", status: "frontend" },
-        { id: 4, name: "Vue.js", status: "frontend" },
-        { id: 5, name: "React.js", status: "frontend" },
-        { id: 6, name: "AngularJS", status: "frontend" },
-        { id: 7, name: "jQuery", status: "frontend" },
-        { id: 8, name: "Bootstrap", status: "frontend" },
-        { id: 9, name: "Nuxt.js", status: "frontend" },
-        { id: 10, name: "Next.js", status: "frontend" },
-        { id: 11, name: "C/C++", status: "backend" },
-        { id: 12, name: "C#", status: "backend" },
-        { id: 13, name: "Java", status: "backend" },
-        { id: 14, name: "Python", status: "backend" },
-        { id: 15, name: "Rails", status: "backend" },
-        { id: 16, name: "Go", status: "backend" },
-        { id: 17, name: "PHP", status: "backend" },
-        { id: 18, name: "Kotlin", status: "mobile" },
-        { id: 19, name: "Swift", status: "mobile" },
-        { id: 20, name: "Flutter", status: "mobile" },
-        { id: 21, name: "Rust", status: "server" },
-        { id: 22, name: "Nginx", status: "server" },
-        { id: 23, name: "Apache", status: "server" },
-        { id: 24, name: "SQL", status: "server" },
-      ],
+      skills: [],
       members: [
         { id: 1, name: "技大一郎" },
         { id: 2, name: "技大二郎" },
@@ -277,16 +272,22 @@ export default {
         { id: 6, name: "技大六郎" },
         { id: 7, name: "技大七郎" },
       ],
+      projects: [
+        { id: 1, name: "efficientree" },
+        { id: 2, name: "tracking support" },
+      ],
+      project: [],
+      clients: [],
+      issues: [],
     };
   },
   components: {
     tree,
   },
   mounted() {
-    // const url = process.env.VUE_APP_URL + "/api/v1/get_user_issue";
-    const url = process.env.VUE_APP_URL + "/api/v1/users/show";
+    const url = process.env.VUE_APP_URL;
     axios
-      .get(url, {
+      .get(url + "/api/v1/get_user_skill", {
         headers: {
           "Content-Type": "application/json",
           "access-token": localStorage.getItem("access-token"),
@@ -295,11 +296,46 @@ export default {
         },
       })
       .then((response) => {
-        this.issues = response.data.data;
-        this.name = this.issues.name;
-        this.email = this.issues.email;
-        console.log(this.issues);
+        this.skill = response.data;
+        this.skillName = this.skill.name;
+        this.status = this.skill.status;
+        console.log(this.skill);
       });
+    const url = "api/v1/projects/" + this.$route.params.id;
+    this.$axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log("aaaaaaaaaaaaaaaaa", response);
+        this.student_id = response.data.student_id;
+        this.grade_id = response.data.grade_id;
+        console.log("aaaaaaaaaaaaaaaaa", this.grade_id);
+        this.department_id = response.data.department_id;
+        this.tel = response.data.tel;
+        this.show = response.data;
+        this.user = this.show.user;
+        this.user_id = this.show.user_id;
+        this.name = this.show.user.name;
+        this.email = this.show.user.email;
+        this.role_id = this.show.user.role_id;
+      });
+    // axios
+    //   .get(url + "projects", {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "access-token": localStorage.getItem("access-token"),
+    //       client: localStorage.getItem("client"),
+    //       uid: localStorage.getItem("uid"),
+    //     },
+    //   })
+    //   .then((response) => {
+    //     this.projects = response.data;
+    //     console.log("projects");
+    //     console.log(response);
+    //   });
   },
   methods: {
     async do(action) {
