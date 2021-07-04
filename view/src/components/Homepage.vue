@@ -8,7 +8,7 @@
       <v-row>
       <v-layout align-center justify-center>
         <v-card-title class="white--text text-h5 font-weight-bold">
-          長岡技大学-学園祭実行委員会（通称NUTMEG）
+          長岡技大-学園祭実行委員会（通称NUTMEG）
         </v-card-title>
       </v-layout>
       </v-row>

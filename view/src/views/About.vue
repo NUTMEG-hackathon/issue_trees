@@ -6,19 +6,24 @@
         <v-row>
           <v-col cols="2"></v-col>
           <v-col cols="8">
-          <v-select
-            label="skill"
-            ref="skill"
-            v-model="skillid"
-            :items="s_list"
-            :menu-props="{
-              top: true,
-              offsetY: true,
-            }"
-            item-text="name"
-            item-value="id"
-            outlined
-          />
+                <v-select
+                  multiple
+                  v-model="selected"
+                  :options="options"
+                  :reduce="(options) => options.id"
+                  key="id"
+                  label="skill"
+                  @input="onInput"
+                  placeholder="Filter Skills ..."
+                  :items="this.s_list"
+                  :menu-props="{
+                    top: true,
+                    offsetY: true,
+                  }"
+                  item-text="name"
+                  item-value="id"
+                  outlined
+                />
           </v-col>
           <v-col cols="2"></v-col>
         </v-row>
