@@ -3,19 +3,23 @@
     <v-container>
       <v-card>
         <v-card-title class="text-h3 justify-center">Personal Page</v-card-title>
-        <v-card-title class="text-h4 justify-center">Personal Information</v-card-title>
+        <v-card-title class="text-h5 justify-center">Personal Information</v-card-title>
         <v-row>
           <v-layout align-center justify-center>
-
+            <v-list>
+              <v-list-title>
+                {{users}}
+              </v-list-title>
+            </v-list>
             <v-tooltip left>
               <template v-slot:activator="{ on, attrs  }">
                   <v-btn
-                      x-large
                       rounded
                       v-bind="attrs"
                       v-on="on"
                       @click="send">
-                      <v-icon large>mdi-pencil</v-icon>
+                      編集
+                      <v-icon>mdi-pencil</v-icon>
                   </v-btn>
               </template>
               <span>ユーザー情報を編集する</span>
@@ -24,12 +28,12 @@
             <v-tooltip right>
               <template v-slot:activator="{ on, attrs  }">
                   <v-btn
-                    x-large
                     rounded
                     v-bind="attrs"
                     v-on="on"
                       @click="password = true">
-                    <v-icon large>mdi-lock-question</v-icon>
+                      変更
+                    <v-icon>mdi-lock-question</v-icon>
                   </v-btn>
               </template>
               <span>パスワードの変更</span>
@@ -44,27 +48,28 @@
             </EditUser>
         </v-row>
 
-        <v-card-title class="text-h4 justify-center">Myskill</v-card-title>
+        <v-card-title class="text-h5 justify-center">Myskill</v-card-title>
         <v-row>
           <v-layout align-center justify-center>
             <v-tooltip left>
               <template v-slot:activator="{ on, attrs  }">
                   <v-btn
-                      x-large
                       rounded
                       v-bind="attrs"
                       v-on="on"
                       @click="skill = true">
-                      <v-icon large>mdi-plus-box-multiple</v-icon>
+                      編集
+                      <v-icon>mdi-plus-box-multiple</v-icon>
                   </v-btn>
               </template>
               <span>Myskillの編集</span>
             </v-tooltip>
           </v-layout>
         </v-row>
+        <br />
 
-          <v-card-title class="text-h4 justify-center">参加project</v-card-title>
-          <v-card-title class="text-h4 justify-center">Myissue</v-card-title>
+          <v-card-title class="text-h5 justify-center">参加project</v-card-title>
+          <v-card-title class="text-h5 justify-center">Myissue</v-card-title>
 
       </v-card>
 
@@ -82,10 +87,10 @@
                   :options="options"
                   :reduce="(options) => options.id"
                   key="id"
-                  label="level"
+                  label="skill"
                   @input="onInput"
                   placeholder="Filter Skills ..."
-                  :items="member"
+                  :items="this.s_list"
                   :menu-props="{
                     top: true,
                     offsetY: true,
@@ -96,30 +101,6 @@
                 />
               </v-col>
               <v-col cols="2"></v-col>
-              </v-row>
-                          <v-row>
-                <v-col cols="2"></v-col>
-                <v-col cols="8" align="center">
-                  <v-select
-                    multiple
-                    v-model="selected"
-                    :options="options"
-                    :reduce="(options) => options.id"
-                    key="id"
-                    label="skill"
-                    @input="onInput"
-                    placeholder="Filter Skills ..."
-                    :items="member"
-                    :menu-props="{
-                      top: true,
-                      offsetY: true,
-                    }"
-                    item-text="name"
-                    item-value="id"
-                    outlined
-                  />
-                </v-col>
-                <v-col cols="2"></v-col>
               </v-row>
 
           </v-container>
@@ -208,18 +189,15 @@ export default {
   data() {
     return {
       users: [],
+      issues: [],
+      skills: [],
+      projects: [],
+      p_list: [],
+      c_list: [],
+      s_list: [],
       skill: false,
       edit: false,
       password: false,
-      member: [
-        { id: 1, name: "vue" },
-        { id: 2, name: "rails" },
-        { id: 3, name: "python" },
-        { id: 4, name: "fortran" },
-        { id: 5, name: "C" },
-        { id: 6, name: "C#" },
-        { id: 7, name: "C++" },
-      ],
     };
   },
   mounted() {
@@ -236,6 +214,103 @@ export default {
       .then((response) => {
         this.users = response.data.data;
       });
+
+    const issue_url = process.env.VUE_APP_URL + "/api/v1/get_user_issue";
+      axios
+      .get(issue_url, {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("access-token"),
+          client: localStorage.getItem("client"),
+          uid: localStorage.getItem("uid"),
+        },
+      })
+      .then((response) => {
+        this.issues = response.data;
+        console.log("---");
+        console.log(this.issues);
+      });
+
+    const skill_url = process.env.VUE_APP_URL + "/api/v1/get_user_skill";
+      axios
+      .get(skill_url, {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("access-token"),
+          client: localStorage.getItem("client"),
+          uid: localStorage.getItem("uid"),
+        },
+      })
+      .then((response) => {
+        this.skills = response.data;
+        console.log("---");
+        console.log(this.issues);
+      });
+
+    const project_url = process.env.VUE_APP_URL + "/api/v1/get_project_user";
+      axios
+      .get(project_url, {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("access-token"),
+          client: localStorage.getItem("client"),
+          uid: localStorage.getItem("uid"),
+        },
+      })
+      .then((response) => {
+        this.projects = response.data;
+        console.log("---");
+        console.log(this.issues);
+      });
+
+    const p_url = process.env.VUE_APP_URL + "/api/v1/projects/index";
+      axios
+      .get(p_url, {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("access-token"),
+          client: localStorage.getItem("client"),
+          uid: localStorage.getItem("uid"),
+        },
+      })
+      .then((response) => {
+        this.p_list = response.data;
+        console.log("---");
+        console.log(this.issues);
+      });
+
+    const c_url = process.env.VUE_APP_URL + "/api/v1/get_client_issue";
+      axios
+      .get(c_url, {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("access-token"),
+          client: localStorage.getItem("client"),
+          uid: localStorage.getItem("uid"),
+        },
+      })
+      .then((response) => {
+        this.c_list = response.data;
+        console.log("---");
+        console.log(this.issues);
+      });
+
+    const s_url = process.env.VUE_APP_URL + "/skills";
+      axios
+      .get(s_url, {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("access-token"),
+          client: localStorage.getItem("client"),
+          uid: localStorage.getItem("uid"),
+        },
+      })
+      .then((response) => {
+        this.s_list = response.data;
+        console.log("---");
+        console.log(this.issues);
+      });
+
   },
   methods:{
     send: function(){

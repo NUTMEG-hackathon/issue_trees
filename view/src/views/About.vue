@@ -10,26 +10,7 @@
             label="skill"
             ref="skill"
             v-model="skillid"
-            :items="skills"
-            :menu-props="{
-              top: true,
-              offsetY: true,
-            }"
-            item-text="name"
-            item-value="id"
-            outlined
-          />
-          </v-col>
-          <v-col cols="2"></v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="2"></v-col>
-          <v-col cols="8">
-          <v-select
-            label="level"
-            ref="level"
-            v-model="levelid"
-            :items="levels"
+            :items="s_list"
             :menu-props="{
               top: true,
               offsetY: true,
@@ -62,22 +43,7 @@ export default {
   data() {
     return {
       users: [],
-      skills: [
-        { id: 1, name: "この木なんの木きになる木" },
-        { id: 2, name: "efficientree" },
-        { id: 3, name: "ryusei" },
-        { id: 4, name: "NUTMEG" },
-        { id: 5, name: "yushiro" },
-        { id: 6, name: "tomoe" },
-      ],
-      levels: [
-        { id: 1, name: "level_1 芋虫" },
-        { id: 2, name: "level_2 カブトムシ" },
-        { id: 3, name: "level_3 下僕" },
-        { id: 4, name: "level_4 人間" },
-        { id: 5, name: "level_5 神と人間のハーフ" },
-        { id: 6, name: "level_6 神" },
-      ],
+      s_list: [],
     };
   },
   mounted() {
@@ -93,6 +59,22 @@ export default {
       })
       .then((response) => {
         this.users = response.data.data;
+      });
+
+    const s_url = process.env.VUE_APP_URL + "/skills";
+      axios
+      .get(s_url, {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("access-token"),
+          client: localStorage.getItem("client"),
+          uid: localStorage.getItem("uid"),
+        },
+      })
+      .then((response) => {
+        this.s_list = response.data;
+        console.log("---");
+        console.log(this.issues);
       });
   },
 };
