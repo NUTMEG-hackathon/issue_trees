@@ -1,7 +1,7 @@
 class Api::V1::UserIssueApiController < ApplicationController
   #before_action :authenticate_api_user!
 
-  def get_user_issues
+  def get_user_issue
     @user = current_api_user
     issues = @user.issues
     userIssues = []

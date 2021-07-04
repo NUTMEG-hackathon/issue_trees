@@ -1,9 +1,9 @@
-class Api::V1::ClientIssuesApiController < ApplicationController
+class Api::V1::ClientIssueApiController < ApplicationController
   #before_action :authenticate_api_user!
 
   def get_client_issue
-    @client= current_api_client
-    issues = @project.issues
+    @client= Client.find(params[:id])
+    issues = @client.issues
     clientissues = []
     for issue in issues do
       name = issue.name

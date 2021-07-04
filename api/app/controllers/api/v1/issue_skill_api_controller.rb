@@ -1,17 +1,17 @@
-class Api::V1::IssueSkillsApiController < ApplicationController
+class Api::V1::IssueSkillApiController < ApplicationController
   #before_action :authenticate_api_user!
   
   def get_issue_skills
-    @issue = current_api_issue
-    issue_skills = @issue.issue_skill
+    @issue = Issue.find(params[:id])
+    issue_skills = @issue.issue_skills
     issueskills = []
     for issue_skill in issue_skills 
       name = issue_skill.skill.name
-      description = issue_skill.skill.description
+      status = issue_skill.skill.status
       level = issue_skill.skill.level
-      userIssue << {
+      issueskills << {
         name: name,
-        description: description,
+        status: status,
         level: level
       }
     end
