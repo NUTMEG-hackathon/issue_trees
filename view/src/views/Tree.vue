@@ -4,6 +4,13 @@
       <v-row>
         <v-col cols="1" />
         <v-col cols="3">
+          <v-select
+            item-text="name"
+            item-value="name"
+            :items="user_projects"
+            label="Project"
+          >
+          </v-select>
           <div class="light-green lighten-2 events_title panel-heading">
             Events
           </div>
@@ -247,6 +254,7 @@ export default {
       projects: [],
       clients: [],
       issues: [],
+      user_projects: [],
     };
   },
   components: {
@@ -277,7 +285,6 @@ export default {
       })
       .then((response) => {
         this.projects = response.data;
-        console.log(this.projects);
       });
     axios
       .get(url + "/api/v1/users/index", {
@@ -290,7 +297,21 @@ export default {
       })
       .then((response) => {
         this.users = JSON.parse(JSON.stringify(response.data.data));
-        console.log(this.users);
+      });
+    axios
+      .get(url + "/api/v1/get_project_user", {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("access-token"),
+          client: localStorage.getItem("client"),
+          uid: localStorage.getItem("uid"),
+        },
+      })
+      .then((response) => {
+        this.user_projects = response.data;
+        // console.log("-------");
+        // console.log(this.user_projects);
+        // console.log("-------");
       });
 
     // const url = "api/v1/projects/" + this.$route.params.id;
