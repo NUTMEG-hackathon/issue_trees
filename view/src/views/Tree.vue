@@ -5,10 +5,12 @@
         <v-col cols="1" />
         <v-col cols="3">
           <v-select
+            label="Project"
+            v-model="project_name"
+            :items="user_projects"
             item-text="name"
             item-value="name"
-            :items="user_projects"
-            label="Project"
+            @input="selectProject"
           >
           </v-select>
           <div class="light-green lighten-2 events_title panel-heading">
@@ -255,6 +257,7 @@ export default {
       clients: [],
       issues: [],
       user_projects: [],
+      project_name: [],
     };
   },
   components: {
@@ -393,6 +396,9 @@ export default {
       this.addFor(this.event);
       console.log(this.newNode);
       this.addIssueDialog = false;
+    },
+    selectProject: function () {
+      this.tree.name = this.project_name;
     },
   },
 };
