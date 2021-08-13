@@ -257,7 +257,10 @@ export default {
       clients: [],
       issues: [],
       user_projects: [],
+      user_project_id: 1,
+      user_project_name: [],
       project_name: [],
+      project_clients: [],
     };
   },
   components: {
@@ -312,8 +315,22 @@ export default {
       })
       .then((response) => {
         this.user_projects = response.data;
+        this.user_project_id = this.user_projects.id;
+        this.user_project_name = this.user_projects.name;
+      });
+    axios
+      .get(url + "/api/v1/get_project_client/" + this.user_project_id, {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("access-token"),
+          client: localStorage.getItem("client"),
+          uid: localStorage.getItem("uid"),
+        },
+      })
+      .then((response) => {
+        this.project_clients = response.data;
         // console.log("-------");
-        // console.log(this.user_projects);
+        // console.log(response.data);
         // console.log("-------");
       });
 
@@ -399,6 +416,13 @@ export default {
     },
     selectProject: function () {
       this.tree.name = this.project_name;
+      // this.tree.children.length = this.project_clients.length;
+      for (let i = 0; i < this.project_clients.length; i++) {
+        this.tree.children.push({
+          name: this.project_clients[i].name,
+          children: [],
+        });
+      }
     },
   },
 };
