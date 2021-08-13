@@ -9,8 +9,8 @@ class Api::V1::ProjectUserApiController < ApplicationController
       project_id = project_user.project_id
       name = project_user.project.name 
       projects <<{
-      name:name,
-      project_id: project_id
+        project_id: project_id,
+        name:name
     }
     end
     render json:projects

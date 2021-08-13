@@ -257,10 +257,14 @@ export default {
       clients: [],
       issues: [],
       user_projects: [],
+      // 1に仮置する
       user_project_id: 1,
       user_project_name: [],
       project_name: [],
       project_clients: [],
+      // 1に仮置する
+      project_client_id: 1,
+      project_client_name: [],
     };
   },
   components: {
@@ -315,8 +319,6 @@ export default {
       })
       .then((response) => {
         this.user_projects = response.data;
-        this.user_project_id = this.user_projects.id;
-        this.user_project_name = this.user_projects.name;
       });
     axios
       .get(url + "/api/v1/get_project_client/" + this.user_project_id, {
@@ -330,20 +332,24 @@ export default {
       .then((response) => {
         this.project_clients = response.data;
         // console.log("-------");
-        // console.log(response.data);
+        // console.log(this.project_clients);
         // console.log("-------");
       });
-
-    // const url = "api/v1/projects/" + this.$route.params.id;
-    // this.$axios
-    //   .get(url, {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   })
-    //   .then((response) => {
-    //     this.projects = response.data;
-    //   });
+    axios
+      .get(url + "/api/v1/get_client_issue/" + this.project_client_id, {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("access-token"),
+          client: localStorage.getItem("client"),
+          uid: localStorage.getItem("uid"),
+        },
+      })
+      .then((response) => {
+        this.client_issues = response.data;
+        // console.log("-------");
+        // console.log(this.client_issues);
+        // console.log("-------");
+      });
   },
   methods: {
     async do(action) {
@@ -416,12 +422,24 @@ export default {
     },
     selectProject: function () {
       this.tree.name = this.project_name;
-      // this.tree.children.length = this.project_clients.length;
       for (let i = 0; i < this.project_clients.length; i++) {
         this.tree.children.push({
           name: this.project_clients[i].name,
           children: [],
         });
+      }
+      for (let i = 0; i < this.tree.children.length; i++) {
+        for (let j = 0; j < this.client_issues.length; j++) {
+          if (this.client_issues[j].client_id == this.project_client_id) {
+            this.tree.children[i].children.push({
+              name: this.client_issues[j].name,
+              client_id: this.client_issues[j].client_id,
+              user_id: this.client_issues[j].user_id,
+              description: this.client_issues[j].description,
+              level: this.client_issues[j].level,
+            });
+          }
+        }
       }
     },
   },

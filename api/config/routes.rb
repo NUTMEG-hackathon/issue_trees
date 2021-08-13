@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       get "projects/show" => "projects#show"
       
 
-      get "get_client_issue" => "client_issue_api#get_client_issue"
+      get "get_client_issue/:id" => "client_issue_api#get_client_issue"
       get "get_issue_skill" => "issue_skill_api#get_issue_skills"
       get "get_project_client/:id" => "project_client_api#get_project_client"
       get "get_project_user" => "project_user_api#get_project_user"
