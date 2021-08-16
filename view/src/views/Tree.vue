@@ -331,9 +331,9 @@ export default {
       })
       .then((response) => {
         this.project_clients = response.data;
-        // console.log("-------");
-        // console.log(this.project_clients);
-        // console.log("-------");
+        console.log("---project_cliants---");
+        console.log(this.project_clients);
+        console.log("-------");
       });
     axios
       .get(url + "/api/v1/get_client_issue/" + this.project_client_id, {
@@ -346,9 +346,9 @@ export default {
       })
       .then((response) => {
         this.client_issues = response.data;
-        // console.log("-------");
-        // console.log(this.client_issues);
-        // console.log("-------");
+        console.log("---client_issues---");
+        console.log(this.client_issues);
+        console.log("-------");
       });
   },
   methods: {
@@ -421,6 +421,8 @@ export default {
       this.addIssueDialog = false;
     },
     selectProject: function () {
+      this.tree.name = [];
+      this.tree.children = [];
       this.tree.name = this.project_name;
       for (let i = 0; i < this.project_clients.length; i++) {
         this.tree.children.push({
