@@ -65,12 +65,21 @@ import axios from 'axios'
   },
     methods: {
     submit: function() {
-      const url = process.env.VUE_APP_URL + '/api/v1/users/show' + '/' + this.userId + '?' + 'name=' + this.name + '&email=' + this.email;
+      const url = process.env.VUE_APP_URL + '/api/v1/users/show/' + this.userId + '?' + 'name=' + this.name + '&email=' + this.email;
       console.log(url)
-      axios.put(url).then(
+      axios.put(url,{
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem('access-token'),
+          "client": localStorage.getItem('client'),
+          "uid": localStorage.getItem('uid')
+        }
+      }
+      ).then(
         (response) => {
           console.log('response:', response)
-          this.isDisplay = false
+          this.edit = false
+          this.$emit('reload')
         },
         (error) => {
           console.log('登録できませんでした')

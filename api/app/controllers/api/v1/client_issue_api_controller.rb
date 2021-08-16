@@ -3,9 +3,9 @@ class Api::V1::ClientIssueApiController < ApplicationController
 
   def get_client_issue
     @client= Client.find(params[:id])
-    issues = @client.issues
+    issues = @client.issue
     clientissues = []
-    for issue in issues do
+    for issue in issues
       name = issue.name
       description = issue.description
       clientissues<< {

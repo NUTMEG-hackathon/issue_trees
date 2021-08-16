@@ -24,4 +24,19 @@ class Api::V1::UsersController < ApplicationController
     render json: { data: @skills }
     
   end
+
+  def edit_user
+    @user = User.find(edit_user_params[:user_id])
+    @user.name = edit_user_info_params[:name]
+    @user.email = edit_user_info_params[:email]
+    @user.save!
+  end
+
+  def reset_password
+    @user = User.find(reset_password_params[:user_id])
+    @user.password = reset_password_params[:password]
+    @user.password_confirmation = reset_password_params[:password_confirmation]
+    @user.save!
+  end
+
 end

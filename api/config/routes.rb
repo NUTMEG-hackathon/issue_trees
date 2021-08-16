@@ -15,7 +15,8 @@ Rails.application.routes.draw do
       get "users/show" => "users#show"
       get "projects/index" => "projects#index"
       get "projects/show" => "projects#show"
-      
+      post "users/edit_user" => "users#edit_user"
+      post "users/reset_password" => "users#reset_password"
 
       get "get_client_issue" => "client_issue_api#get_client_issue"
       get "get_issue_skill" => "issue_skill_api#get_issue_skills"
