@@ -6,10 +6,10 @@
         <v-col cols="3">
           <v-select
             label="Project"
-            v-model="project_name"
+            v-model="user_project_id"
             :items="user_projects"
             item-text="name"
-            item-value="name"
+            item-value="project_id"
             @input="selectProject"
           >
           </v-select>
@@ -319,6 +319,9 @@ export default {
       })
       .then((response) => {
         this.user_projects = response.data;
+        console.log("---user_projects---");
+        console.log(this.user_projects);
+        console.log("-------");
       });
     axios
       .get(url + "/api/v1/get_project_client/" + this.user_project_id, {
@@ -421,9 +424,13 @@ export default {
       this.addIssueDialog = false;
     },
     selectProject: function () {
-      this.tree.name = [];
       this.tree.children = [];
-      this.tree.name = this.project_name;
+      this.getProject(this.user_project_id);
+      this.getClients;
+      this.getIssues;
+      this.tree.name = this.user_project_name;
+      console.log("this.tree.name");
+      console.log(this.tree.name);
       for (let i = 0; i < this.project_clients.length; i++) {
         this.tree.children.push({
           name: this.project_clients[i].name,
@@ -443,6 +450,62 @@ export default {
           }
         }
       }
+    },
+    getProject: function (id) {
+      axios
+        .get(process.env.VUE_APP_URL + "/api/v1/get_user_project/" + id, {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then((response) => {
+          this.user_project = response.data;
+          this.user_project_name = this.user_project.name;
+          console.log("---user_project---");
+          console.log(this.user_project_name);
+          console.log("-------");
+        });
+    },
+    getClients: function () {
+      axios
+        .get(
+          process.env.VUE_APP_URL +
+            "/api/v1/get_project_client/" +
+            this.user_project_id,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "access-token": localStorage.getItem("access-token"),
+              client: localStorage.getItem("client"),
+              uid: localStorage.getItem("uid"),
+            },
+          }
+        )
+        .then((response) => {
+          this.project_clients = response.data;
+        });
+    },
+    getIssues: function () {
+      axios
+        .get(
+          process.env.VUE_APP_URL +
+            "/api/v1/get_client_issue/" +
+            this.project_client_id,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "access-token": localStorage.getItem("access-token"),
+              client: localStorage.getItem("client"),
+              uid: localStorage.getItem("uid"),
+            },
+          }
+        )
+        .then((response) => {
+          this.client_issues = response.data;
+        });
     },
   },
 };
