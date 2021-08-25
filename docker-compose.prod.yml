@@ -1,0 +1,62 @@
+version: "3"
+services:
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./certs:/etc/nginx/certs:ro
+      - /etc/nginx/vhost.d
+      - /usr/share/nginx/html
+    restart: always
+    
+  db:
+    image: mysql:8.0
+    container_name: "efficientree-DB"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mysql-data:/var/lib/mysql
+    tty: true
+
+  api:
+    build: ./api
+    container_name: "efficientree-API"
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - ./api:/myapp
+    ports:
+      - "3000:3000"
+    environment:
+      VIRTUAL_HOST: efficientree-api.nutfes.net
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+
+  view:
+    build: ./view
+    container_name: "efficientree-VIEW"
+    ports:
+      - "8080:8080"
+    command: npm run serve
+    volumes:
+      - ./view:/app
+    stdin_open: true
+    tty: true
+    environment:
+      VUE_APP_URL: http://localhost:3000
+      VIRTUAL_HOST: efficientree.nutfes.net
+    depends_on:
+      - api
+
+volumes:
+  mysql-data:
+    driver: local
