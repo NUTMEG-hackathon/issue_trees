@@ -8,11 +8,24 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./certs:/etc/nginx/certs:ro
-      - /etc/nginx/vhost.d
-      - /usr/share/nginx/html
-    restart: always
+      - html:/usr/share/nginx/html
+      - dhparam:/etc/nginx/dhparam
+      - vhost:/etc/nginx/vhost.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy"
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt
+    depends_on:
+      - nginx-proxy
+    volumes:
+      - ./certs:/etc/nginx/certs:rw
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     
   db:
     image: mysql:8.0
@@ -29,13 +42,16 @@ services:
   api:
     build: ./api
     container_name: "efficientree-API"
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec pumactl start"
     volumes:
       - ./api:/myapp
+      - ./certs:/certs
     ports:
-      - "3000:3000"
+      - "3000:9292"
     environment:
+      RAILS_ENV: production
       VIRTUAL_HOST: efficientree-api.nutfes.net
+      LETSENCRYPT_HOST: efficientree-api.nutfes.net
     depends_on:
       - db
     stdin_open: true
@@ -52,11 +68,15 @@ services:
     stdin_open: true
     tty: true
     environment:
-      VUE_APP_URL: http://localhost:3000
+      VUE_APP_URL: https://efficientree-api.nutfes.net #http://localhost:3000
       VIRTUAL_HOST: efficientree.nutfes.net
+      LETSENCRYPT_HOST: efficientree.nutfes.net
     depends_on:
       - api
 
 volumes:
   mysql-data:
     driver: local
+  html:
+  vhost:
+  dhparam:
