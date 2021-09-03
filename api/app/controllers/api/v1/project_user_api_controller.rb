@@ -7,8 +7,10 @@ class Api::V1::ProjectUserApiController < ApplicationController
     projects = []
     for project_user in project_users
       name = project_user.project.name 
+      id = project_user.project.id
       projects <<{
-      name:name
+      name:name,
+      id:id
     }
     end
     render json:projects
