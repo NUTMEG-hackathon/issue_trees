@@ -9,20 +9,31 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   
   namespace 'api' do
+    namespace 'auth' do
+      get "registrations" => "registrations#account_update_params"
+      post "registrations" => "registrations#account_update_params"
+    end
+
     namespace 'v1' do
       # resources :users
       get "users/index" => "users#index"
       get "users/show" => "users#show"
       get "projects/index" => "projects#index"
       get "projects/show" => "projects#show"
+      post "users/edit_user_info" => "users#edit_user_info"
+      post "users/reset_password" => "users#reset_password"
       
-
       get "get_client_issue" => "client_issue_api#get_client_issue"
       get "get_issue_skill" => "issue_skill_api#get_issue_skills"
       get "get_project_client" => "project_client_api#get_project_client"
       get "get_project_user" => "project_user_api#get_project_user"
       get "get_user_issue" => "user_issue_api#get_user_issue"
       get "get_user_skill" => "user_skill_api#get_user_skills"
+
+      get "current_user/show" => "current_user_api#show"
+      post "current_user/edit_user_info" => "current_user_api#edit_user_info"
+      put "current_user/edit_user_info" => "current_user_api#edit_user_info"
+      post "current_user/password_reset" => "current_user_api#password_reset"
     end
   end
   namespace :api do

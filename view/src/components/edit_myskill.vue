@@ -1,18 +1,43 @@
 <template>
   <v-container>
-    <v-dialog v-model="edit1" max-width="600" persistent>
+    <v-dialog v-model="edit2" max-width="600" persistent>
       <v-card>
         <v-card-title class="text-h4 justify-center light-green lighten-2">
-          個人情報の編集
+          MySkillの編集
         </v-card-title>
         <v-container class="justify-content-center">
 
           <v-row>
             <v-col cols="2"></v-col>
+            <v-col cols="8" align="center">
+              <v-select
+                multiple
+                v-model="selected"
+                :options="options"
+                :reduce="(options) => options.id"
+                key="id"
+                label="name"
+                @input="onInput"
+                placeholder="Filter Skills ..."
+                :items="this.s_list"
+                :menu-props="{
+                  top: true,
+                  offsetY: true,
+                }"
+                item-text="name"
+                item-value="id"
+                outlined
+              />
+            </v-col>
+            <v-col cols="2"></v-col>
+          </v-row>
+
+          <v-row>
+            <v-col cols="2"></v-col>
             <v-col cols="8">
               <v-text-field
-                label="name"
-                v-model="name"
+                label="status"
+                v-model="status"
                 text
                 outlined
                 clearable
@@ -25,8 +50,8 @@
             <v-col cols="2"></v-col>
             <v-col cols="8">
               <v-text-field
-                label="email"
-                v-model="email"
+                label="level"
+                v-model="level"
                 text
                 outlined
                 clearable
@@ -39,7 +64,7 @@
         <v-card-actions>
           <v-layout align-center justify-center>
             <v-spacer />
-            <v-btn class="error" flat="flat" @click="edit1 = false">取り消し</v-btn>
+            <v-btn class="error" flat="flat" @click="edit2 = false">取り消し</v-btn>
             <v-spacer />
             <v-btn class="primary" flat="flat" @click="submit">登録</v-btn>
             <v-spacer />
@@ -54,13 +79,14 @@
 import axios from 'axios'
  export default {
   props:{
-    userId: Number,
     name: String,
-    email: String,
+    status: String,
+    level: Number,
   },
   data() {
     return {
-      edit1: false,
+      edit2: false,
+      s_list: [],
     };
   },
     methods: {
@@ -77,15 +103,32 @@ import axios from 'axios'
       ).then(
         (response) => {
           console.log(response)
-          this.edit1 = false
+          this.edit2 = false
         },
         (error) => {
           console.log('登録できませんでした')
-          this.edit1 = false
+          this.edit2 = false
           return error;
         }
       )
     },
+  },
+  mounted() {
+    const s_url = process.env.VUE_APP_URL + "/skills";
+    axios
+      .get(s_url, {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("access-token"),
+          client: localStorage.getItem("client"),
+          uid: localStorage.getItem("uid"),
+        },
+      })
+      .then((response) => {
+        this.s_list = response.data;
+        console.log("---");
+        console.log(this.issues);
+      });
   },
 };
 </script>
