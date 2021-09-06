@@ -196,6 +196,17 @@
                     </template>
                     <span>詳細情報の確認</span>
                   </v-tooltip>
+
+                  <v-tooltip right>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn rounded v-bind="attrs" v-on="on" @click="deleteissue(issue.id)">
+                        完了
+                        <v-icon>mdi-check-underline</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>issueの完了と削除</span>
+                  </v-tooltip>
+
                 </v-list-item>
               </div>
             </v-list>
@@ -340,6 +351,32 @@
         </v-card>
       </v-dialog>
 
+      <!-- issue情報の詳細コンポーネント -->
+      <v-dialog v-model="deleteI" max-width="600" persistent>
+        <v-card>
+          <v-card-title class="text-h4 justify-center light-green lighten-2 lighten-2">
+            issueの完了と削除
+            <v-spacer />
+            <v-btn class="text-h4 justify-center light-green lighten-2 lighten-2" @click="detailI=false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-card-title>
+          <v-container class="justify-content-center">
+            <template>
+              <v-card-actions>
+                <v-layout align-center justify-center>
+                  <v-spacer />
+                  <v-btn class="error" flat @click="deleteI = false">閉じる</v-btn>
+                  <v-spacer />
+                  <v-btn class="primary" flat @click="trash()">完了</v-btn>
+                  <v-spacer />
+                </v-layout>
+              </v-card-actions>
+            </template>
+          </v-container>
+        </v-card>
+      </v-dialog>
+
       <!-- パスワードの変更コンポーネント -->
       <v-dialog v-model="password" max-width="600" persistent>
         <v-card>
@@ -428,6 +465,7 @@ export default {
       issueDD: [],
       issueL: [],
       issueLL: [],
+      iddueid: [],
       skills: [],
       skillN: [],
       skillNN: [],
@@ -449,6 +487,7 @@ export default {
       detailS: false,
       detailP: false,
       detailI: false,
+      deleteI: false,
     };
   },
   mounted() {
@@ -599,9 +638,35 @@ export default {
       this.issueNN = name;
       this.issueDD = description;
       this.issueLL = level;
-      this.detailI = true;
+      this.deleteI = true;
     },
-  },
+    deleteissue(id) {
+      this.issueid = id
+      this.deleteI = true;
+    },
+    submit: function() {
+        const url = process.env.VUE_APP_URL + '/projects' + '/' + this.id + '?name=' + this.name + '&id=' + this.id;
+        axios.put(url, {
+            headers: {
+              'Content-Type': 'application/json',
+              'access-token': localStorage.getItem('access-token'),
+              'client': localStorage.getItem('client'),
+              'uid': localStorage.getItem('uid')
+            }
+          }
+        ).then(
+          (response) => {
+            console.log(response)
+            this.edit3 = false
+          },
+          (error) => {
+            console.log('登録できませんでした')
+            this.edit3 = false
+            return error;
+          }
+        )
+      },
+  }
 };
 </script>
 
