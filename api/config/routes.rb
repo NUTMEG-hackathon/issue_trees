@@ -31,8 +31,9 @@ Rails.application.routes.draw do
       get "get_user_skill" => "user_skill_api#get_user_skills"
 
       get "current_user/show" => "current_user_api#show"
-      post "current_user/edit_user_info" => "current_user_api#edit_user_info"
+      
       put "current_user/edit_user_info" => "current_user_api#edit_user_info"
+      #get "current_user/edit_user_info" => "current_user_api#edit_user_info"
       post "current_user/password_reset" => "current_user_api#password_reset"
     end
   end

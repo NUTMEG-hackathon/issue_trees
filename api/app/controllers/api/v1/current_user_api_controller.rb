@@ -6,6 +6,11 @@ class Api::V1::CurrentUserApiController < ApplicationController
     render json: { data: @user }
   end
 
+  def update
+    @user = User.find(params[:id])
+    @user.update(edit_user_info)
+  end
+
   def password_reset 
     @user = current_api_user
     @user.password = password_reset_params[:password]
@@ -15,6 +20,9 @@ class Api::V1::CurrentUserApiController < ApplicationController
 
 
   def edit_user_info
+    p "=================="
+    p "aaaaaaaaaa"
+    p "=================="
     @user = current_api_user
     @user.name = edit_user_info_params[:name]
     @user.email = edit_user_info_params[:email]

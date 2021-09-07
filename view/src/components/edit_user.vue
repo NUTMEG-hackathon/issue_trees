@@ -65,8 +65,15 @@ import axios from 'axios'
   },
     methods: {
       submit: function() {
-      const url = process.env.VUE_APP_URL + 'users/edit_user_info' + '/' + this.userId + '?' + 'name=' + this.name + '&email=' + this.email;
-      axios.put(url, {
+      const url = process.env.VUE_APP_URL + '/api/v1/current_user/edit_user_info' ;
+        if ( !this.$refs.form.validate() ) return;
+
+      var params =  {
+          'name' : this.name,
+          'email' : this.email,
+      }
+
+      axios.put(url, params, {
           headers: {
             'Content-Type': 'application/json',
             'access-token': localStorage.getItem('access-token'),
