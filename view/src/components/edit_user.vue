@@ -65,7 +65,7 @@ import axios from 'axios'
   },
     methods: {
       submit: function() {
-      const url = process.env.VUE_APP_URL + '/api/v1/users/show' + '/' + this.userId + '?' + 'name=' + this.name + '&email=' + this.email;
+      const url = process.env.VUE_APP_URL + 'users/edit_user_info' + '/' + this.userId + '?' + 'name=' + this.name + '&email=' + this.email;
       axios.put(url, {
           headers: {
             'Content-Type': 'application/json',
