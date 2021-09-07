@@ -223,21 +223,8 @@ export default {
   data() {
     return {
       tree: {
-        name: "efficientree",
-        children: [
-          {
-            name: "frontend",
-            children: [{ name: "issue1" }, { name: "issue2" }],
-          },
-          {
-            name: "backend",
-            children: [
-              { name: "issue3" },
-              { name: "issue4" },
-              { name: "issue5" },
-            ],
-          },
-        ],
+        name: "",
+        children: [],
       },
       Details: "write issue descriptions",
       newNode: [],
@@ -258,7 +245,7 @@ export default {
       issues: [],
       user_projects: [],
       // 1に仮置する
-      user_project_id: 1,
+      user_project_id: [],
       user_project_name: [],
       project_name: [],
       project_clients: [],
@@ -319,9 +306,6 @@ export default {
       })
       .then((response) => {
         this.user_projects = response.data;
-        console.log("---user_projects---");
-        console.log(this.user_projects);
-        console.log("-------");
       });
     axios
       .get(url + "/api/v1/get_project_client/" + this.user_project_id, {
@@ -334,9 +318,6 @@ export default {
       })
       .then((response) => {
         this.project_clients = response.data;
-        console.log("---project_cliants---");
-        console.log(this.project_clients);
-        console.log("-------");
       });
     axios
       .get(url + "/api/v1/get_client_issue/" + this.project_client_id, {
@@ -349,9 +330,6 @@ export default {
       })
       .then((response) => {
         this.client_issues = response.data;
-        console.log("---client_issues---");
-        console.log(this.client_issues);
-        console.log("-------");
       });
   },
   methods: {
@@ -423,14 +401,64 @@ export default {
       console.log(this.newNode);
       this.addIssueDialog = false;
     },
-    selectProject: function () {
+    getProject: async function (id) {
+      await axios
+        .get(process.env.VUE_APP_URL + "/api/v1/get_user_project/" + id, {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then((response) => {
+          this.user_project = response.data;
+          this.user_project_name = this.user_project.name;
+        });
+    },
+    getClients: async function () {
+      await axios
+        .get(
+          process.env.VUE_APP_URL +
+            "/api/v1/get_project_client/" +
+            this.user_project_id,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "access-token": localStorage.getItem("access-token"),
+              client: localStorage.getItem("client"),
+              uid: localStorage.getItem("uid"),
+            },
+          }
+        )
+        .then((response) => {
+          this.project_clients = response.data;
+        });
+    },
+    getIssues: async function () {
+      await axios
+        .get(
+          process.env.VUE_APP_URL +
+            "/api/v1/get_client_issue/" +
+            this.project_client_id,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "access-token": localStorage.getItem("access-token"),
+              client: localStorage.getItem("client"),
+              uid: localStorage.getItem("uid"),
+            },
+          }
+        )
+        .then((response) => {
+          this.client_issues = response.data;
+        });
+    },
+    setTree: async function () {
       this.tree.children = [];
-      this.getProject(this.user_project_id);
-      this.getClients;
-      this.getIssues;
-      this.tree.name = this.user_project_name;
       console.log("this.tree.name");
       console.log(this.tree.name);
+      this.tree.name = this.user_project_name;
       for (let i = 0; i < this.project_clients.length; i++) {
         this.tree.children.push({
           name: this.project_clients[i].name,
@@ -450,69 +478,13 @@ export default {
           }
         }
       }
-      // processAll();
     },
-    getProject: function (id) {
-      axios
-        .get(process.env.VUE_APP_URL + "/api/v1/get_user_project/" + id, {
-          headers: {
-            "Content-Type": "application/json",
-            "access-token": localStorage.getItem("access-token"),
-            client: localStorage.getItem("client"),
-            uid: localStorage.getItem("uid"),
-          },
-        })
-        .then((response) => {
-          this.user_project = response.data;
-          this.user_project_name = this.user_project.name;
-          console.log("---user_project---");
-          console.log(this.user_project_name);
-          console.log("-------");
-        });
+    selectProject: async function () {
+      await this.getProject(this.user_project_id);
+      await this.getClients();
+      await this.getIssues();
+      await this.setTree();
     },
-    getClients: function () {
-      axios
-        .get(
-          process.env.VUE_APP_URL +
-            "/api/v1/get_project_client/" +
-            this.user_project_id,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "access-token": localStorage.getItem("access-token"),
-              client: localStorage.getItem("client"),
-              uid: localStorage.getItem("uid"),
-            },
-          }
-        )
-        .then((response) => {
-          this.project_clients = response.data;
-        });
-    },
-    getIssues: function () {
-      axios
-        .get(
-          process.env.VUE_APP_URL +
-            "/api/v1/get_client_issue/" +
-            this.project_client_id,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "access-token": localStorage.getItem("access-token"),
-              client: localStorage.getItem("client"),
-              uid: localStorage.getItem("uid"),
-            },
-          }
-        )
-        .then((response) => {
-          this.client_issues = response.data;
-        });
-    },
-    // processAll: async function () {
-    //   await getProject();
-    //   await getClients();
-    //   await getIssues();
-    // },
   },
 };
 </script>
