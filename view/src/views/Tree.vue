@@ -450,6 +450,7 @@ export default {
           }
         }
       }
+      // processAll();
     },
     getProject: function (id) {
       axios
@@ -507,6 +508,11 @@ export default {
           this.client_issues = response.data;
         });
     },
+    // processAll: async function () {
+    //   await getProject();
+    //   await getClients();
+    //   await getIssues();
+    // },
   },
 };
 </script>
