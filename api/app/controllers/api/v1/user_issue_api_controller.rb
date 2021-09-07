@@ -6,10 +6,12 @@ class Api::V1::UserIssueApiController < ApplicationController
     issues = @user.issues
     userIssues = []
     for issue in issues do
+      id = issue.id
       name = issue.name
       description = issue.description
       level = issue.level
       userIssues << {
+        id: id,
         name: name,
         description: description,
         level: level

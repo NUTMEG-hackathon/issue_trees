@@ -6,9 +6,11 @@ class Api::V1::ClientIssueApiController < ApplicationController
     issues = @client.issues
     clientissues = []
     for issue in issues do
+      id = issue.id
       name = issue.name
       description = issue.description
       clientissues<< {
+        id: id,
         name: name,
         description: description
       }

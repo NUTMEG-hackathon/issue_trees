@@ -50,7 +50,7 @@ import axios from 'axios'
   },
     methods: {
       submit: function() {
-      const url = process.env.VUE_APP_URL + '/projects' + '/' + this.id + '?name=' + this.name;
+      const url = process.env.VUE_APP_URL + '/projects' + '/' + this.id + '?name=' + this.name + '&id=' + this.id;
       axios.put(url, {
           headers: {
             'Content-Type': 'application/json',
