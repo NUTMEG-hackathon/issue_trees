@@ -21,6 +21,17 @@ port ENV.fetch("PORT") { 3000 }
 #
 environment ENV.fetch("RAILS_ENV") { "development" }
 
+#################################
+## production
+#################################
+if "production" == ENV.fetch("RAILS_ENV") { "production" }
+  ssl_bind '0.0.0.0', '9292', {
+    key: '/certs/efficientree-api.nutfes.net/production/domain.key',
+    cert: '/certs/efficientree-api.nutfes.net/production/signed.crt',
+    verify_mode: "none"
+  }
+end
+
 # Specifies the `pidfile` that Puma will use.
 pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 

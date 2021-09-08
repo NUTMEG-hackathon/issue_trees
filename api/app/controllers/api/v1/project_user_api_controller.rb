@@ -1,16 +1,18 @@
 class Api::V1::ProjectUserApiController < ApplicationController
   #before_action :authenticate_api_user!
-  
+
   def get_project_user
     @user = current_api_user
     project_users = @user.project_users
     projects = []
     for project_user in project_users
       project_id = project_user.project_id
-      name = project_user.project.name 
+      name = project_user.project.name
+      id = project_user.project.id
       projects <<{
         project_id: project_id,
-        name:name
+        name:name,
+        id:id
     }
     end
     render json:projects
