@@ -5,10 +5,12 @@
         <v-col cols="1" />
         <v-col cols="3">
           <v-select
-            item-text="name"
-            item-value="name"
-            :items="user_projects"
             label="Project"
+            v-model="user_project_id"
+            :items="user_projects"
+            item-text="name"
+            item-value="project_id"
+            @input="selectProject"
           >
           </v-select>
           <div class="light-green lighten-2 events_title panel-heading">
@@ -221,21 +223,8 @@ export default {
   data() {
     return {
       tree: {
-        name: "efficientree",
-        children: [
-          {
-            name: "frontend",
-            children: [{ name: "issue1" }, { name: "issue2" }],
-          },
-          {
-            name: "backend",
-            children: [
-              { name: "issue3" },
-              { name: "issue4" },
-              { name: "issue5" },
-            ],
-          },
-        ],
+        name: "",
+        children: [],
       },
       Details: "write issue descriptions",
       newNode: [],
@@ -255,6 +244,16 @@ export default {
       clients: [],
       issues: [],
       user_projects: [],
+      user_project_id: [],
+      user_project_name: [],
+      project_name: [],
+      project_clients: [],
+      // 1に仮置する
+      project_client_id: [],
+      project_clients_id: [],
+      project_client_name: [],
+      client_issue: [],
+      client_issues: [],
     };
   },
   components: {
@@ -309,21 +308,7 @@ export default {
       })
       .then((response) => {
         this.user_projects = response.data;
-        // console.log("-------");
-        // console.log(this.user_projects);
-        // console.log("-------");
       });
-
-    // const url = "api/v1/projects/" + this.$route.params.id;
-    // this.$axios
-    //   .get(url, {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   })
-    //   .then((response) => {
-    //     this.projects = response.data;
-    //   });
   },
   methods: {
     async do(action) {
@@ -393,6 +378,98 @@ export default {
       this.addFor(this.event);
       console.log(this.newNode);
       this.addIssueDialog = false;
+    },
+    getProject: async function (id) {
+      await axios
+        .get(process.env.VUE_APP_URL + "/api/v1/get_user_project/" + id, {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then((response) => {
+          this.user_project = response.data;
+          this.user_project_name = this.user_project.name;
+          this.user_project_id = this.user_project.project_id;
+        });
+    },
+    getClients: async function () {
+      await axios
+        .get(
+          process.env.VUE_APP_URL +
+            "/api/v1/get_project_client/" +
+            this.user_project_id,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "access-token": localStorage.getItem("access-token"),
+              client: localStorage.getItem("client"),
+              uid: localStorage.getItem("uid"),
+            },
+          }
+        )
+        .then((response) => {
+          this.project_clients = response.data;
+        });
+      this.project_clients_id = [];
+    },
+    getIssues: async function () {
+      this.client_issues = [];
+      for (let i = 0; i < this.project_clients.length; i++) {
+        await axios
+          .get(
+            process.env.VUE_APP_URL +
+              "/api/v1/get_client_issue/" +
+              this.project_clients[i].client_id,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "access-token": localStorage.getItem("access-token"),
+                client: localStorage.getItem("client"),
+                uid: localStorage.getItem("uid"),
+              },
+            }
+          )
+          .then((response) => {
+            this.client_issue = response.data;
+            this.client_issues.push(this.client_issue);
+          });
+      }
+    },
+    setTree: async function () {
+      this.tree.children = [];
+      this.tree.name = this.user_project_name;
+      for (let i = 0; i < this.project_clients.length; i++) {
+        this.tree.children.push({
+          name: this.project_clients[i].name,
+          client_id: this.project_clients[i].client_id,
+          children: [],
+        });
+      }
+      for (let i = 0; i < this.tree.children.length; i++) {
+        for (let j = 0; j < this.client_issues[i].length; j++) {
+          if (
+            this.client_issues[i][j].client_id ==
+            this.tree.children[i].client_id
+          ) {
+            this.tree.children[i].children.push({
+              name: this.client_issues[i][j].name,
+              client_id: this.client_issues[i][j].client_id,
+              user_id: this.client_issues[i][j].user_id,
+              description: this.client_issues[i][j].description,
+              level: this.client_issues[i][j].level,
+            });
+          }
+        }
+      }
+    },
+    selectProject: async function () {
+      await this.getProject(this.user_project_id);
+      await this.getClients();
+      await this.getIssues();
+      await this.setTree();
     },
   },
 };
