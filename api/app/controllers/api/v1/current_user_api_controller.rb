@@ -8,9 +8,6 @@ class Api::V1::CurrentUserApiController < ApplicationController
 
   def get_user_detail
     @user = current_api_user
-    puts "---------------------------------------------------------------"
-    puts @user
-    puts "---------------------------------------------------------------"
     user_detail = {
      user: @user
     }
