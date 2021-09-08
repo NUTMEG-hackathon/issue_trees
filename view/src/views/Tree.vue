@@ -50,44 +50,42 @@
       </v-row>
       <v-dialog persistent v-model="addIssueDialog" width="500">
         <v-card>
-          <v-card-title class="text-h4 justify-center light-green lighten-2">
+          <v-card-title class="text-h4 lighten-2">
             <v-row>
               <v-col cols="3" />
-              <v-col cols="6"> add issues </v-col>
-              <v-col cols="3" class="text-end">
+              <v-col cols="6" class="my-3 light-green--text">
+                Add issues
+              </v-col>
+              <v-col cols="3" class="text-end my-3">
                 <v-btn text @click="addIssueDialog = false">
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
               </v-col>
             </v-row>
           </v-card-title>
-          <v-row>
+          <v-row no-gutters>
             <v-col cols="1" />
             <v-col cols="10">
-              <v-card-title
-                class="text-h5 justify-center text-decoration-underline"
-              >
-                issue Name </v-card-title
+              <v-card-title class="text-left"
+                ><v-icon class="mr-3">mdi-tag-text-outline</v-icon> issue Name </v-card-title
               ><v-text-field
+                class="px-4"
                 label="issue name"
-                placeholder="Placeholder"
                 solo
               ></v-text-field>
-              <v-card-title
-                class="text-h5 justify-center text-decoration-underline"
-              >
+              <v-card-title class="text-left"
+                ><v-icon class="mr-3">mdi-message-reply-text-outline</v-icon>
                 issue descriptions
               </v-card-title>
               <v-textarea
+                class="px-4"
                 v-model="Details"
+                label="issue descriptions"
                 solo
                 name="input-7-4"
-                label="Solo textarea"
               ></v-textarea>
-              <v-card-title
-                class="text-h5 justify-center text-decoration-underline"
-              >
-                skills
+              <v-card-title class="text-left"
+                ><v-icon class="mr-3">mdi-laptop</v-icon> skills
               </v-card-title>
               <v-card-text>
                 <v-form>
@@ -108,10 +106,8 @@
                   />
                 </v-form>
               </v-card-text>
-              <v-card-title
-                class="text-h5 justify-center text-decoration-underline"
-              >
-                member
+              <v-card-title class="text-left"
+                ><v-icon class="mr-3">mdi-account-group</v-icon> member
               </v-card-title>
               <v-card-text>
                 <v-form>
@@ -132,62 +128,68 @@
                 </v-form>
               </v-card-text>
               <v-card-actions>
-                <v-btn color="error" text @click="addIssueDialog = false">
+                <v-btn
+                  class="ma-2"
+                  outlined
+                  color="red"
+                  @click="addIssueDialog = false"
+                >
                   cancel
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" text @click="addIssue"> add </v-btn>
+                <v-btn class="ma-2" outlined color="blue" @click="addIssue">
+                  add
+                </v-btn>
               </v-card-actions>
             </v-col>
-            <v-col cols="1" />
           </v-row>
         </v-card>
       </v-dialog>
       <v-dialog persistent v-model="issueDetails" width="500">
         <v-card>
-          <v-card-title class="text-h4 light-green justify-center lighten-2">
-            <v-row>
+          <v-card-title class="text-h4 lighten-2">
+            <v-row no-gutters>
               <v-col cols="3" />
-              <v-col cols="6">issue details </v-col>
-              <v-col cols="3" class="text-end">
+              <v-col cols="6" class="my-3 light-green--text"
+                >issue details
+              </v-col>
+              <v-col cols="3" class="text-end my-3">
                 <v-btn text @click="issueDetails = false">
-                  <v-icon>mdi-close</v-icon>
+                  <v-icon class="my-3">mdi-close</v-icon>
                 </v-btn>
               </v-col>
             </v-row>
           </v-card-title>
-          <v-card-title
-            class="text-h5 justify-center text-decoration-underline"
-          >
-            issue Name </v-card-title
-          ><v-text class="text">{{ currentNodeName }}</v-text>
-          <v-card-title
-            class="text-h5 justify-center text-decoration-underline"
-          >
-            issue descriptions
-          </v-card-title>
-          <v-textarea
-            solo
-            name="input-7-4"
-            label="please write detail here"
-            value="email"
-          ></v-textarea>
-          <v-card-title
-            class="text-h5 justify-center text-decoration-underline"
-          >
-            skills
-          </v-card-title>
-          <v-card-title
-            class="text-h5 justify-center text-decoration-underline"
-          >
-            member
-          </v-card-title>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="issueDetails = false">
-              done
-            </v-btn>
-          </v-card-actions>
+          <v-row no-gutters>
+            <v-col cols="1" />
+            <v-col cols="10">
+              <v-card-title class="text-left"
+                ><v-icon class="mr-3">mdi-tag-text-outline</v-icon> issue Name </v-card-title
+              ><v-text class="px-4" label="issue name" solo>{{
+                currentNodeName
+              }}</v-text>
+              <v-card-title class="text-left"
+                ><v-icon class="mr-3">mdi-message-reply-text-outline</v-icon>
+                issue descriptions
+              </v-card-title>
+              <v-text class="px-4" label="issue name" solo>{{
+                currentNodeDescriptions
+              }}</v-text>
+
+              <v-card-title class="text-left"
+                ><v-icon class="mr-3">mdi-laptop</v-icon> skills
+              </v-card-title>
+              <v-card-title class="text-left"
+                ><v-icon class="mr-3">mdi-account-group</v-icon> member
+              </v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" text @click="issueDetails = false">
+                  done
+                </v-btn>
+              </v-card-actions>
+            </v-col>
+          </v-row>
         </v-card>
       </v-dialog>
     </div>
@@ -226,10 +228,10 @@ export default {
         name: "",
         children: [],
       },
-      Details: "write issue descriptions",
+      Details: "",
       newNode: [],
       currentNodeName: [],
-      currentNodeDetails: [],
+      currentNodeDescriptions: [],
       skillName: [],
       status: [],
       email: [],
@@ -248,7 +250,6 @@ export default {
       user_project_name: [],
       project_name: [],
       project_clients: [],
-      // 1に仮置する
       project_client_id: [],
       project_clients_id: [],
       project_client_name: [],
@@ -337,6 +338,8 @@ export default {
       this.onEvent("clickedText", evt);
       var data = JSON.parse(JSON.stringify(evt.data));
       this.currentNodeName = data.name;
+      this.currentNodeDescriptions = data.description;
+      console.log(data);
       if (this.isChildNode) {
         this.addIssueDialog = true;
       } else {
