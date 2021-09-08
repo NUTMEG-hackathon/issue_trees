@@ -33,8 +33,8 @@ Rails.application.routes.draw do
       get "current_user/show" => "current_user_api#show"
       
       put "current_user/edit_user_info" => "current_user_api#edit_user_info"
-      #get "current_user/edit_user_info" => "current_user_api#edit_user_info"
-      post "current_user/password_reset" => "current_user_api#password_reset"
+      get "current_user/get_user_detail" => "current_user_api#get_user_detail"
+      #post "current_user/password_reset" => "current_user_api#password_reset"
     end
   end
   namespace :api do
