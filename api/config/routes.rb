@@ -18,12 +18,10 @@ Rails.application.routes.draw do
       # resources :users
       get "users/index" => "users#index"
       get "users/show" => "users#show"
-      get "projects/index" => "projects#index"
-      get "projects/show" => "projects#show"
       post "users/edit_user_info" => "users#edit_user_info"
       post "users/reset_password" => "users#reset_password"
 
-
+      #api周り
       get "get_client_issue/:id" => "client_issue_api#get_client_issue"
       get "get_issue_skill" => "issue_skill_api#get_issue_skills"
       get "get_project_client/:id" => "project_client_api#get_project_client"
@@ -31,6 +29,7 @@ Rails.application.routes.draw do
       get "get_user_project/:id" => "project_user_api#get_user_project"
       get "get_user_issue" => "user_issue_api#get_user_issue"
       get "get_user_skill" => "user_skill_api#get_user_skills"
+      get "get_issue_detail" => "issue_detail_api#get_issue_detail"
 
       get "current_user/show" => "current_user_api#show"
       
