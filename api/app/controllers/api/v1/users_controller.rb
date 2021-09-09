@@ -32,9 +32,6 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def edit_user_info
-    p "=================="
-    p "aaaaaaaaaa"
-    p "=================="
     @user = User.find(params[:id])
     @user.name = params[:name]
     @user.email = params[:email]
