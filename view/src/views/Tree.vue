@@ -6,8 +6,8 @@
         <v-col cols="3">
           <v-select
             label="Project"
-            v-model="user_project_id"
-            :items="user_projects"
+            v-model="userProjectId"
+            :items="userProjects"
             item-text="name"
             item-value="project_id"
             @input="selectProject"
@@ -48,7 +48,7 @@
           </div>
         </v-col>
       </v-row>
-      <v-dialog persistent v-model="addIssueDialog" width="500">
+      <v-dialog persistent v-model="addIssueDialog" width="700">
         <v-card>
           <v-card-title class="text-h4 lighten-2">
             <v-row>
@@ -56,7 +56,7 @@
               <v-col cols="6" class="my-3 light-green--text">
                 Add issues
               </v-col>
-              <v-col cols="3" class="text-end my-3">
+              <v-col cols="2" class="text-end my-3">
                 <v-btn text @click="addIssueDialog = false">
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
@@ -145,7 +145,7 @@
           </v-row>
         </v-card>
       </v-dialog>
-      <v-dialog persistent v-model="issueDetails" width="500">
+      <v-dialog persistent v-model="issueDetailsDialog" width="700">
         <v-card>
           <v-card-title class="text-h4 lighten-2">
             <v-row no-gutters>
@@ -153,8 +153,13 @@
               <v-col cols="6" class="my-3 light-green--text"
                 >issue details
               </v-col>
-              <v-col cols="3" class="text-end my-3">
-                <v-btn text @click="issueDetails = false">
+              <v-col cols="1" class="text-end my-3">
+                <v-btn text @click="changeDialog()">
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col cols="2" class="text-end my-3">
+                <v-btn text @click="issueDetailsDialog = false">
                   <v-icon class="my-3">mdi-close</v-icon>
                 </v-btn>
               </v-col>
@@ -166,14 +171,14 @@
               <v-card-title class="text-left"
                 ><v-icon class="mr-3">mdi-tag-text-outline</v-icon> issue Name </v-card-title
               ><v-text class="px-4" label="issue name" solo>{{
-                currentNodeName
+                issueName
               }}</v-text>
               <v-card-title class="text-left"
                 ><v-icon class="mr-3">mdi-message-reply-text-outline</v-icon>
                 issue descriptions
               </v-card-title>
               <v-text class="px-4" label="issue name" solo>{{
-                currentNodeDescriptions
+                issueDescription
               }}</v-text>
 
               <v-card-title class="text-left"
@@ -182,12 +187,69 @@
               <v-card-title class="text-left"
                 ><v-icon class="mr-3">mdi-account-group</v-icon> member
               </v-card-title>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" text @click="issueDetails = false">
-                  done
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-dialog>
+      <v-dialog persistent v-model="editIssueDetailsDialog" width="700">
+        <v-card>
+          <v-card-title class="text-h4 lighten-2">
+            <v-row no-gutters>
+              <v-col cols="3" />
+              <v-col cols="6" class="my-3 light-green--text"
+                >Edit issue details
+              </v-col>
+              <v-col cols="1" class="text-end my-3">
+                <v-btn text @click="changeDialog()">
+                  <v-icon>mdi-arrow-left-top</v-icon>
                 </v-btn>
-              </v-card-actions>
+              </v-col>
+              <v-col cols="2" class="text-end my-3">
+                <v-btn text @click="editIssueDetailsDialog = false">
+                  <v-icon class="my-3">mdi-close</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-title>
+          <v-row no-gutters>
+            <v-col cols="1" />
+            <v-col cols="10">
+              <v-card-title class="text-left"
+                ><v-icon class="mr-3">mdi-tag-text-outline</v-icon> issue Name
+              </v-card-title>
+              <v-text-field
+                v-model="this.issueName"
+                class="px-4"
+                label="issue name"
+                clearable
+                outlined
+              ></v-text-field>
+              <v-card-title class="text-left"
+                ><v-icon class="mr-3">mdi-message-reply-text-outline</v-icon>
+                issue descriptions
+              </v-card-title>
+              <v-textarea
+                class="px-4"
+                v-model="issueDescription"
+                label="issue descriptions"
+                clearable
+                outlined
+              ></v-textarea>
+              <v-card-title class="text-left"
+                ><v-icon class="mr-3">mdi-laptop</v-icon> skills
+              </v-card-title>
+              <v-card-title class="text-left"
+                ><v-icon class="mr-3">mdi-account-group</v-icon> member
+              </v-card-title>
+              <v-btn
+                class="ma-2"
+                outlined
+                large
+                color="light-green"
+                @click="editIssueDetails"
+              >
+                Edit
+              </v-btn>
             </v-col>
           </v-row>
         </v-card>
@@ -229,32 +291,43 @@ export default {
         children: [],
       },
       Details: "",
+      // Node
       newNode: [],
-      currentNodeName: [],
-      currentNodeDescriptions: [],
-      skillName: [],
-      status: [],
-      email: [],
+      // Dialog
       addIssueDialog: false,
-      issueDetails: false,
+      issueDetailsDialog: false,
+      editIssueDetailsDialog: false,
+      // events
       isChildNode: false,
       event: [],
       events: [],
+      // skill
       skills: [],
+      // user
       users: [],
+      // project
       projects: [],
+      // client
       clients: [],
+      // issue
       issues: [],
-      user_projects: [],
-      user_project_id: [],
-      user_project_name: [],
-      project_name: [],
-      project_clients: [],
-      project_client_id: [],
-      project_clients_id: [],
-      project_client_name: [],
-      client_issue: [],
-      client_issues: [],
+      issueId: [],
+      issueName: [],
+      issueDescription: [],
+      issueLevel: [],
+      issueClientId: [],
+      issueUserId: [],
+      // user_project
+      userProject: [],
+      userProjects: [],
+      userProjectId: [],
+      userProjectName: [],
+      // project_client
+      projectClients: [],
+      projectClientsId: [],
+      // client_issue
+      clientIssue: [],
+      clientIssues: [],
     };
   },
   components: {
@@ -308,7 +381,7 @@ export default {
         },
       })
       .then((response) => {
-        this.user_projects = response.data;
+        this.userProjects = response.data;
       });
   },
   methods: {
@@ -337,13 +410,17 @@ export default {
     onClick(evt) {
       this.onEvent("clickedText", evt);
       var data = JSON.parse(JSON.stringify(evt.data));
-      this.currentNodeName = data.name;
-      this.currentNodeDescriptions = data.description;
-      console.log(data);
+      this.issueId = data.issue_id;
+      this.issueName = data.name;
+      this.issueClientId = data.client_id;
+      this.issueUserId = data.user_id;
+      this.issueDescription = data.description;
+      this.issueLevel = data.level;
       if (this.isChildNode) {
         this.addIssueDialog = true;
       } else {
-        this.issueDetails = true;
+        this.issueDetailsDialog = true;
+        this.editIssueDetailsDialog = false;
       }
       this.event = data;
       this.events = [];
@@ -393,9 +470,9 @@ export default {
           },
         })
         .then((response) => {
-          this.user_project = response.data;
-          this.user_project_name = this.user_project.name;
-          this.user_project_id = this.user_project.project_id;
+          this.userProject = response.data;
+          this.userProjectName = this.userProject.name;
+          this.userProjectId = this.userProject.project_id;
         });
     },
     getClients: async function () {
@@ -403,7 +480,7 @@ export default {
         .get(
           process.env.VUE_APP_URL +
             "/api/v1/get_project_client/" +
-            this.user_project_id,
+            this.userProjectId,
           {
             headers: {
               "Content-Type": "application/json",
@@ -414,18 +491,18 @@ export default {
           }
         )
         .then((response) => {
-          this.project_clients = response.data;
+          this.projectClients = response.data;
         });
-      this.project_clients_id = [];
+      this.projectClientsId = [];
     },
     getIssues: async function () {
-      this.client_issues = [];
-      for (let i = 0; i < this.project_clients.length; i++) {
+      this.clientIssues = [];
+      for (let i = 0; i < this.projectClients.length; i++) {
         await axios
           .get(
             process.env.VUE_APP_URL +
               "/api/v1/get_client_issue/" +
-              this.project_clients[i].client_id,
+              this.projectClients[i].client_id,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -436,43 +513,109 @@ export default {
             }
           )
           .then((response) => {
-            this.client_issue = response.data;
-            this.client_issues.push(this.client_issue);
+            this.clientIssue = response.data;
+            this.clientIssues.push(this.clientIssue);
           });
       }
     },
     setTree: async function () {
       this.tree.children = [];
-      this.tree.name = this.user_project_name;
-      for (let i = 0; i < this.project_clients.length; i++) {
+      this.tree.name = this.userProjectName;
+      for (let i = 0; i < this.projectClients.length; i++) {
         this.tree.children.push({
-          name: this.project_clients[i].name,
-          client_id: this.project_clients[i].client_id,
+          name: this.projectClients[i].name,
+          client_id: this.projectClients[i].client_id,
           children: [],
         });
       }
       for (let i = 0; i < this.tree.children.length; i++) {
-        for (let j = 0; j < this.client_issues[i].length; j++) {
+        for (let j = 0; j < this.clientIssues[i].length; j++) {
           if (
-            this.client_issues[i][j].client_id ==
-            this.tree.children[i].client_id
+            this.clientIssues[i][j].client_id == this.tree.children[i].client_id
           ) {
             this.tree.children[i].children.push({
-              name: this.client_issues[i][j].name,
-              client_id: this.client_issues[i][j].client_id,
-              user_id: this.client_issues[i][j].user_id,
-              description: this.client_issues[i][j].description,
-              level: this.client_issues[i][j].level,
+              issue_id: this.clientIssues[i][j].id,
+              name: this.clientIssues[i][j].name,
+              client_id: this.clientIssues[i][j].client_id,
+              user_id: this.clientIssues[i][j].user_id,
+              description: this.clientIssues[i][j].description,
+              level: this.clientIssues[i][j].level,
             });
           }
+          console.log();
         }
       }
     },
     selectProject: async function () {
-      await this.getProject(this.user_project_id);
+      await this.getProject(this.userProjectId);
       await this.getClients();
       await this.getIssues();
       await this.setTree();
+      console.log(this.tree.children);
+    },
+    changeDialog: function () {
+      if (this.issueDetailsDialog == true) {
+        this.issueDetailsDialog = false;
+        this.editIssueDetailsDialog = true;
+      } else {
+        this.issueDetailsDialog = true;
+        this.editIssueDetailsDialog = false;
+      }
+    },
+    // editIssueDetails: function () {
+    //   // const edit_url =
+    //   //   "/issues/" +
+    //   //   this.issueId +
+    //   //   "?name=" +
+    //   //   this.issueName +
+    //   //   "&client_id=" +
+    //   //   this.issueClientId +
+    //   //   "&user_id=" +
+    //   //   this.issueUserId +
+    //   //   "&description=" +
+    //   //   this.issueDescription +
+    //   //   "&level=" +
+    //   //   this.issueLevel;
+    //   // console.log(edit_url);
+
+    //   const url = process.env.VUE_APP_URL;
+    //   const id = this.issueId;
+    //   var params = {
+    //     name: this.issueName,
+    //     client_id: this.issueClientId,
+    //     user_id: this.issueUserId,
+    //     description: this.issueDescription,
+    //     level: this.issueLevel,
+    //   };
+    //   axios.defaults.headers.common["Content-Type"] = "application/json";
+    //   axios
+    //     .put(url + "/issues/" + id, params, {
+    //       headers: {
+    //         "access-token": localStorage.getItem("access-token"),
+    //         client: localStorage.getItem("client"),
+    //         uid: localStorage.getItem("uid"),
+    //       },
+    //     })
+    //     .then((response) => {
+    //       console.log("=====");
+    //       console.log(response);
+    //       console.log("=====");
+    //       // this.editIssueDetailsDialog = false;
+    //     })
+    //     .catch((error) => {
+    //       //失敗した時の処理
+    //       console.log(error);
+    //       console.log(typeof error);
+    //       // 引数objectが持つキーの一覧を、配列にして返す関数
+    //       // configに必要なデータは入ってた
+    //       for (let key of Object.keys(error)) {
+    //         console.log(key);
+    //         console.log(error[key]);
+    //       }
+    //       // const errorId = error.config.data.id; //エラー発生したリクエストの記事ID
+    //       console.log("=====");
+    //       console.log(error.config.data);
+    //     });
     },
   },
 };
