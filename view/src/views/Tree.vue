@@ -69,7 +69,7 @@
               <v-card-title class="text-left"
                 ><v-icon class="mr-3">mdi-tag-text-outline</v-icon> issue Name </v-card-title
               ><v-text-field
-                class="px-4"
+                v-model="addIssueName"
                 label="issue name"
                 solo
               ></v-text-field>
@@ -78,8 +78,7 @@
                 issue descriptions
               </v-card-title>
               <v-textarea
-                class="px-4"
-                v-model="Details"
+                v-model="issueDescription"
                 label="issue descriptions"
                 solo
                 name="input-7-4"
@@ -87,46 +86,61 @@
               <v-card-title class="text-left"
                 ><v-icon class="mr-3">mdi-laptop</v-icon> skills
               </v-card-title>
-              <v-card-text>
-                <v-form>
-                  <v-select
-                    multiple
-                    :reduce="(options) => options.id"
-                    key="id"
-                    label="skill"
-                    placeholder="Filter Skills ..."
-                    :items="skills"
-                    :menu-props="{
-                      top: true,
-                      offsetY: true,
-                    }"
-                    item-text="name"
-                    item-value="id"
-                    outlined
-                  />
-                </v-form>
-              </v-card-text>
+              <v-form>
+                <v-select
+                  v-model="addIssueSkill"
+                  multiple
+                  :reduce="(optjions) => options.id"
+                  key="id"
+                  label="skill"
+                  :items="skills"
+                  :menu-props="{
+                    top: true,
+                    offsetY: true,
+                  }"
+                  item-text="name"
+                  item-value="id"
+                  outlined
+                />
+              </v-form>
               <v-card-title class="text-left"
-                ><v-icon class="mr-3">mdi-account-group</v-icon> member
+                ><v-icon class="mr-3">mdi-chart-box-outline</v-icon> levels
               </v-card-title>
-              <v-card-text>
-                <v-form>
-                  <v-select
-                    :reduce="(options) => options.id"
-                    key="id"
-                    label="member"
-                    placeholder="Filter member ..."
-                    :items="users"
-                    :menu-props="{
-                      top: true,
-                      offsetY: true,
-                    }"
-                    item-text="name"
-                    item-value="id"
-                    outlined
-                  />
-                </v-form>
-              </v-card-text>
+              <v-form>
+                <v-select
+                  v-model="addIssueLevel"
+                  :reduce="(options) => options.id"
+                  key="id"
+                  label="skill level"
+                  :items="levels"
+                  :menu-props="{
+                    top: true,
+                    offsetY: true,
+                  }"
+                  item-text="name"
+                  item-value="id"
+                  outlined
+                />
+              </v-form>
+              <v-card-title class="text-left"
+                ><v-icon class="mr-3">mdi-account-group-outline</v-icon> member
+              </v-card-title>
+              <v-form>
+                <v-select
+                  v-model="addIssueUser"
+                  :reduce="(options) => options.id"
+                  key="id"
+                  label="member"
+                  :items="users"
+                  :menu-props="{
+                    top: true,
+                    offsetY: true,
+                  }"
+                  item-text="name"
+                  item-value="id"
+                  outlined
+                />
+              </v-form>
               <v-card-actions>
                 <v-btn
                   class="ma-2"
@@ -291,6 +305,28 @@ export default {
         children: [],
       },
       Details: "",
+      levels: [
+        {
+          id: 1,
+          name: 1,
+        },
+        {
+          id: 2,
+          name: 2,
+        },
+        {
+          id: 3,
+          name: 3,
+        },
+        {
+          id: 4,
+          name: 4,
+        },
+        {
+          id: 5,
+          name: 5,
+        },
+      ],
       // Node
       newNode: [],
       // Dialog
@@ -328,6 +364,11 @@ export default {
       // client_issue
       clientIssue: [],
       clientIssues: [],
+      // add issue
+      addIssueName: [],
+      addIssueSkill: [],
+      addIssueLevel: [],
+      addIssueUser: [],
     };
   },
   components: {
@@ -455,8 +496,39 @@ export default {
       removeElement(parent.children, data);
     },
     addIssue: function () {
+      const url = process.env.VUE_APP_URL;
+      var params = {
+        name: this.addIssueName,
+        client_id: this.issueClientId,
+        user_id: this.addIssueUser,
+        description: this.issueDescription,
+        level: this.addIssueLevel,
+      };
+      axios.defaults.headers.common["Content-Type"] = "application/json";
+      axios
+        .post(url + "/issues/", params, {
+          headers: {
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then((response) => {
+          console.log("=====");
+          console.log(response);
+          console.log("=====");
+          // this.editIssueDetailsDialog = false;
+        })
+        .catch((error) => {
+          //失敗した時の処理
+          console.log(error);
+        });
       this.addFor(this.event);
-      console.log(this.newNode);
+      // console.log("===");
+      // console.log(this.event);
+      // console.log(params);
+      // console.log("===");
+      // console.log(this.newNode);
       this.addIssueDialog = false;
     },
     getProject: async function (id) {
@@ -542,7 +614,6 @@ export default {
               level: this.clientIssues[i][j].level,
             });
           }
-          console.log();
         }
       }
     },
@@ -551,7 +622,6 @@ export default {
       await this.getClients();
       await this.getIssues();
       await this.setTree();
-      console.log(this.tree.children);
     },
     changeDialog: function () {
       if (this.issueDetailsDialog == true) {
