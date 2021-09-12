@@ -37,15 +37,17 @@ class IssuesController < ApplicationController
 
   # PATCH/PUT /issues/1 or /issues/1.json
   def update
-    respond_to do |format|
-      if @issue.update(issue_params)
-        format.html { redirect_to @issue, notice: "Issue was successfully updated." }
-        format.json { render :show, status: :ok, location: @issue }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @issue.errors, status: :unprocessable_entity }
-      end
-    end
+    @issue.update(issue_params)
+    render json: @issue
+    # respond_to do |format|
+    #   if @issue.update(issue_params)
+    #     format.html { redirect_to @issue, notice: "Issue was successfully updated." }
+    #     format.json { render :show, status: :ok, location: @issue }
+    #   else
+    #     format.html { render :edit, status: :unprocessable_entity }
+    #     format.json { render json: @issue.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # DELETE /issues/1 or /issues/1.json
@@ -65,6 +67,6 @@ class IssuesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def issue_params
-      params.require(:issue).permit(:name, :client_id, :user_id, :description, :level)
+      params.permit(:name, :client_id, :user_id, :description, :level)
     end
 end

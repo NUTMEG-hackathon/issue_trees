@@ -196,11 +196,21 @@
               }}</v-text>
 
               <v-card-title class="text-left"
-                ><v-icon class="mr-3">mdi-laptop</v-icon> skills
-              </v-card-title>
+                ><v-icon class="mr-3">mdi-laptop</v-icon> skills </v-card-title
+              ><v-text
+                class="px-4"
+                label="member name"
+                solo
+                v-for="(issueSkill, i) in issueSkills"
+                :key="i"
+                >{{ issueSkill }}</v-text
+              >
               <v-card-title class="text-left"
-                ><v-icon class="mr-3">mdi-account-group</v-icon> member
-              </v-card-title>
+                ><v-icon class="mr-3">mdi-account-group</v-icon>
+                member </v-card-title
+              ><v-text class="px-4" label="member name" solo>
+                {{ issueUserName }}</v-text
+              >
             </v-col>
           </v-row>
         </v-card>
@@ -353,6 +363,7 @@ export default {
       issueLevel: [],
       issueClientId: [],
       issueUserId: [],
+      issueUserName: [],
       // user_project
       userProject: [],
       userProjects: [],
@@ -364,6 +375,9 @@ export default {
       // client_issue
       clientIssue: [],
       clientIssues: [],
+      // issue_details
+      issueDetails: [],
+      issueSkills: [],
       // add issue
       addIssueName: [],
       addIssueSkill: [],
@@ -465,6 +479,28 @@ export default {
       }
       this.event = data;
       this.events = [];
+      const url = process.env.VUE_APP_URL;
+      axios
+        .get(url + "/api/v1/get_issue_details/" + this.issueId, {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then((response) => {
+          this.issueDetails = response.data;
+          this.issueUserName = this.issueDetails[0].user_name;
+          for (let i = 1; i < this.issueDetails.length; i++) {
+            this.issueSkills.push(this.issueDetails[i].skill_name);
+          }
+          // this.issueSkills = issueDetails
+          // console.log("---get_issue_detail---");
+          // console.log(this.issueDetails.length);
+          // console.log(this.issueSkills);
+          // this.users = JSON.parse(JSON.stringify(response.data));
+        });
     },
     onClickNode(evt) {
       this.onEvent("clickedNode", evt);
@@ -610,6 +646,7 @@ export default {
               name: this.clientIssues[i][j].name,
               client_id: this.clientIssues[i][j].client_id,
               user_id: this.clientIssues[i][j].user_id,
+              // user_name: this.clientIssues[i][j].user_name,
               description: this.clientIssues[i][j].description,
               level: this.clientIssues[i][j].level,
             });
@@ -632,61 +669,36 @@ export default {
         this.editIssueDetailsDialog = false;
       }
     },
-    // editIssueDetails: function () {
-    //   // const edit_url =
-    //   //   "/issues/" +
-    //   //   this.issueId +
-    //   //   "?name=" +
-    //   //   this.issueName +
-    //   //   "&client_id=" +
-    //   //   this.issueClientId +
-    //   //   "&user_id=" +
-    //   //   this.issueUserId +
-    //   //   "&description=" +
-    //   //   this.issueDescription +
-    //   //   "&level=" +
-    //   //   this.issueLevel;
-    //   // console.log(edit_url);
-
-    //   const url = process.env.VUE_APP_URL;
-    //   const id = this.issueId;
-    //   var params = {
-    //     name: this.issueName,
-    //     client_id: this.issueClientId,
-    //     user_id: this.issueUserId,
-    //     description: this.issueDescription,
-    //     level: this.issueLevel,
-    //   };
-    //   axios.defaults.headers.common["Content-Type"] = "application/json";
-    //   axios
-    //     .put(url + "/issues/" + id, params, {
-    //       headers: {
-    //         "access-token": localStorage.getItem("access-token"),
-    //         client: localStorage.getItem("client"),
-    //         uid: localStorage.getItem("uid"),
-    //       },
-    //     })
-    //     .then((response) => {
-    //       console.log("=====");
-    //       console.log(response);
-    //       console.log("=====");
-    //       // this.editIssueDetailsDialog = false;
-    //     })
-    //     .catch((error) => {
-    //       //失敗した時の処理
-    //       console.log(error);
-    //       console.log(typeof error);
-    //       // 引数objectが持つキーの一覧を、配列にして返す関数
-    //       // configに必要なデータは入ってた
-    //       for (let key of Object.keys(error)) {
-    //         console.log(key);
-    //         console.log(error[key]);
-    //       }
-    //       // const errorId = error.config.data.id; //エラー発生したリクエストの記事ID
-    //       console.log("=====");
-    //       console.log(error.config.data);
-    //     });
-    // },
+    editIssueDetails: function () {
+      const url = process.env.VUE_APP_URL;
+      const id = this.issueId;
+      var params = {
+        name: this.issueName,
+        client_id: this.issueClientId,
+        user_id: this.issueUserId,
+        description: this.issueDescription,
+        level: this.issueLevel,
+      };
+      axios.defaults.headers.common["Content-Type"] = "application/json";
+      console.log(params);
+      axios
+        .put(url + "/issues/" + id, params, {
+          headers: {
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then((response) => {
+          console.log("=====");
+          console.log(response);
+          console.log("=====");
+          // this.editIssueDetailsDialog = false;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
