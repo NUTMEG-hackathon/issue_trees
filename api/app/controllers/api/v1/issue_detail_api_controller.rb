@@ -15,16 +15,18 @@ class Api::V1::IssueDetailApiController < ApplicationController
             user_name: issue_user_name
         }
         issue_skills = @issue.issue_skills
-        for issue_skill in issue_skills 
-            name = issue_skill.skill.name
-            status = issue_skill.skill.status
-            level = issue_skill.skill.level
-            issuedetails << {
-              skill_name: name,
-              skill_status: status,
-              skill_level: level
-            }
-          end
-          render json:issuedetails
+        for issue_skill in issue_skills
+          id = issue_skill.skill.id
+          name = issue_skill.skill.name
+          status = issue_skill.skill.status
+          level = issue_skill.skill.level
+          issuedetails << {
+            skill_id: id,
+            skill_name: name,
+            skill_status: status,
+            skill_level: level
+          }
         end
+        render json:issuedetails
+    end
 end
