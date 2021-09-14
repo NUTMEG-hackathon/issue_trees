@@ -5,19 +5,15 @@
         <v-card-title class="text-h4 justify-center light-green lighten-2">
           MySkillの編集
         </v-card-title>
+        
         <v-container class="justify-content-center">
 
           <v-row>
             <v-col cols="2"></v-col>
             <v-col cols="8" align="center">
-              <v-select
-                multiple
-                v-model="selected"
-                :options="options"
-                :reduce="(options) => options.id"
+              <v-select  
                 key="id"
                 label="name"
-                @input="onInput"
                 placeholder="Filter Skills ..."
                 :items="this.s_list"
                 :menu-props="{
@@ -26,6 +22,7 @@
                 }"
                 item-text="name"
                 item-value="id"
+                v-model="skills"
                 outlined
               />
             </v-col>
@@ -79,6 +76,7 @@
 import axios from 'axios'
  export default {
   props:{
+    id:Number,
     name: String,
     status: String,
     level: Number,
@@ -87,12 +85,21 @@ import axios from 'axios'
     return {
       edit2: false,
       s_list: [],
+      skills: [],
     };
   },
     methods: {
-      submit: function() {
-      const url = process.env.VUE_APP_URL + '/api/v1/users/show' + '/' + this.userId + '?' + 'name=' + this.name + '&email=' + this.email;
-      axios.put(url, {
+      submit: async function() {
+      const url = process.env.VUE_APP_URL + '/api/v1/userskill/edit_user_skill';
+
+      let params ={
+        'id' : this.id,
+        'name' : this.name,
+        'status' : this.status,
+        'level' : this.level
+      }
+      console.log(params)
+      axios.put(url, params, {
           headers: {
             'Content-Type': 'application/json',
             'access-token': localStorage.getItem('access-token'),
@@ -107,6 +114,7 @@ import axios from 'axios'
         },
         (error) => {
           console.log('登録できませんでした')
+          console.log(error)
           this.edit2 = false
           return error;
         }
@@ -126,8 +134,6 @@ import axios from 'axios'
       })
       .then((response) => {
         this.s_list = response.data;
-        console.log("---");
-        console.log(this.issues);
       });
   },
 };

@@ -16,4 +16,19 @@ class Api::V1::UserSkillApiController < ApplicationController
     end
     render json:skills
   end
+
+  def edit_user_skill
+    @user_skill = UserSkill.find(params[:id])
+    @user_skill.id = edit_user_project_params[:id]
+    @user_skill.name = edit_user_project_params[:name]
+    @user_skill.status = edit_user_project_params[:status]
+    @user_skill.level = edit_user_project_params[:level]
+    @user_skill.save!
+  end
+
+  private
+    def edit_user_project_params
+      params.require(:user_skill_api).permit(:id, :name, :status, :level)
+    end
+
 end

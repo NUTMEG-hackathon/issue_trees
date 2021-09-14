@@ -76,7 +76,7 @@
                   <v-row>
                     <v-tooltip left>
                       <template v-slot:activator="{ on, attrs }">
-                        <v-btn rounded v-bind="attrs" v-on="on" @click="editskill(skill.name, skill.status, skill.level)">
+                        <v-btn rounded v-bind="attrs" v-on="on" @click="editskill(skill.id,skill.name, skill.status, skill.level)">
                           編集
                           <v-icon>mdi-pencil</v-icon>
                         </v-btn>
@@ -101,6 +101,7 @@
           </v-layout>
           <MySkill
             ref="edit2dialog"
+            :id="this.skillI"                     
             :name="this.skillN"
             :status="this.skillS"
             :level="this.skillL">
@@ -161,7 +162,7 @@
 
                   <v-tooltip left>
                     <template v-slot:activator="{ on, attrs }">
-                      <v-btn rounded v-bind="attrs" v-on="on" @click="editissue(issue.name,issue.description,issue.level)">
+                      <v-btn rounded v-bind="attrs" v-on="on" @click="editissue(issue.id,issue.name,issue.description,issue.level)">
                         編集
                         <v-icon>mdi-pencil</v-icon>
                       </v-btn>
@@ -230,6 +231,14 @@
               </v-list-item-group>
             </v-list>
           </template>
+        
+        <MyIssue
+          ref="edit4dialog"
+          :id ="this.issueI"
+          :name="this.issueN"
+          :description="this.issueD"
+          :level="this.issueL">
+        </MyIssue>
         </v-container>
       </v-card>
     </v-dialog>
@@ -420,6 +429,7 @@ export default {
           'Personal Information', 'My Skill', 'My Project', 'My Issue',
         ],
       users: [],
+      issueI: [],
       issues: [],
       issueN: [],
       issueNN: [],
@@ -427,7 +437,8 @@ export default {
       issueDD: [],
       issueL: [],
       issueLL: [],
-      iddueid: [],
+      issueid: [],
+      skillI: [],
       skills: [],
       skillN: [],
       skillNN: [],
@@ -569,7 +580,8 @@ export default {
     send: function () {
       this.$refs.edit1dialog.edit1 = true;
     },
-    editskill(name, status, level) {
+    editskill(id,name, status, level) {
+      this.skillI =id;
       this.skillN = name;
       this.skillS = status;
       this.skillL = level;
@@ -590,7 +602,8 @@ export default {
       this.projectNN = name;
       this.detailP = true;
     },
-    editissue(name, description, level) {
+    editissue(id,name, description, level) {
+      this.issueI = id;
       this.issueN = name;
       this.issueD = description;
       this.issueL = level;
