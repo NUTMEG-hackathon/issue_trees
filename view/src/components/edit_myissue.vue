@@ -25,8 +25,8 @@
             <v-col cols="2"></v-col>
             <v-col cols="8">
               <v-text-field
-                label="discription"
-                v-model="discription"
+                label="description"
+                v-model="description"
                 text
                 outlined
                 clearable
@@ -34,7 +34,6 @@
             </v-col>
             <v-col cols="2"></v-col>
           </v-row>
-
           <v-row>
             <v-col cols="2"></v-col>
             <v-col cols="8">
@@ -48,7 +47,6 @@
             </v-col>
             <v-col cols="2"></v-col>
           </v-row>
-
         </v-container>
         <v-card-actions>
           <v-layout align-center justify-center>
@@ -68,8 +66,9 @@
 import axios from 'axios'
  export default {
   props:{
+    id: Number,
     name: String,
-    discription: String,
+    description: String,
     level: Number,
   },
   data() {
@@ -80,8 +79,16 @@ import axios from 'axios'
   },
     methods: {
       submit: function() {
-      const url = process.env.VUE_APP_URL + '/api/v1/users/show' + '/' + this.userId + '?' + 'name=' + this.name + '&email=' + this.email;
-      axios.put(url, {
+      const url = process.env.VUE_APP_URL + '/api/v1/userissue/edituserissue';
+
+      let params ={
+          'id': this.id,
+          'name' : this.name,
+          'description' : this.description,
+          'level' : this.level
+      }
+
+      axios.put(url, params, {
           headers: {
             'Content-Type': 'application/json',
             'access-token': localStorage.getItem('access-token'),
@@ -92,11 +99,12 @@ import axios from 'axios'
       ).then(
         (response) => {
           console.log(response)
-          this.edit1 = false
+          this.edit4 = false
         },
         (error) => {
           console.log('登録できませんでした')
-          this.edit1 = false
+          console.log(params.name)
+          this.edit4 = false
           return error;
         }
       )

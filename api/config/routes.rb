@@ -33,10 +33,15 @@ Rails.application.routes.draw do
 
       get "current_user/show" => "current_user_api#show"
       
+      #編集api
       put "current_user/edit_user_info" => "current_user_api#edit_user_info"
+      put "project_user/edit_user_project" => "project_user_api#edit_user_project"
+      put "userskill/edit_user_skill" => "user_skill_api#edit_user_skill"
+      put "userissue/edituserissue" => "user_issue_api#edit_user_issue"
       get "current_user/get_user_detail" => "current_user_api#get_user_detail"
+      #get "project_user/get_edit_user_project" => "project_user_api#get_edit_user_project"
       #post "current_user/password_reset" => "current_user_api#password_reset"
-    end
+    end 
   end
   namespace :api do
     mount_devise_token_auth_for 'User', at: 'auth', controllers: {

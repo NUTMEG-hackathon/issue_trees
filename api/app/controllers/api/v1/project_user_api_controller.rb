@@ -29,4 +29,19 @@ class Api::V1::ProjectUserApiController < ApplicationController
     }
     render json:user_project
   end
+
+  def edit_user_project
+    @project_users = ProjectUser.find(params[:id])
+    @project_users.id = edit_user_project_params[:id]
+    @project_users.name = edit_user_project_params[:name]
+    p @project_users
+    @project_users.save!
+  end
+
+
+  private
+    def edit_user_project_params
+      params.require(:project_user_api).permit(:id ,:name)
+    end
+
 end
