@@ -9,6 +9,7 @@ class IssuesController < ApplicationController
 
   # GET /issues/1 or /issues/1.json
   def show
+    render json: @issue
   end
 
   # GET /issues/new
