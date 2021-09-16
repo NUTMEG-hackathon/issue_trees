@@ -4,7 +4,7 @@ class Api::V1::IssueSkillApiController < ApplicationController
   def get_issue_skill
     @issue = Issue.find(params[:id])
     issue_skills = @issue.issue_skills
-    issue_skill_ids = @issue.issue_skill_ids
+    issue_skill_ids = @issue.skill_ids
     issueskills = []
     for issue_skill in issue_skills
       name = issue_skill.skill.name
@@ -35,11 +35,4 @@ class Api::V1::IssueSkillApiController < ApplicationController
     render json:issueSkills
   end
 
-  def get_issue_skill_ids
-    @issue = Issue.find(params[:id])
-    issue_skill_ids = @issue.issue_skill_ids
-    @user.name = edit_user_info_params[:name]
-    @user.email = edit_user_info_params[:email]
-    @user.save!
-  end
 end

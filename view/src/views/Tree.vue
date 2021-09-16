@@ -292,7 +292,7 @@
                 <v-select
                   v-model="issueSkillIds"
                   multiple
-                  :reduce="(optjions) => options.id"
+                  :reduce="(options) => options.id"
                   key="id"
                   label="skill"
                   :items="skills"
@@ -303,42 +303,6 @@
                   item-text="name"
                   item-value="id"
                   outlined
-                  @change="checkIds"
-                />
-              </v-form>
-              <v-text> Number of skills </v-text>
-              <br />
-              <v-form>
-                <v-select
-                  v-model="skillNum"
-                  :reduce="(optjions) => options.id"
-                  key="id"
-                  label="Number of skill"
-                  :items="skillNumber"
-                  :menu-props="{
-                    top: true,
-                    offsetY: true,
-                  }"
-                  item-text="id"
-                  item-value="id"
-                  outlined
-                />
-              </v-form>
-              <v-form v-for="issueSkill in issueSkills" :key="issueSkill.id">
-                <v-select
-                  v-model="issue_skill"
-                  :reduce="(optjions) => options.id"
-                  key="id"
-                  label="skill"
-                  :items="skills"
-                  :menu-props="{
-                    top: true,
-                    offsetY: true,
-                  }"
-                  item-text="name"
-                  item-value="id"
-                  outlined
-                  @change="fetchSkill"
                 />
               </v-form>
               <v-card-title class="text-left">
@@ -365,7 +329,7 @@
               </v-card-title>
               <v-form>
                 <v-select
-                  v-model="issueUsers"
+                  v-model="issueUser"
                   :reduce="(options) => options.id"
                   key="id"
                   label="member"
@@ -484,13 +448,14 @@ export default {
       // client
       clients: [],
       // issue
+      issue: [],
       issues: [],
       issueId: [],
       issueName: [],
       issueDescription: [],
       issueLevel: [],
       issueClientId: [],
-      issueUsers: [],
+      issueUser: [],
       issueUserId: [],
       issueUserName: [],
       // user_project
@@ -532,7 +497,6 @@ export default {
         for (let i = 0; i < this.skills.length; i++) {
           this.skillName.push(this.skills[i].name);
         }
-        console.log(this.skillName);
       });
     axios
       .get(url + "/projects", {
@@ -625,15 +589,32 @@ export default {
         .then((response) => {
           this.issueDetails = response.data;
           this.issueUserName = this.issueDetails[0].user_name;
-          // let tmp_array = [];
-          // for (let i = 1; i < this.issueDetails.length; i++) {
-          //   tmp_array.push(
-          //     this.issueDetails[i].skill_id,
-          //     this.issueDetails[i].skill_name
-          //   );
-          //   this.issueSkills.push(tmp_array);
-          //   tmp_array = [];
-          // }
+        });
+      axios
+        .get(url + "/issues/" + this.issueId, {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then((response) => {
+          this.issue = response.data;
+        });
+      axios
+        .get(url + "/api/v1/get_issue_user/" + this.issueId, {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then((response) => {
+          this.issueUser = response.data;
+          this.issueUserId = this.issueUser.id;
+          this.issueUserName = this.issueUser.name;
         });
       axios
         .get(url + "/api/v1/get_issue_skill/" + this.issueId, {
@@ -646,8 +627,8 @@ export default {
         })
         .then((response) => {
           this.issueSkills = response.data;
-          console.log(this.issueSkills);
-          this.skillNum = this.issueSkills.length - 1;
+          this.issueSkillIds =
+            this.issueSkills[this.issueSkills.length - 1].issue_skill_ids;
         });
       // axios
       //   .get(url + "/api/v1/get_issue_skills/" + this.issueId, {
@@ -832,11 +813,10 @@ export default {
     editIssueDetails: function () {
       const url = process.env.VUE_APP_URL;
       const id = this.issueId;
-      // this.issueSkillIds = [];
       var issueParams = {
         name: this.issueName,
         client_id: this.issueClientId,
-        user_id: this.issueUserId,
+        user_id: this.issueUser,
         description: this.issueDescription,
         level: this.issueLevel,
         skill_ids: this.issueSkillIds,
@@ -864,7 +844,6 @@ export default {
         .catch((error) => {
           console.log(error.response);
         });
-      // console.log(this.issueSkillIds);
     },
   },
 };

@@ -29,4 +29,10 @@ class Api::V1::IssueDetailApiController < ApplicationController
         end
         render json:issuedetails
     end
+
+    def get_issue_user
+      @issue = Issue.find(params[:id])
+      @issue_user = @issue.user
+      render json:@issue_user
+    end
 end
