@@ -23,15 +23,18 @@ Rails.application.routes.draw do
 
       #api周り
       get "get_client_issue/:id" => "client_issue_api#get_client_issue"
-      get "get_issue_skill" => "issue_skill_api#get_issue_skills"
+      get "get_issue_skill/:id" => "issue_skill_api#get_issue_skill"
+      get "get_issue_skills/:id" => "issue_skill_api#get_issue_skills"
       get "get_project_client/:id" => "project_client_api#get_project_client"
       get "get_project_user" => "project_user_api#get_project_user"
       get "get_user_project/:id" => "project_user_api#get_user_project"
       get "get_user_issue" => "user_issue_api#get_user_issue"
       get "get_user_skill" => "user_skill_api#get_user_skills"
-      get "get_issue_detail" => "issue_detail_api#get_issue_detail"
+      get "get_issue_details/:id" => "issue_detail_api#get_issue_detail"
+      get "get_issue_user/:id" => "issue_detail_api#get_issue_user"
 
       get "current_user/show" => "current_user_api#show"
+
       
       #編集api
       put "current_user/edit_user_info" => "current_user_api#edit_user_info"
