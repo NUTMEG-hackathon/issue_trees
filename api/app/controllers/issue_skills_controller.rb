@@ -39,8 +39,8 @@ class IssueSkillsController < ApplicationController
 
   # PATCH/PUT /issue_skills/1 or /issue_skills/1.json
   def update
-    @issue.update(issue_params)
-    render json: @issue
+    @issue_skill.update(issue_skill_params)
+    render json: @issue_skill
     # respond_to do |format|
     #   if @issue_skill.update(issue_skill_params)
     #     format.html { redirect_to @issue_skill, notice: "Issue skill was successfully updated." }
