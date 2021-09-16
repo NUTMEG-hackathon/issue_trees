@@ -41,17 +41,46 @@ import axios from 'axios'
  export default {
   props:{
     name: String,
-    id: String,
+    id: Number,
   },
   data() {
     return {
       edit3: false,
     };
   },
-    methods: {
-      submit: function() {
-      const url = process.env.VUE_APP_URL + '/projects' + '/' + this.id + '?name=' + this.name + '&id=' + this.id;
-      axios.put(url, {
+    methods:{ 
+
+      reload: async function(){
+        const get_url = process.env.VUE_APP_URL + 'get_project_user' ;
+        await axios.get(get_url, {
+          headers: {
+            'Content-Type': 'application/json',
+            'access-token': localStorage.getItem('access-token'),
+            'client': localStorage.getItem('client'),
+            'uid': localStorage.getItem('uid')
+          }
+        }
+      ).then(
+        (response) => {
+          console.log(response)
+          console.log('get')
+        },
+        (error) => {
+          console.log('編集できない')
+          this.edit3 = false
+          return error;
+        }
+      )
+    },
+
+      submit: async function() {
+      const url = process.env.VUE_APP_URL + '/api/v1/project_user/edit_user_project';
+      let params ={
+          'id' : this.id ,
+          'name': this.name
+      }
+
+      axios.put(url, params, {
           headers: {
             'Content-Type': 'application/json',
             'access-token': localStorage.getItem('access-token'),
@@ -66,6 +95,7 @@ import axios from 'axios'
         },
         (error) => {
           console.log('登録できませんでした')
+          console.log(params)
           this.edit3 = false
           return error;
         }

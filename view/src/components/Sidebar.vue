@@ -32,7 +32,7 @@
           >
           <v-container class="justify-content-center">
             <v-card-title class="text-h5 justify-center"
-              >puroject名</v-card-title
+              >project名</v-card-title
             >
             <v-row>
               <v-col cols="2"></v-col>
