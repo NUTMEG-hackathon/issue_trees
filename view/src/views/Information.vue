@@ -1,372 +1,236 @@
 <template>
   <v-container>
-    <template>
-      <v-card-title class="text-center justify-center py-6">
-        <h1 id="maintitle" class="display-1 font-weight-bold">Personal Page</h1>
-      </v-card-title>
-      <v-tabs grow color="green darken-3">
-        <v-tab v-for="title in titles" :key="title" id="subtitle">{{ title }}</v-tab>
+    <v-card-title class="text-center justify-center py-6">
+      <h1 id="maintitle" class="display-1 font-weight-bold">Personal Page</h1>
+    </v-card-title>
 
-        <v-tab-item>
-          <v-layout class="text-center justify-center py-6">
-            <template>
-              <v-list rounded>
-                <v-list-item>
-                  <v-list-item-icon class="pa-3 ma-3">
-                    <v-icon>mdi-account</v-icon>
-                    name:
-                  </v-list-item-icon>
-                  <v-list-item-title class="green lighten-3 pa-2 ma-3">
-                    {{ users.name }}
-                  </v-list-item-title>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-icon class="pa-3 ma-5">
-                    <v-icon>mdi-email-open-outline</v-icon>
-                    email:
-                  </v-list-item-icon>
-                  <v-list-item-title class="green lighten-3 pa-3 ma-3">
-                    {{ users.email }}
-                  </v-list-item-title>
-                </v-list-item>
-                <br/>
-                <v-row>
-                  <v-tooltip left>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn rounded v-bind="attrs" v-on="on" @click="send">
-                        編集
-                        <v-icon>mdi-pencil</v-icon>
-                      </v-btn>
-                    </template>
-                    <div>ユーザー情報を編集する</div>
-                  </v-tooltip>
-                  <v-spacer/>
-                  <v-tooltip right>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn rounded v-bind="attrs" v-on="on" @click="password = true">
-                        変更
-                        <v-icon>mdi-lock-question</v-icon>
-                      </v-btn>
-                    </template>
-                    <div>パスワードの変更</div>
-                  </v-tooltip>
-                </v-row>
+    <v-tabs grow color="green darken-3">
+      <v-tab v-for="title in titles" :key="title" id="subtitle">{{
+        title
+      }}</v-tab>
 
-              </v-list>
-            </template>
-          </v-layout>
-          <EditUser
-            ref="edit1dialog"
-            :userId="users.id"
-            :name="users.name"
-            :email="users.email">
-          </EditUser>
-        </v-tab-item>
+      <v-tab-item>
+        <br /><br />
+        <hr style="height: 6px; background-color: #3cb371" />
+        <v-row>
+          <v-col cols="2"></v-col>
+          <v-col cols="4">
+            <h2><v-icon>mdi-account</v-icon>name</h2>
+          </v-col>
+          <v-col cols="4">
+            <h2><v-icon>mdi-email-open-outline</v-icon>email</h2>
+          </v-col>
+          <v-col cols="2"></v-col>
+        </v-row>
+        <hr style="height: 6px; background-color: #3cb371" />
+        <br />
+        <v-row>
+          <v-col cols="2"></v-col>
+          <v-col cols="4" class="green lighten-5 pa-3 ma-3">
+            <h3>{{ users.name }}</h3>
+          </v-col>
+          <v-col cols="4" class="green lighten-5 pa-3 ma-3">
+            <h3>{{ users.email }}</h3>
+          </v-col>
+          <v-col cols="2"></v-col>
+        </v-row>
+        <br /><br />
+        <v-row>
+          <v-col cols="3"></v-col>
+          <v-col cols="3">
+            <v-tooltip left>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn rounded v-bind="attrs" v-on="on" @click="edit" large>
+                  編集
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+              </template>
+              <div>ユーザー情報を編集する</div>
+            </v-tooltip>
+          </v-col>
+          <v-col cols="3">
+            <v-tooltip right>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  rounded
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="password = true"
+                  large
+                >
+                  変更
+                  <v-icon>mdi-lock-question</v-icon>
+                </v-btn>
+              </template>
+              <div>パスワードの変更</div>
+            </v-tooltip>
+          </v-col>
+          <v-col cols="3"></v-col>
+        </v-row>
+        <EditUser
+          ref="edit1dialog"
+          :userId="users.id"
+          :name="users.name"
+          :email="users.email"
+        >
+        </EditUser>
+      </v-tab-item>
 
-        <v-tab-item>
-          <v-layout align-center justify-center>
-            <template>
-              <v-list rounded>
-                <span v-for="skill in skills" :key="skill.id">
-                  <v-list-item>
-                    <v-list-item-title class="green lighten-3 pa-3 ma-3">
-                      {{ skill.name }}
-                    </v-list-item-title>
-                  </v-list-item>
-                  <v-row>
-                    <v-tooltip left>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn rounded v-bind="attrs" v-on="on" @click="editskill(skill.name, skill.status, skill.level)">
-                          編集
-                          <v-icon>mdi-pencil</v-icon>
-                        </v-btn>
-                      </template>
-                      <div>Myskillの編集</div>
-                    </v-tooltip>
-                    <v-spacer />
-                    <v-tooltip right>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn rounded v-bind="attrs" v-on="on" @click="detailskill(skill.name, skill.status, skill.level)">
-                          詳細情報
-                          <v-icon>mdi-ballot-outline</v-icon>
-                        </v-btn>
-                      </template>
-                      <div>詳細情報の確認</div>
-                    </v-tooltip>
-                  </v-row>
-                  <br/><br/><br/>
-                </span>
-              </v-list>
-            </template>
-          </v-layout>
-          <MySkill
-            ref="edit2dialog"
-            :name="this.skillN"
-            :status="this.skillS"
-            :level="this.skillL">
-          </MySkill>
-        </v-tab-item>
-
-        <v-tab-item>
-          <v-layout align-center justify-center>
-            <template>
-              <v-list rounded>
-                <div v-for="project in projects" :key="project.id">
-                  <v-list-item>
-                    <v-list-item-title class="green lighten-3 pa-3 ma-3">
-                      {{ project.name }}
-                    </v-list-item-title>
-                  </v-list-item>
-                    <v-tooltip left>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn rounded v-bind="attrs" v-on="on" @click="editproject(project.name,project.id)">
-                          編集
-                          <v-icon>mdi-pencil</v-icon>
-                        </v-btn>
-                      </template>
-                      <div>ユーザー情報を編集する</div>
-                    </v-tooltip>
-
-                    <v-tooltip right>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn rounded v-bind="attrs" v-on="on" @click="detailproject(project.name,project.id)">
-                          詳細情報
-                          <v-icon>mdi-ballot-outline</v-icon>
-                        </v-btn>
-                      </template>
-                      <div>詳細情報の確認</div>
-                    </v-tooltip>
-                  <br/><br/><br/>
-                </div>
-              </v-list>
-            </template>
-          </v-layout>
-          <Project
-            ref="edit3dialog"
-            :name="this.projectN"
-            :id="this.projectid">
-          </Project>
-        </v-tab-item>
-
-        <v-tab-item>
-          <v-layout align-center justify-center>
-            <template>
-              <v-list rounded>
-                <div v-for="issue in issues" :key="issue.id">
-                  <v-list-item>
-                    <v-list-item-title class="green lighten-3 pa-3 ma-3">
-                      {{ issue.name }}
-                    </v-list-item-title>
-                  </v-list-item>
-
-                  <v-tooltip left>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn rounded v-bind="attrs" v-on="on" @click="editissue(issue.name,issue.description,issue.level)">
-                        編集
-                        <v-icon>mdi-pencil</v-icon>
-                      </v-btn>
-                    </template>
-                    <div>Myskillの編集</div>
-                  </v-tooltip>
-
-                  <v-tooltip right>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn rounded v-bind="attrs" v-on="on" @click="detailissue(issue.name,issue.description,issue.level)">
-                        詳細情報
-                        <v-icon>mdi-ballot-outline</v-icon>
-                      </v-btn>
-                    </template>
-                    <div>詳細情報の確認</div>
-                  </v-tooltip>
-
-                  <v-tooltip right>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn rounded v-bind="attrs" v-on="on" @click="deleteissue(issue.id)">
-                        完了
-                        <v-icon>mdi-check-underline</v-icon>
-                      </v-btn>
-                    </template>
-                    <div>issueの完了と削除</div>
-                  </v-tooltip>
-                  <br/><br/><br/>
-                </div>
-              </v-list>
-            </template>
-          </v-layout>
-          <MyIssue
-            ref="edit4dialog"
-            :name="this.issueN"
-            :discription="this.issueD"
-            :level="this.issueL">
-          </MyIssue>
-        </v-tab-item>
-      </v-tabs>
-    </template>
-
-    <!-- ユーザー情報の詳細コンポーネント -->
-    <v-dialog v-model="detailU" max-width="600" persistent>
-      <v-card>
-        <v-card-title class="text-h4 justify-center light-green lighten-2 lighten-2">
-          ユーザーの詳細情報
-          <v-spacer />
-          <v-btn class="text-h4 justify-center light-green lighten-2 lighten-2" @click="detailU=false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-card-title>
-        <v-container class="justify-content-center">
-          <template>
-            <v-list rounded>
-              <v-list-item-group>
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon>mdi-account</v-icon>name:{{ users.name }}
-                  </v-list-item-icon>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon>mdi-email-open-outline</v-icon>email:{{ users.email }}
-                  </v-list-item-icon>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
+      <v-tab-item>
+        <br /><br />
+        <hr style="height: 6px; background-color: #3cb371" />
+        <v-row>
+          <v-col cols="4">
+            <h2>name</h2>
+          </v-col>
+          <v-col cols="4">
+            <h2>status</h2>
+          </v-col>
+          <v-col cols="4">
+            <h2>level</h2>
+          </v-col>
+        </v-row>
+        <hr style="height: 6px; background-color: #3cb371" />
+        <br />
+        <div v-for="skill in skills" :key="skill.id">
+          <v-row>
+            <v-col cols="4" class="green lighten-5 pa-3">
+              <h3>{{ skill.name }}</h3>
+            </v-col>
+            <v-col cols="4" class="green lighten-5 pa-3">
+              <h3>{{ skill.status }}</h3>
+            </v-col>
+            <v-col cols="4" class="green lighten-5 pa-3">
+              <v-btn
+                @click="minuslevelskill(skill.name, skill.status, skill.level)"
+                small
+                class="green lighten-3"
+                ><v-icon>mdi-minus</v-icon></v-btn
+              >
+              {{ skill.level }}
+              <v-btn
+                @click="pluslevelskill(skill.name, skill.status, skill.level)"
+                small
+                class="green lighten-3"
+                ><v-icon>mdi-plus</v-icon></v-btn
+              >
+            </v-col>
+          </v-row>
+          <br />
+          <hr />
+          <br />
+        </div>
+        <v-tooltip right>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              @click="addskill = true"
+              v-bind="attrs"
+              v-on="on"
+              large
+              class="green lighten-2"
+            >
+              <v-icon>mdi-text-box-plus</v-icon>
+              <h2>追加</h2></v-btn
+            >
           </template>
-        </v-container>
-      </v-card>
-    </v-dialog>
+          <div>スキルの複数登録</div>
+        </v-tooltip>
+      </v-tab-item>
 
-    <!-- スキル情報の詳細コンポーネント -->
-    <v-dialog v-model="detailS" max-width="600" persistent>
-      <v-card>
-        <v-card-title class="text-h4 justify-center light-green lighten-2 lighten-2">
-          スキルの詳細情報
-          <v-spacer />
-          <v-btn class="text-h4 justify-center light-green lighten-2 lighten-2" @click="detailS=false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-card-title>
-        <v-container class="justify-content-center">
-          <template>
-            <v-list rounded>
-              <v-list-item-group>
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon>mdi-account</v-icon>name : {{ skillNN }}
-                  </v-list-item-icon>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon>mdi-account</v-icon>status : {{ skillSS }}
-                  </v-list-item-icon>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon>mdi-account</v-icon>level : {{ skillLL }}
-                  </v-list-item-icon>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-          </template>
-        </v-container>
-      </v-card>
-    </v-dialog>
+      <v-tab-item>
+        <br /><br />
+        <hr style="height: 6px; background-color: #3cb371" />
+        <v-row>
+          <v-col cols="4"> </v-col>
+          <v-col cols="4">
+            <h2>name</h2>
+          </v-col>
+          <v-col cols="4"> </v-col>
+        </v-row>
+        <hr style="height: 6px; background-color: #3cb371" />
+        <br />
+        <div v-for="project in projects" :key="project.id">
+          <v-row>
+            <v-col cols="4"></v-col>
+            <v-col cols="4" class="green lighten-5 pa-3 ma-3">
+              <h3>{{ project.name }}</h3>
+            </v-col>
+            <v-col cols="4"></v-col>
+          </v-row>
+          <hr />
+          <br />
+        </div>
+      </v-tab-item>
 
-    <!-- プロジェクト情報の詳細コンポーネント -->
-    <v-dialog v-model="detailP" max-width="600" persistent>
-      <v-card>
-        <v-card-title class="text-h4 justify-center light-green lighten-2 lighten-2">
-          プロジェクトの詳細情報
-          <v-spacer />
-          <v-btn class="text-h4 justify-center light-green lighten-2 lighten-2" @click="detailP=false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-card-title>
-        <v-container class="justify-content-center">
-          <template>
-            <v-list rounded>
-              <v-list-item-group>
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon>mdi-account</v-icon>name : {{ projectNN }}
-                  </v-list-item-icon>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-          </template>
-        </v-container>
-      </v-card>
-    </v-dialog>
-
-    <!-- issue情報の詳細コンポーネント -->
-    <v-dialog v-model="detailI" max-width="600" persistent>
-      <v-card>
-        <v-card-title class="text-h4 justify-center light-green lighten-2 lighten-2">
-          issueの詳細情報
-          <v-spacer />
-          <v-btn class="text-h4 justify-center light-green lighten-2 lighten-2" @click="detailI=false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-card-title>
-        <v-container class="justify-content-center">
-          <template>
-            <v-list rounded>
-              <v-list-item-group>
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon>mdi-account</v-icon>name : {{ issueNN }}
-                  </v-list-item-icon>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon>mdi-email-open-outline</v-icon>description : {{ issueDD }}
-                  </v-list-item-icon>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon>mdi-email-open-outline</v-icon>level : {{ issueLL }}
-                  </v-list-item-icon>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-          </template>
-        </v-container>
-      </v-card>
-    </v-dialog>
-
-    <!-- issue情報の詳細コンポーネント -->
-    <v-dialog v-model="deleteI" max-width="600" persistent>
-      <v-card>
-        <v-card-title class="text-h4 justify-center light-green lighten-2 lighten-2">
-          issueの完了と削除
-          <v-spacer />
-          <v-btn class="text-h4 justify-center light-green lighten-2 lighten-2" @click="detailI=false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-card-title>
-        <v-container class="justify-content-center">
-          <template>
-            <v-card-actions>
-              <v-layout align-center justify-center>
-                <v-spacer />
-                <v-btn class="error" flat @click="deleteI = false">閉じる</v-btn>
-                <v-spacer />
-                <v-btn class="primary" flat @click="trash()">完了</v-btn>
-                <v-spacer />
-              </v-layout>
-            </v-card-actions>
-          </template>
-        </v-container>
-      </v-card>
-    </v-dialog>
+      <v-tab-item>
+        <br /><br />
+        <hr style="height: 6px; background-color: #3cb371" />
+        <v-row>
+          <v-col cols="4">
+            <h2>name</h2>
+          </v-col>
+          <v-col cols="4">
+            <h2>description</h2>
+          </v-col>
+          <v-col cols="4">
+            <h2>level</h2>
+          </v-col>
+        </v-row>
+        <hr style="height: 6px; background-color: #3cb371" />
+        <br />
+        <div v-for="issue in issues" :key="issue.id">
+          <v-row>
+            <v-col cols="4" class="green lighten-5 pa-3">
+              <h3>{{ issue.name }}</h3>
+            </v-col>
+            <v-col cols="4" class="green lighten-5 pa-3">
+              <h3>{{ issue.description }}</h3>
+            </v-col>
+            <v-col cols="4" class="green lighten-5 pa-3">
+              <v-btn
+                @click="
+                  minuslevelissue(issue.name, issue.description, issue.level)
+                "
+                small
+                class="green lighten-3"
+                ><v-icon>mdi-minus</v-icon></v-btn
+              >
+              {{ issue.level }}
+              <v-btn
+                @click="
+                  pluslevelissue(issue.name, issue.description, issue.level)
+                "
+                small
+                class="green lighten-3"
+                ><v-icon>mdi-plus</v-icon></v-btn
+              >
+            </v-col>
+          </v-row>
+          <br />
+          <hr />
+          <br />
+        </div>
+      </v-tab-item>
+    </v-tabs>
 
     <!-- パスワードの変更コンポーネント -->
     <v-dialog v-model="password" max-width="600" persistent>
       <v-card>
-        <v-card-title class="text-h4 justify-center light-green lighten-2 lighten-2">パスワードの変更</v-card-title>
+        <v-card-title
+          class="text-h4 justify-center light-green lighten-2 lighten-2"
+          >パスワードの変更</v-card-title
+        >
         <v-container class="justify-content-center">
           <v-row>
             <v-col cols="2"></v-col>
             <v-col cols="8">
-              <v-text-field label="現在のパスワード" v-model="name" text outlined clearable />
+              <v-text-field
+                label="現在のパスワード"
+                v-model="name"
+                text
+                outlined
+                clearable
+              />
             </v-col>
             <v-col cols="2"></v-col>
           </v-row>
@@ -374,7 +238,13 @@
           <v-row>
             <v-col cols="2"></v-col>
             <v-col cols="8">
-              <v-text-field label="新しいパスワード" v-model="name" text outlined clearable/>
+              <v-text-field
+                label="新しいパスワード"
+                v-model="name"
+                text
+                outlined
+                clearable
+              />
             </v-col>
             <v-col cols="2"></v-col>
           </v-row>
@@ -382,7 +252,13 @@
           <v-row>
             <v-col cols="2"></v-col>
             <v-col cols="8">
-              <v-text-field label="新しいパスワードの確認" v-model="name" text outlined clearable />
+              <v-text-field
+                label="新しいパスワードの確認"
+                v-model="name"
+                text
+                outlined
+                clearable
+              />
             </v-col>
             <v-col cols="2"></v-col>
           </v-row>
@@ -390,9 +266,81 @@
         <v-card-actions>
           <v-layout align-center justify-center>
             <v-spacer />
-            <v-btn class="error" flat @click="detail = false">取り消し</v-btn>
+            <v-btn class="error" flat @click="password = false">取り消し</v-btn>
             <v-spacer />
-            <v-btn class="primary" flat @click="password = true">登録</v-btn>
+            <v-btn class="primary" flat @click="regist">登録</v-btn>
+            <v-spacer />
+          </v-layout>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="addskill" max-width="600" persistent>
+      <v-card>
+        <v-card-title
+          class="text-h4 justify-center light-green lighten-2 lighten-2"
+          >新しいスキルの追加</v-card-title
+        >
+        <v-container class="justify-content-center">
+          <v-row>
+            <v-col cols="2"></v-col>
+            <v-col cols="8">
+              <v-select
+                v-model="name"
+                label="skill"
+                :items="this.s_list"
+                :menu-props="{
+                  top: true,
+                  offsetY: true,
+                }"
+                item-text="name"
+                item-value="id"
+                outlined
+              />
+            </v-col>
+            <v-col cols="2"></v-col>
+          </v-row>
+
+          <v-row>
+            <v-col cols="2"></v-col>
+            <v-col cols="8">
+              <v-select
+                v-model="status"
+                label="status"
+                :items="this.statuses"
+                :menu-props="{
+                  top: true,
+                  offsetY: true,
+                }"
+                outlined
+              />
+            </v-col>
+            <v-col cols="2"></v-col>
+          </v-row>
+
+          <v-row>
+            <v-col cols="2"></v-col>
+            <v-col cols="8">
+              <v-select
+                v-model="level"
+                label="level"
+                :items="this.levels"
+                :menu-props="{
+                  top: true,
+                  offsetY: true,
+                }"
+                outlined
+              />
+            </v-col>
+            <v-col cols="2"></v-col>
+          </v-row>
+        </v-container>
+        <v-card-actions>
+          <v-layout align-center justify-center>
+            <v-spacer />
+            <v-btn class="error" flat @click="addskill = false">取り消し</v-btn>
+            <v-spacer />
+            <v-btn class="primary" flat @click="regist">登録</v-btn>
             <v-spacer />
           </v-layout>
         </v-card-actions>
@@ -403,53 +351,26 @@
 
 <script>
 import EditUser from "@/components/edit_user.vue";
-import MyIssue from "@/components/edit_myissue.vue";
-import MySkill from "@/components/edit_myskill.vue";
-import Project from "@/components/edit_project.vue";
 import axios from "axios";
 export default {
   components: {
     EditUser,
-    MyIssue,
-    MySkill,
-    Project,
   },
   data() {
     return {
-      titles: [
-          'Personal Information', 'My Skill', 'My Project', 'My Issue',
-        ],
+      titles: ["Personal Information", "My Skill", "My Project", "My Issue"],
+      levels: ["1(復習レベル)", "2", "3", "4", "5(新しい技術に挑戦)"],
+      statuses: ["front", "backencd", "server", "infra"],
       users: [],
-      issues: [],
-      issueN: [],
-      issueNN: [],
-      issueD: [],
-      issueDD: [],
-      issueL: [],
-      issueLL: [],
-      iddueid: [],
-      skills: [],
-      skillN: [],
-      skillNN: [],
-      skillS: [],
-      skillSS: [],
-      skillL: [],
-      skillLL: [],
-      projects: [],
-      projectid: [],
-      projectN: [],
-      projectNN: [],
       p_list: [],
       c_list: [],
       s_list: [],
-      skill: false,
-      edit: false,
       password: false,
-      detailU: false,
-      detailS: false,
-      detailP: false,
-      detailI: false,
-      deleteI: false,
+      addskill: false,
+      name: [],
+      status: [],
+      description: [],
+      level: [],
     };
   },
   mounted() {
@@ -566,49 +487,21 @@ export default {
   },
 
   methods: {
-    send: function () {
+    edit: function () {
       this.$refs.edit1dialog.edit1 = true;
     },
-    editskill(name, status, level) {
-      this.skillN = name;
-      this.skillS = status;
-      this.skillL = level;
-      this.$refs.edit2dialog.edit2 = true;
-    },
-    detailskill(name, status, level) {
-      this.skillNN = name;
-      this.skillSS = status;
-      this.skillLL = level;
-      this.detailS = true;
-    },
-    editproject(name,id) {
-      this.projectN = name;
-      this.projectid = id;
-      this.$refs.edit3dialog.edit3 = true;
-    },
-    detailproject(name) {
-      this.projectNN = name;
-      this.detailP = true;
-    },
-    editissue(name, description, level) {
-      this.issueN = name;
-      this.issueD = description;
-      this.issueL = level;
-      this.$refs.edit4dialog.edit4 = true;
-    },
-    detailissue(name, description, level) {
-      this.issueNN = name;
-      this.issueDD = description;
-      this.issueLL = level;
-      this.detailI = true;
-    },
-    deleteissue(id) {
-      this.issueid = id
-      this.deleteI = true;
-    },
-    submit: function() {
-        const url = process.env.VUE_APP_URL + '/projects' + '/' + this.id + '?name=' + this.name + '&id=' + this.id;
-        axios.put(url, {
+    pluslevelissue(name, status, level) {
+      this.name = name;
+      this.status = status;
+      this.level = level;
+
+        const url = process.env.VUE_APP_URL + '/issues' ;
+        var params =  {
+            'name': this.name,
+            'status': this.status,
+            'level': this.level+1,
+        }
+            axios.put(url, params, {
             headers: {
               'Content-Type': 'application/json',
               'access-token': localStorage.getItem('access-token'),
@@ -619,31 +512,89 @@ export default {
         ).then(
           (response) => {
             console.log(response)
-            this.edit3 = false
+            console.log('put')
           },
           (error) => {
             console.log('登録できませんでした')
-            this.edit3 = false
             return error;
           }
         )
-      },
-  }
+    },
+    minuslevelissue(name, status, level) {
+      this.name = name;
+      this.status = status;
+      this.level = level;
+    },
+    pluslevelskill(name, description, level) {
+      this.name = name;
+      this.description = description;
+      this.level = level;
+    },
+    minuslevelskill(name, description, level) {
+      this.name = name;
+      this.description = description;
+      this.level = level;
+    },
+    reload() {
+      const issue_url = process.env.VUE_APP_URL + "/api/v1/get_user_issue";
+      axios
+        .get(issue_url, {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then((response) => {
+          this.issues = response.data;
+          console.log("---");
+          console.log(this.issues);
+        });
+
+      const skill_url = process.env.VUE_APP_URL + "/api/v1/get_user_skill";
+      axios
+        .get(skill_url, {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then((response) => {
+          this.skills = response.data;
+          console.log("---");
+          console.log(this.issues);
+        });
+
+      const project_url = process.env.VUE_APP_URL + "/api/v1/get_project_user";
+      axios
+        .get(project_url, {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then((response) => {
+          this.projects = response.data;
+          console.log("---");
+          console.log(this.projects);
+        });
+    },
+  },
 };
 </script>
 
 <style>
-  .line {
-    height: 12px;
-    border: 0;
-    box-shadow: inset 0 12px 12px -12px rgba(0,0,0,0.5);
-  }
-  #maintitle{
-    color: #005500;
-    font-weight: bold;
-  }
-  #subtitle{
-    color: #006B3E;
-    font-weight: bold;
-  }
+#maintitle {
+  color: #005500;
+  font-weight: bold;
+}
+#subtitle {
+  color: #006b3e;
+  font-weight: bold;
+}
 </style>
