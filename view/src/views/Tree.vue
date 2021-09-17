@@ -158,7 +158,7 @@
           </v-row>
         </v-card>
       </v-dialog>
-      <v-dialog persistent v-model="issueDetailsDialog" width="700">
+      <v-dialog v-model="issueDetailsDialog" width="700">
         <v-card>
           <v-card-title class="text-h4 lighten-2">
             <v-row no-gutters>
@@ -222,10 +222,57 @@
               <v-text class="px-4" label="member name" solo>
                 {{ issueUserName }}
               </v-text>
+              <br />
+              <br />
+              <v-btn
+                class="ma-2"
+                outlined
+                large
+                color="light-green"
+                @click="openDeleteIssueDialog"
+              >
+                Done
+              </v-btn>
             </v-col>
           </v-row>
         </v-card>
       </v-dialog>
+
+      <v-dialog v-model="deleteIssueDialog">
+        <v-card>
+          <v-card-title class="text-h4 lighten-2">
+            <v-row no-gutters>
+              <v-col cols="3" />
+              <v-col cols="6" class="my-3 light-green--text">
+                Finish issue
+              </v-col>
+              <v-col cols="3" />
+            </v-row>
+          </v-card-title>
+          <v-row no-gutters>
+            <v-col cols="1" />
+            <v-col cols="10" class="my-3 text-h5">
+              <v-card-text> 完了したissueを削除してもよいですか？ </v-card-text>
+              <v-card-actions>
+                <v-btn
+                  class="ma-2"
+                  outlined
+                  color="blue"
+                  @click="addIssueDialog = false"
+                >
+                  cancel
+                </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn class="ma-2" outlined color="red" @click="deleteIssue()">
+                  Delete
+                </v-btn>
+              </v-card-actions>
+            </v-col>
+            <v-col cols="1" />
+          </v-row>
+        </v-card>
+      </v-dialog>
+
       <v-dialog persistent v-model="editIssueDetailsDialog" width="700">
         <v-card>
           <v-card-title class="text-h4 lighten-2">
@@ -414,6 +461,7 @@ export default {
       newNode: [],
       // Dialog
       addIssueDialog: false,
+      deleteIssueDialog: false,
       issueDetailsDialog: false,
       editIssueDetailsDialog: false,
       // events
@@ -829,6 +877,16 @@ export default {
         .catch((error) => {
           console.log(error.response);
         });
+      this.selectProject();
+    },
+    openDeleteIssueDialog: function () {
+      this.issueDetailsDialog = false;
+      this.deleteIssueDialog = true;
+    },
+    deleteIssue: function () {
+      const url = process.env.VUE_APP_URL;
+      axios.delete(url + "/issues/" + this.issueId);
+      this.deleteIssueDialog = false;
       this.selectProject();
     },
     setUser: function (event) {

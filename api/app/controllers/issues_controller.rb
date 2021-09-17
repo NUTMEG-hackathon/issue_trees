@@ -57,10 +57,13 @@ class IssuesController < ApplicationController
   # DELETE /issues/1 or /issues/1.json
   def destroy
     @issue.destroy
-    respond_to do |format|
-      format.html { redirect_to issues_url, notice: "Issue was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    @issues = Issue.all
+    render json: @issues
+
+    # respond_to do |format|
+    #   format.html { redirect_to issues_url, notice: "Issue was successfully destroyed." }
+    #   format.json { head :no_content }
+    # end
   end
 
   private
