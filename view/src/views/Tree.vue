@@ -690,11 +690,7 @@ export default {
           console.log(error.response);
         });
       this.addFor(this.event);
-      // console.log("===");
-      // console.log(this.event);
-      // console.log(params);
-      // console.log("===");
-      // console.log(this.newNode);
+      this.selectProject();
       this.addIssueDialog = false;
     },
     getProject: async function (id) {
@@ -833,6 +829,7 @@ export default {
         .catch((error) => {
           console.log(error.response);
         });
+      this.selectProject();
     },
     setUser: function (event) {
       this.issueUser = event;
