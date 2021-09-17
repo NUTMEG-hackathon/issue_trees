@@ -5,6 +5,7 @@ import Information from '../views/Information.vue'
 import Tree from '../views/Tree'
 import Welcome from '../views/Welcome.vue'
 import MyPage from '../views/MyPage.vue'
+import ProjectRegist from '../views/ProjectRegist.vue'
 
 Vue.use(VueRouter)
 
@@ -42,6 +43,11 @@ const routes = [
     name: 'MyPage',
     component: MyPage
   },
+  {
+    path: '/projectregist',
+    name: 'ProjectRegist',
+    component: ProjectRegist
+  }
 ]
 
 const router = new VueRouter({
