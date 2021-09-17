@@ -706,6 +706,8 @@ export default {
     },
     addIssue: function () {
       const url = process.env.VUE_APP_URL;
+      this.issueUser = [];
+      this.issueSkills = [];
       var params = {
         name: this.IssueName,
         client_id: this.issueClientId,
