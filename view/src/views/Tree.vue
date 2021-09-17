@@ -84,28 +84,11 @@
               <v-card-title class="text-left"
                 ><v-icon class="mr-3">mdi-laptop</v-icon> skills
               </v-card-title>
-              <v-text> Number of skills </v-text>
-              <br />
               <v-form>
                 <v-select
-                  v-model="skillNum"
-                  :reduce="(optjions) => options.id"
-                  key="id"
-                  label="Number of skill"
-                  :items="skillNumber"
-                  :menu-props="{
-                    top: true,
-                    offsetY: true,
-                  }"
-                  item-text="id"
-                  item-value="id"
-                  outlined
-                />
-              </v-form>
-              <v-form v-for="i in skillNum" :key="i">
-                <v-select
-                  v-model="issueSkill"
-                  :reduce="(optjions) => options.id"
+                  v-model="issueSkillIds"
+                  multiple
+                  :reduce="(options) => options.id"
                   key="id"
                   label="skill"
                   :items="skills"
@@ -118,8 +101,8 @@
                   outlined
                 />
               </v-form>
-              <v-card-title class="text-left"
-                ><v-icon class="mr-3">mdi-chart-box-outline</v-icon> levels
+              <v-card-title class="text-left">
+                <v-icon class="mr-3">mdi-chart-box-outline</v-icon> levels
               </v-card-title>
               <v-form>
                 <v-select
@@ -138,12 +121,11 @@
                 />
               </v-form>
               <v-card-title class="text-left">
-                <v-icon class="mr-3">mdi-account-group-outline</v-icon>
+                <v-icon class="mr-3">mdi-account-outline</v-icon>
                 member
               </v-card-title>
               <v-form>
                 <v-select
-                  v-model="IssueUsers"
                   :reduce="(options) => options.id"
                   key="id"
                   label="member"
@@ -155,6 +137,7 @@
                   item-text="name"
                   item-value="id"
                   outlined
+                  @change="setUser"
                 />
               </v-form>
               <v-card-actions>
@@ -233,7 +216,7 @@
                 {{ issueLevel }}
               </v-text>
               <v-card-title class="text-left">
-                <v-icon class="mr-3">mdi-account-group</v-icon>
+                <v-icon class="mr-3">mdi-account-outline</v-icon>
                 member
               </v-card-title>
               <v-text class="px-4" label="member name" solo>
@@ -325,7 +308,7 @@
                 />
               </v-form>
               <v-card-title class="text-left">
-                <v-icon class="mr-3">mdi-account-group</v-icon> member
+                <v-icon class="mr-3">mdi-account-outline</v-icon> member
               </v-card-title>
               <v-form>
                 <v-select
@@ -678,19 +661,25 @@ export default {
       var params = {
         name: this.IssueName,
         client_id: this.issueClientId,
-        user_id: this.issueUserId,
+        user_id: this.issueUser,
         description: this.issueDescription,
         level: this.issueLevel,
+        skill_ids: this.issueSkillIds,
       };
+      console.log(params);
       axios.defaults.headers.common["Content-Type"] = "application/json";
       axios
-        .post(url + "/issues/", params, {
-          headers: {
-            "access-token": localStorage.getItem("access-token"),
-            client: localStorage.getItem("client"),
-            uid: localStorage.getItem("uid"),
-          },
-        })
+        .post(
+          url + "/issues/",
+          { issue: params },
+          {
+            headers: {
+              "access-token": localStorage.getItem("access-token"),
+              client: localStorage.getItem("client"),
+              uid: localStorage.getItem("uid"),
+            },
+          }
+        )
         .then((response) => {
           console.log("=====");
           console.log(response);
@@ -844,6 +833,9 @@ export default {
         .catch((error) => {
           console.log(error.response);
         });
+    },
+    setUser: function (event) {
+      this.issueUser = event;
     },
   },
 };
