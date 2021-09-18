@@ -661,21 +661,8 @@ export default {
           this.issueSkillIds =
             this.issueSkills[this.issueSkills.length - 1].issue_skill_ids;
         });
-      // axios
-      //   .get(url + "/api/v1/get_issue_skills/" + this.issueId, {
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       "access-token": localStorage.getItem("access-token"),
-      //       client: localStorage.getItem("client"),
-      //       uid: localStorage.getItem("uid"),
-      //     },
-      //   })
-      //   .then((response) => {
-      //     this.issueSkills = response.data;
-      //     console.log(this.issueSkills);
-      //   });
     },
-    onClickNodje(evt) {
+    onClickNode(evt) {
       this.onEvent("clickedNode", evt);
     },
     onExpand(evt) {
@@ -716,7 +703,6 @@ export default {
         level: this.issueLevel,
         skill_ids: this.issueSkillIds,
       };
-      console.log(params);
       axios.defaults.headers.common["Content-Type"] = "application/json";
       axios
         .post(
@@ -731,10 +717,7 @@ export default {
           }
         )
         .then((response) => {
-          console.log("=====");
           console.log(response);
-          console.log("=====");
-          // this.editIssueDetailsDialog = false;
         })
         .catch((error) => {
           console.log(error.response);
@@ -870,10 +853,7 @@ export default {
           }
         )
         .then((response) => {
-          console.log("=====");
           console.log(response.data);
-          console.log(issueParams);
-          console.log("=====");
           this.editIssueDetailsDialog = false;
         })
         .catch((error) => {
