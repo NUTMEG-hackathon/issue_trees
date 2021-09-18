@@ -47,25 +47,10 @@ import axios from "axios";
 export default {
   data() {
     return {
-      users: [],
       s_list: [],
     };
   },
   mounted() {
-    const url = process.env.VUE_APP_URL + "/api/v1/users/show";
-    axios
-      .get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          "access-token": localStorage.getItem("access-token"),
-          client: localStorage.getItem("client"),
-          uid: localStorage.getItem("uid"),
-        },
-      })
-      .then((response) => {
-        this.users = response.data.data;
-      });
-
     const s_url = process.env.VUE_APP_URL + "/skills";
       axios
       .get(s_url, {

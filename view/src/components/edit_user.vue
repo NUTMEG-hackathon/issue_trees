@@ -17,7 +17,6 @@
                 outlined
                 clearable
               />
-              {{ this.name }}
             </v-col>
             <v-col cols="2"></v-col>
           </v-row>
@@ -113,6 +112,7 @@ import axios from 'axios'
             console.log(response)
             console.log('get')
             // this.name = response.data.name;
+            this.reload()
           },
           (error) => {
             console.log('編集できませんでした')
