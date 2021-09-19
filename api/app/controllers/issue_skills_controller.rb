@@ -23,29 +23,33 @@ class IssueSkillsController < ApplicationController
   # POST /issue_skills or /issue_skills.json
   def create
     @issue_skill = IssueSkill.new(issue_skill_params)
+    @issue_skill.save
+    render json: @issue_skill
 
-    respond_to do |format|
-      if @issue_skill.save
-        format.html { redirect_to @issue_skill, notice: "Issue skill was successfully created." }
-        format.json { render :show, status: :created, location: @issue_skill }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @issue_skill.errors, status: :unprocessable_entity }
-      end
-    end
+    # respond_to do |format|
+    #   if @issue_skill.save
+    #     format.html { redirect_to @issue_skill, notice: "Issue skill was successfully created." }
+    #     format.json { render :show, status: :created, location: @issue_skill }
+    #   else
+    #     format.html { render :new, status: :unprocessable_entity }
+    #     format.json { render json: @issue_skill.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # PATCH/PUT /issue_skills/1 or /issue_skills/1.json
   def update
-    respond_to do |format|
-      if @issue_skill.update(issue_skill_params)
-        format.html { redirect_to @issue_skill, notice: "Issue skill was successfully updated." }
-        format.json { render :show, status: :ok, location: @issue_skill }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @issue_skill.errors, status: :unprocessable_entity }
-      end
-    end
+    @issue_skill.update(issue_skill_params)
+    render json: @issue_skill
+    # respond_to do |format|
+    #   if @issue_skill.update(issue_skill_params)
+    #     format.html { redirect_to @issue_skill, notice: "Issue skill was successfully updated." }
+    #     format.json { render :show, status: :ok, location: @issue_skill }
+    #   else
+    #     format.html { render :edit, status: :unprocessable_entity }
+    #     format.json { render json: @issue_skill.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # DELETE /issue_skills/1 or /issue_skills/1.json

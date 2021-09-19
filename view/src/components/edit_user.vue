@@ -67,37 +67,36 @@ import axios from 'axios'
   },
     methods: {
 
-      edit:async function(){
+      // edit:async function(){
         
-        const url = process.env.VUE_APP_URL + '/api/v1/current_user/edit_user_info' ;
+      //   const url = process.env.VUE_APP_URL + '/api/v1/current_user/edit_user_info' ;
 
-        var params =  {
-            'name' : this.name,
-            'email' : this.email
-        }
+      //   var params =  {
+      //       'name' : this.name,
+      //       'email' : this.email
+      //   }
 
-        await axios.put(url, params, {
-            headers: {
-              'Content-Type': 'application/json',
-              'access-token': localStorage.getItem('access-token'),
-              'client': localStorage.getItem('client'),
-              'uid': localStorage.getItem('uid')
-            }
-          }
-        ).then(
-          (response) => {
-            console.log(response)
-            console.log('put')
-            this.edit1 = false
-            this.reload()
-          },
-          (error) => {
-            console.log('登録できませんでした')
-            this.edit1 = false
-            return error;
-          }
-        )
-      },
+      //   await axios.put(url, params, {
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //         'access-token': localStorage.getItem('access-token'),
+      //         'client': localStorage.getItem('client'),
+      //         'uid': localStorage.getItem('uid')
+      //       }
+      //     }
+      //   ).then(
+      //     (response) => {
+      //       console.log(response)
+      //       console.log('put')
+      //       this.edit1 = false
+      //     },
+      //     (error) => {
+      //       console.log('登録できませんでした')
+      //       this.edit1 = false
+      //       return error;
+      //     }
+      //   )
+      // },
       reload:async function(){
         const get_url = process.env.VUE_APP_URL + '/api/v1/current_user/get_user_detail'
         await axios.get(get_url, {

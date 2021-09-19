@@ -66,20 +66,17 @@
           <v-row no-gutters>
             <v-col cols="1" />
             <v-col cols="10">
-              <v-card-title class="text-left"
-                ><v-icon class="mr-3">mdi-tag-text-outline</v-icon> issue Name </v-card-title
-              ><v-text-field
-                class="px-4"
-                label="issue name"
-                solo
-              ></v-text-field>
-              <v-card-title class="text-left"
-                ><v-icon class="mr-3">mdi-message-reply-text-outline</v-icon>
+              <v-card-title class="text-left">
+                <v-icon class="mr-3">mdi-tag-text-outline</v-icon> issue Name
+              </v-card-title>
+              <v-text-field v-model="IssueName" label="issue name" solo>
+              </v-text-field>
+              <v-card-title class="text-left">
+                <v-icon class="mr-3">mdi-message-reply-text-outline</v-icon>
                 issue descriptions
               </v-card-title>
               <v-textarea
-                class="px-4"
-                v-model="Details"
+                v-model="issueDescription"
                 label="issue descriptions"
                 solo
                 name="input-7-4"
@@ -87,46 +84,62 @@
               <v-card-title class="text-left"
                 ><v-icon class="mr-3">mdi-laptop</v-icon> skills
               </v-card-title>
-              <v-card-text>
-                <v-form>
-                  <v-select
-                    multiple
-                    :reduce="(options) => options.id"
-                    key="id"
-                    label="skill"
-                    placeholder="Filter Skills ..."
-                    :items="skills"
-                    :menu-props="{
-                      top: true,
-                      offsetY: true,
-                    }"
-                    item-text="name"
-                    item-value="id"
-                    outlined
-                  />
-                </v-form>
-              </v-card-text>
-              <v-card-title class="text-left"
-                ><v-icon class="mr-3">mdi-account-group</v-icon> member
+              <v-form>
+                <v-select
+                  v-model="issueSkillIds"
+                  multiple
+                  :reduce="(options) => options.id"
+                  key="id"
+                  label="skill"
+                  :items="skills"
+                  :menu-props="{
+                    top: true,
+                    offsetY: true,
+                  }"
+                  item-text="name"
+                  item-value="id"
+                  outlined
+                />
+              </v-form>
+              <v-card-title class="text-left">
+                <v-icon class="mr-3">mdi-chart-box-outline</v-icon> levels
               </v-card-title>
-              <v-card-text>
-                <v-form>
-                  <v-select
-                    :reduce="(options) => options.id"
-                    key="id"
-                    label="member"
-                    placeholder="Filter member ..."
-                    :items="users"
-                    :menu-props="{
-                      top: true,
-                      offsetY: true,
-                    }"
-                    item-text="name"
-                    item-value="id"
-                    outlined
-                  />
-                </v-form>
-              </v-card-text>
+              <v-form>
+                <v-select
+                  v-model="issueLevel"
+                  :reduce="(options) => options.id"
+                  key="id"
+                  label="issue level"
+                  :items="levels"
+                  :menu-props="{
+                    top: true,
+                    offsetY: true,
+                  }"
+                  item-text="name"
+                  item-value="id"
+                  outlined
+                />
+              </v-form>
+              <v-card-title class="text-left">
+                <v-icon class="mr-3">mdi-account-outline</v-icon>
+                member
+              </v-card-title>
+              <v-form>
+                <v-select
+                  :reduce="(options) => options.id"
+                  key="id"
+                  label="member"
+                  :items="users"
+                  :menu-props="{
+                    top: true,
+                    offsetY: true,
+                  }"
+                  item-text="name"
+                  item-value="id"
+                  outlined
+                  @change="setUser"
+                />
+              </v-form>
               <v-card-actions>
                 <v-btn
                   class="ma-2"
@@ -137,7 +150,7 @@
                   cancel
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn class="ma-2" outlined color="blue" @click="addIssue">
+                <v-btn class="ma-2" outlined color="blue" @click="addIssue()">
                   add
                 </v-btn>
               </v-card-actions>
@@ -145,7 +158,7 @@
           </v-row>
         </v-card>
       </v-dialog>
-      <v-dialog persistent v-model="issueDetailsDialog" width="700">
+      <v-dialog v-model="issueDetailsDialog" width="700">
         <v-card>
           <v-card-title class="text-h4 lighten-2">
             <v-row no-gutters>
@@ -168,36 +181,105 @@
           <v-row no-gutters>
             <v-col cols="1" />
             <v-col cols="10">
-              <v-card-title class="text-left"
-                ><v-icon class="mr-3">mdi-tag-text-outline</v-icon> issue Name </v-card-title
-              ><v-text class="px-4" label="issue name" solo>{{
-                issueName
-              }}</v-text>
-              <v-card-title class="text-left"
-                ><v-icon class="mr-3">mdi-message-reply-text-outline</v-icon>
+              <v-card-title class="text-left">
+                <v-icon class="mr-3">mdi-tag-text-outline</v-icon>
+                issue Name
+              </v-card-title>
+              <v-text class="px-4" label="issue name" solo>
+                {{ issueName }}
+              </v-text>
+              <v-card-title class="text-left">
+                <v-icon class="mr-3">mdi-message-reply-text-outline</v-icon>
                 issue descriptions
               </v-card-title>
-              <v-text class="px-4" label="issue name" solo>{{
-                issueDescription
-              }}</v-text>
+              <v-text class="px-4" label="issue name" solo>
+                {{ issueDescription }}
+              </v-text>
 
-              <v-card-title class="text-left"
-                ><v-icon class="mr-3">mdi-laptop</v-icon> skills
+              <v-card-title class="text-left">
+                <v-icon class="mr-3">mdi-laptop</v-icon> skills
               </v-card-title>
-              <v-card-title class="text-left"
-                ><v-icon class="mr-3">mdi-account-group</v-icon> member
+              <v-text
+                class="px-4"
+                label="member name"
+                solo
+                v-for="(Skill, i) in issueSkills"
+                :key="i"
+                item-text="name"
+                item-value="id"
+                >{{ Skill.name }}
+              </v-text>
+              <v-card-title class="text-left">
+                <v-icon class="mr-3">mdi-chart-box-outline</v-icon> levels
               </v-card-title>
+              <v-text class="px-4" label="member name" solo>
+                {{ issueLevel }}
+              </v-text>
+              <v-card-title class="text-left">
+                <v-icon class="mr-3">mdi-account-outline</v-icon>
+                member
+              </v-card-title>
+              <v-text class="px-4" label="member name" solo>
+                {{ issueUserName }}
+              </v-text>
+              <br />
+              <br />
+              <v-btn
+                class="ma-2"
+                outlined
+                large
+                color="light-green"
+                @click="openDeleteIssueDialog"
+              >
+                Done
+              </v-btn>
             </v-col>
           </v-row>
         </v-card>
       </v-dialog>
+
+      <v-dialog v-model="deleteIssueDialog">
+        <v-card>
+          <v-card-title class="text-h4 lighten-2">
+            <v-row no-gutters>
+              <v-col cols="3" />
+              <v-col cols="6" class="my-3 light-green--text">
+                Finish issue
+              </v-col>
+              <v-col cols="3" />
+            </v-row>
+          </v-card-title>
+          <v-row no-gutters>
+            <v-col cols="1" />
+            <v-col cols="10" class="my-3 text-h5">
+              <v-card-text> 完了したissueを削除してもよいですか？ </v-card-text>
+              <v-card-actions>
+                <v-btn
+                  class="ma-2"
+                  outlined
+                  color="blue"
+                  @click="addIssueDialog = false"
+                >
+                  cancel
+                </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn class="ma-2" outlined color="red" @click="deleteIssue()">
+                  Delete
+                </v-btn>
+              </v-card-actions>
+            </v-col>
+            <v-col cols="1" />
+          </v-row>
+        </v-card>
+      </v-dialog>
+
       <v-dialog persistent v-model="editIssueDetailsDialog" width="700">
         <v-card>
           <v-card-title class="text-h4 lighten-2">
             <v-row no-gutters>
               <v-col cols="3" />
-              <v-col cols="6" class="my-3 light-green--text"
-                >Edit issue details
+              <v-col cols="6" class="my-3 light-green--text">
+                Edit issue details
               </v-col>
               <v-col cols="1" class="text-end my-3">
                 <v-btn text @click="changeDialog()">
@@ -214,33 +296,83 @@
           <v-row no-gutters>
             <v-col cols="1" />
             <v-col cols="10">
-              <v-card-title class="text-left"
-                ><v-icon class="mr-3">mdi-tag-text-outline</v-icon> issue Name
+              <v-card-title class="text-left">
+                <v-icon class="mr-3">mdi-tag-text-outline</v-icon> issue Name
               </v-card-title>
               <v-text-field
-                v-model="this.issueName"
-                class="px-4"
+                v-model="issueName"
                 label="issue name"
                 clearable
                 outlined
               ></v-text-field>
-              <v-card-title class="text-left"
-                ><v-icon class="mr-3">mdi-message-reply-text-outline</v-icon>
+              <v-card-title class="text-left">
+                <v-icon class="mr-3">mdi-message-reply-text-outline</v-icon>
                 issue descriptions
               </v-card-title>
               <v-textarea
-                class="px-4"
                 v-model="issueDescription"
                 label="issue descriptions"
                 clearable
                 outlined
               ></v-textarea>
-              <v-card-title class="text-left"
-                ><v-icon class="mr-3">mdi-laptop</v-icon> skills
+              <v-card-title class="text-left">
+                <v-icon class="mr-3">mdi-laptop</v-icon> skills
               </v-card-title>
-              <v-card-title class="text-left"
-                ><v-icon class="mr-3">mdi-account-group</v-icon> member
+              <v-form>
+                <v-select
+                  v-model="issueSkillIds"
+                  multiple
+                  :reduce="(options) => options.id"
+                  key="id"
+                  label="skill"
+                  :items="skills"
+                  :menu-props="{
+                    top: true,
+                    offsetY: true,
+                  }"
+                  item-text="name"
+                  item-value="id"
+                  outlined
+                />
+              </v-form>
+              <v-card-title class="text-left">
+                <v-icon class="mr-3">mdi-chart-box-outline</v-icon> levels
               </v-card-title>
+              <v-form>
+                <v-select
+                  v-model="issueLevel"
+                  :reduce="(options) => options.id"
+                  key="id"
+                  label="issue level"
+                  :items="levels"
+                  :menu-props="{
+                    top: true,
+                    offsetY: true,
+                  }"
+                  item-text="name"
+                  item-value="id"
+                  outlined
+                />
+              </v-form>
+              <v-card-title class="text-left">
+                <v-icon class="mr-3">mdi-account-outline</v-icon> member
+              </v-card-title>
+              <v-form>
+                <v-select
+                  v-model="issueUser"
+                  :reduce="(options) => options.id"
+                  key="id"
+                  label="member"
+                  :items="users"
+                  :menu-props="{
+                    top: true,
+                    offsetY: true,
+                  }"
+                  item-text="name"
+                  item-value="id"
+                  outlined
+                />
+              </v-form>
               <v-btn
                 class="ma-2"
                 outlined
@@ -291,10 +423,45 @@ export default {
         children: [],
       },
       Details: "",
+      skillNumber: [
+        { id: 1 },
+        { id: 2 },
+        { id: 3 },
+        { id: 4 },
+        { id: 5 },
+        { id: 6 },
+        { id: 7 },
+        { id: 8 },
+        { id: 9 },
+        { id: 10 },
+      ],
+      levels: [
+        {
+          id: 1,
+          name: 1,
+        },
+        {
+          id: 2,
+          name: 2,
+        },
+        {
+          id: 3,
+          name: 3,
+        },
+        {
+          id: 4,
+          name: 4,
+        },
+        {
+          id: 5,
+          name: 5,
+        },
+      ],
       // Node
       newNode: [],
       // Dialog
       addIssueDialog: false,
+      deleteIssueDialog: false,
       issueDetailsDialog: false,
       editIssueDetailsDialog: false,
       // events
@@ -303,6 +470,8 @@ export default {
       events: [],
       // skill
       skills: [],
+      skillName: [],
+      skillNum: 1,
       // user
       users: [],
       // project
@@ -310,13 +479,16 @@ export default {
       // client
       clients: [],
       // issue
+      issue: [],
       issues: [],
       issueId: [],
       issueName: [],
       issueDescription: [],
       issueLevel: [],
       issueClientId: [],
+      issueUser: [],
       issueUserId: [],
+      issueUserName: [],
       // user_project
       userProject: [],
       userProjects: [],
@@ -328,6 +500,12 @@ export default {
       // client_issue
       clientIssue: [],
       clientIssues: [],
+      // issue_details
+      issueDetails: [],
+      issueSkill: [],
+      issueSkills: [],
+      issueSkillIds: [],
+      issueSkillsParams: [],
     };
   },
   components: {
@@ -346,6 +524,10 @@ export default {
       })
       .then((response) => {
         this.skills = response.data;
+        this.skillName = [];
+        for (let i = 0; i < this.skills.length; i++) {
+          this.skillName.push(this.skills[i].name);
+        }
       });
     axios
       .get(url + "/projects", {
@@ -424,6 +606,61 @@ export default {
       }
       this.event = data;
       this.events = [];
+      const url = process.env.VUE_APP_URL;
+      console.log(data);
+      axios
+        .get(url + "/api/v1/get_issue_details/" + this.issueId, {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then((response) => {
+          this.issueDetails = response.data;
+          this.issueUserName = this.issueDetails[0].user_name;
+        });
+      axios
+        .get(url + "/issues/" + this.issueId, {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then((response) => {
+          this.issue = response.data;
+        });
+      axios
+        .get(url + "/api/v1/get_issue_user/" + this.issueId, {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then((response) => {
+          this.issueUser = response.data;
+          this.issueUserId = this.issueUser.id;
+          this.issueUserName = this.issueUser.name;
+        });
+      axios
+        .get(url + "/api/v1/get_issue_skill/" + this.issueId, {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then((response) => {
+          this.issueSkills = response.data;
+          this.issueSkillIds =
+            this.issueSkills[this.issueSkills.length - 1].issue_skill_ids;
+        });
     },
     onClickNode(evt) {
       this.onEvent("clickedNode", evt);
@@ -455,8 +692,38 @@ export default {
       removeElement(parent.children, data);
     },
     addIssue: function () {
+      const url = process.env.VUE_APP_URL;
+      this.issueUser = [];
+      this.issueSkills = [];
+      var params = {
+        name: this.IssueName,
+        client_id: this.issueClientId,
+        user_id: this.issueUser,
+        description: this.issueDescription,
+        level: this.issueLevel,
+        skill_ids: this.issueSkillIds,
+      };
+      axios.defaults.headers.common["Content-Type"] = "application/json";
+      axios
+        .post(
+          url + "/issues/",
+          { issue: params },
+          {
+            headers: {
+              "access-token": localStorage.getItem("access-token"),
+              client: localStorage.getItem("client"),
+              uid: localStorage.getItem("uid"),
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
       this.addFor(this.event);
-      console.log(this.newNode);
+      this.selectProject();
       this.addIssueDialog = false;
     },
     getProject: async function (id) {
@@ -538,11 +805,11 @@ export default {
               name: this.clientIssues[i][j].name,
               client_id: this.clientIssues[i][j].client_id,
               user_id: this.clientIssues[i][j].user_id,
+              // user_name: this.clientIssues[i][j].user_name,
               description: this.clientIssues[i][j].description,
               level: this.clientIssues[i][j].level,
             });
           }
-          console.log();
         }
       }
     },
@@ -551,7 +818,6 @@ export default {
       await this.getClients();
       await this.getIssues();
       await this.setTree();
-      console.log(this.tree.children);
     },
     changeDialog: function () {
       if (this.issueDetailsDialog == true) {
@@ -562,61 +828,52 @@ export default {
         this.editIssueDetailsDialog = false;
       }
     },
-    // editIssueDetails: function () {
-    //   // const edit_url =
-    //   //   "/issues/" +
-    //   //   this.issueId +
-    //   //   "?name=" +
-    //   //   this.issueName +
-    //   //   "&client_id=" +
-    //   //   this.issueClientId +
-    //   //   "&user_id=" +
-    //   //   this.issueUserId +
-    //   //   "&description=" +
-    //   //   this.issueDescription +
-    //   //   "&level=" +
-    //   //   this.issueLevel;
-    //   // console.log(edit_url);
-
-    //   const url = process.env.VUE_APP_URL;
-    //   const id = this.issueId;
-    //   var params = {
-    //     name: this.issueName,
-    //     client_id: this.issueClientId,
-    //     user_id: this.issueUserId,
-    //     description: this.issueDescription,
-    //     level: this.issueLevel,
-    //   };
-    //   axios.defaults.headers.common["Content-Type"] = "application/json";
-    //   axios
-    //     .put(url + "/issues/" + id, params, {
-    //       headers: {
-    //         "access-token": localStorage.getItem("access-token"),
-    //         client: localStorage.getItem("client"),
-    //         uid: localStorage.getItem("uid"),
-    //       },
-    //     })
-    //     .then((response) => {
-    //       console.log("=====");
-    //       console.log(response);
-    //       console.log("=====");
-    //       // this.editIssueDetailsDialog = false;
-    //     })
-    //     .catch((error) => {
-    //       //失敗した時の処理
-    //       console.log(error);
-    //       console.log(typeof error);
-    //       // 引数objectが持つキーの一覧を、配列にして返す関数
-    //       // configに必要なデータは入ってた
-    //       for (let key of Object.keys(error)) {
-    //         console.log(key);
-    //         console.log(error[key]);
-    //       }
-    //       // const errorId = error.config.data.id; //エラー発生したリクエストの記事ID
-    //       console.log("=====");
-    //       console.log(error.config.data);
-    //     });
-    // },
+    editIssueDetails: function () {
+      const url = process.env.VUE_APP_URL;
+      const id = this.issueId;
+      var issueParams = {
+        name: this.issueName,
+        client_id: this.issueClientId,
+        user_id: this.issueUser,
+        description: this.issueDescription,
+        level: this.issueLevel,
+        skill_ids: this.issueSkillIds,
+      };
+      axios.defaults.headers.common["Content-Type"] = "application/json";
+      axios
+        .put(
+          url + "/issues/" + id,
+          { issue: issueParams },
+          {
+            headers: {
+              "access-token": localStorage.getItem("access-token"),
+              client: localStorage.getItem("client"),
+              uid: localStorage.getItem("uid"),
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response.data);
+          this.editIssueDetailsDialog = false;
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+      this.selectProject();
+    },
+    openDeleteIssueDialog: function () {
+      this.issueDetailsDialog = false;
+      this.deleteIssueDialog = true;
+    },
+    deleteIssue: function () {
+      const url = process.env.VUE_APP_URL;
+      axios.delete(url + "/issues/" + this.issueId);
+      this.deleteIssueDialog = false;
+      this.selectProject();
+    },
+    setUser: function (event) {
+      this.issueUser = event;
+    },
   },
 };
 </script>

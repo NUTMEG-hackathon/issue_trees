@@ -142,5 +142,11 @@ Skill.seed( :id,
   name: "SQL",
   status: "server",
   level:3
+},
+{
+  id:25,
+  name: "others",
+  status: "none",
+  level:3
 }
 )
