@@ -24,6 +24,7 @@ Rails.application.routes.draw do
       #api周り
       get "get_client_issue/:id" => "client_issue_api#get_client_issue"
       get "get_issue_skill/:id" => "issue_skill_api#get_issue_skill"
+      get "get_issue_skill_ids/:id" => "issue_skill_api#get_issue_skill_ids"
       get "get_issue_skills/:id" => "issue_skill_api#get_issue_skills"
       get "get_project_client/:id" => "project_client_api#get_project_client"
       get "get_project_user" => "project_user_api#get_project_user"
@@ -35,7 +36,7 @@ Rails.application.routes.draw do
 
       get "current_user/show" => "current_user_api#show"
 
-      
+
       #編集api
       put "current_user/edit_user_info" => "current_user_api#edit_user_info"
       put "project_user/edit_user_project" => "project_user_api#edit_user_project"
@@ -44,7 +45,7 @@ Rails.application.routes.draw do
       get "current_user/get_user_detail" => "current_user_api#get_user_detail"
       #get "project_user/get_edit_user_project" => "project_user_api#get_edit_user_project"
       #post "current_user/password_reset" => "current_user_api#password_reset"
-    end 
+    end
   end
   namespace :api do
     mount_devise_token_auth_for 'User', at: 'auth', controllers: {
