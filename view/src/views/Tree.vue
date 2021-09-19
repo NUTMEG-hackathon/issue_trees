@@ -13,6 +13,39 @@
             @input="selectProject"
           >
           </v-select>
+          <v-card>
+            <v-card-title class="text-h6 justify-center lighten-2"
+              >options</v-card-title
+            >
+            <v-row>
+              <v-col cols="1" />
+              <v-col cols="10">
+                <v-text class="text-left"> Nodeの大きさ:{{ radius }}px </v-text>
+                <v-form>
+                  <v-slider v-model="radius" :max="10" step="1" outlined />
+                </v-form>
+                <br />
+                <v-text class="text-left"> Tree Layout </v-text>
+                <v-form>
+                  <v-select
+                    v-model="layoutType"
+                    :items="layoutTypes"
+                    item-text="name"
+                  />
+                </v-form>
+                <br />
+                <v-text class="text-left"> Tree Link Layout </v-text>
+                <v-select
+                  v-model="linkLayout"
+                  :items="linkLayouts"
+                  item-text="name"
+                >
+                </v-select>
+              </v-col>
+              <v-col cols="1" />
+            </v-row>
+          </v-card>
+          <br />
           <div class="light-green lighten-2 events_title panel-heading">
             Events
           </div>
@@ -29,14 +62,11 @@
           <div class="panel panel-default">
             <tree
               ref="tree"
-              v-model="currentData"
-              :nodeTextDisplay="nodeTextDisplay"
               :identifier="getId"
               :data="tree"
-              :node-text="nodeText"
-              radius="6"
-              layout-type="vertical"
-              :duration="duration"
+              :radius="radius"
+              :layout-type="layoutType"
+              :linkLayout="linkLayout"
               contextMenuPlacement="bottom-start"
               class="tree"
               @clickedText="onClick"
@@ -238,7 +268,7 @@
         </v-card>
       </v-dialog>
 
-      <v-dialog v-model="deleteIssueDialog">
+      <v-dialog v-model="deleteIssueDialog" width="500">
         <v-card>
           <v-card-title class="text-h4 lighten-2">
             <v-row no-gutters>
@@ -393,7 +423,6 @@
 <script>
 import { tree } from "vued3tree";
 import axios from "axios";
-import data from "../../data/data";
 let currentId = 500;
 const removeElement = (arr, element) => {
   const index = arr.indexOf(element);
@@ -402,15 +431,10 @@ const removeElement = (arr, element) => {
   }
   arr.splice(index, 1);
 };
-Object.assign(data, {
+Object.assign(tree, {
   type: "tree",
-  layoutType: "horizontal",
-  duration: 750,
-  nodeText: "name",
-  currentData: null,
-  isLoading: false,
-  isUnderGremlinsAttack: false,
-  nodeTextDisplay: "all",
+  layoutType: "vertical",
+  radius: 6,
   linkLayout: "bezier",
   events: [],
 });
@@ -418,23 +442,21 @@ export default {
   name: "App",
   data() {
     return {
+      // tree
       tree: {
         name: "",
         children: [],
       },
-      Details: "",
-      skillNumber: [
-        { id: 1 },
-        { id: 2 },
-        { id: 3 },
-        { id: 4 },
-        { id: 5 },
-        { id: 6 },
-        { id: 7 },
-        { id: 8 },
-        { id: 9 },
-        { id: 10 },
+      radius: 6,
+      layoutType: "vertical",
+      layoutTypes: [
+        { name: "vertical" },
+        { name: "horizontal" },
+        { name: "circular" },
       ],
+      linkLayout: "bezier",
+      linkLayouts: [{ name: "bezier" }, { name: "orthogonal" }],
+      // levels
       levels: [
         {
           id: 1,
@@ -564,103 +586,99 @@ export default {
       })
       .then((response) => {
         this.userProjects = response.data;
+        if (this.userProjects) {
+          this.userProjectId = this.userProjects[0].id;
+          this.selectProject();
+        }
       });
   },
   methods: {
-    async do(action) {
-      if (this.currentData) {
-        this.isLoading = true;
-        await this.$refs["tree"][action](this.currentData);
-        this.isLoading = false;
-      }
-    },
     getId(node) {
       return node.id;
-    },
-    expandAll() {
-      this.do("expandAll");
-    },
-    collapseAll() {
-      this.do("collapseAll");
-    },
-    showOnly() {
-      this.do("showOnly");
-    },
-    show() {
-      this.do("show");
     },
     onClick(evt) {
       this.onEvent("clickedText", evt);
       var data = JSON.parse(JSON.stringify(evt.data));
+      const url = process.env.VUE_APP_URL;
+      this.event = data;
+      this.events = [];
       this.issueId = data.issue_id;
       this.issueName = data.name;
       this.issueClientId = data.client_id;
       this.issueUserId = data.user_id;
       this.issueDescription = data.description;
       this.issueLevel = data.level;
-      if (this.isChildNode) {
-        this.addIssueDialog = true;
-      } else {
+      if (!this.isChildNode) {
         this.issueDetailsDialog = true;
         this.editIssueDetailsDialog = false;
+
+        axios
+          .get(url + "/api/v1/get_issue_details/" + this.issueId, {
+            headers: {
+              "Content-Type": "application/json",
+              "access-token": localStorage.getItem("access-token"),
+              client: localStorage.getItem("client"),
+              uid: localStorage.getItem("uid"),
+            },
+          })
+          .then((response) => {
+            this.issueDetails = response.data;
+            this.issueUserName = this.issueDetails[0].user_name;
+          });
+        axios
+          .get(url + "/issues/" + this.issueId, {
+            headers: {
+              "Content-Type": "application/json",
+              "access-token": localStorage.getItem("access-token"),
+              client: localStorage.getItem("client"),
+              uid: localStorage.getItem("uid"),
+            },
+          })
+          .then((response) => {
+            this.issue = response.data;
+          });
+        axios
+          .get(url + "/api/v1/get_issue_user/" + this.issueId, {
+            headers: {
+              "Content-Type": "application/json",
+              "access-token": localStorage.getItem("access-token"),
+              client: localStorage.getItem("client"),
+              uid: localStorage.getItem("uid"),
+            },
+          })
+          .then((response) => {
+            this.issueUser = response.data;
+            this.issueUserId = this.issueUser.id;
+            this.issueUserName = this.issueUser.name;
+          });
+        axios
+          .get(url + "/api/v1/get_issue_skill/" + this.issueId, {
+            headers: {
+              "Content-Type": "application/json",
+              "access-token": localStorage.getItem("access-token"),
+              client: localStorage.getItem("client"),
+              uid: localStorage.getItem("uid"),
+            },
+          })
+          .then((response) => {
+            this.issueSkills = response.data;
+          });
+        axios
+          .get(url + "/api/v1/get_issue_skill_ids/" + this.issueId, {
+            headers: {
+              "Content-Type": "application/json",
+              "access-token": localStorage.getItem("access-token"),
+              client: localStorage.getItem("client"),
+              uid: localStorage.getItem("uid"),
+            },
+          })
+          .then((response) => {
+            this.issueSkillIds = response.data;
+          });
+      } else if (!data.children[0].children) {
+        this.addIssueDialog = true;
+        console.log(this.issueId);
       }
-      this.event = data;
-      this.events = [];
-      const url = process.env.VUE_APP_URL;
-      console.log(data);
-      axios
-        .get(url + "/api/v1/get_issue_details/" + this.issueId, {
-          headers: {
-            "Content-Type": "application/json",
-            "access-token": localStorage.getItem("access-token"),
-            client: localStorage.getItem("client"),
-            uid: localStorage.getItem("uid"),
-          },
-        })
-        .then((response) => {
-          this.issueDetails = response.data;
-          this.issueUserName = this.issueDetails[0].user_name;
-        });
-      axios
-        .get(url + "/issues/" + this.issueId, {
-          headers: {
-            "Content-Type": "application/json",
-            "access-token": localStorage.getItem("access-token"),
-            client: localStorage.getItem("client"),
-            uid: localStorage.getItem("uid"),
-          },
-        })
-        .then((response) => {
-          this.issue = response.data;
-        });
-      axios
-        .get(url + "/api/v1/get_issue_user/" + this.issueId, {
-          headers: {
-            "Content-Type": "application/json",
-            "access-token": localStorage.getItem("access-token"),
-            client: localStorage.getItem("client"),
-            uid: localStorage.getItem("uid"),
-          },
-        })
-        .then((response) => {
-          this.issueUser = response.data;
-          this.issueUserId = this.issueUser.id;
-          this.issueUserName = this.issueUser.name;
-        });
-      axios
-        .get(url + "/api/v1/get_issue_skill/" + this.issueId, {
-          headers: {
-            "Content-Type": "application/json",
-            "access-token": localStorage.getItem("access-token"),
-            client: localStorage.getItem("client"),
-            uid: localStorage.getItem("uid"),
-          },
-        })
-        .then((response) => {
-          this.issueSkills = response.data;
-          this.issueSkillIds =
-            this.issueSkills[this.issueSkills.length - 1].issue_skill_ids;
-        });
     },
     onClickNode(evt) {
       this.onEvent("clickedNode", evt);
@@ -693,8 +711,6 @@ export default {
     },
     addIssue: function () {
       const url = process.env.VUE_APP_URL;
-      this.issueUser = [];
-      this.issueSkills = [];
       var params = {
         name: this.IssueName,
         client_id: this.issueClientId,
@@ -723,6 +739,8 @@ export default {
           console.log(error.response);
         });
       this.addFor(this.event);
+      this.issueUser = [];
+      this.issueSkills = [];
       this.selectProject();
       this.addIssueDialog = false;
     },
@@ -805,7 +823,6 @@ export default {
               name: this.clientIssues[i][j].name,
               client_id: this.clientIssues[i][j].client_id,
               user_id: this.clientIssues[i][j].user_id,
-              // user_name: this.clientIssues[i][j].user_name,
               description: this.clientIssues[i][j].description,
               level: this.clientIssues[i][j].level,
             });
