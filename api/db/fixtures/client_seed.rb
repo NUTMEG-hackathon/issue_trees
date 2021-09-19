@@ -2,7 +2,7 @@ Client.seed( :id,
   {
     id:1,
     name: 'frontend',
-    project_id: 1,
+    project_id: 1
   },
   {
     id:2,
@@ -11,12 +11,29 @@ Client.seed( :id,
   },
   {
     id:3,
-    name: "backend",
+    name: "database",
     project_id: 1
   },
   {
     id:4,
     name: "server",
     project_id: 1
+  },
+
+  {
+    id:5,
+    name: "infra",
+    project_id: 1
+  },
+  {
+    id:6,
+    name: "desgin",
+    project_id: 1
+  },
+  {
+    id:7,
+    name: "Prodact Manager",
+    project_id: 1
   }
+
 )
