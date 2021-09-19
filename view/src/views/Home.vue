@@ -17,7 +17,7 @@ export default {
     };
   },
   mounted() {
-    const url = "http://localhost:3000" + "/api/v1/users/index";
+    const url = process.env.VUE_APP_URL + "/api/v1/users/index";
     axios
       .get(url, {
         headers: {

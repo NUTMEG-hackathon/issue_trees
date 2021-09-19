@@ -4,5 +4,8 @@ module.exports = {
   ],
   devServer: {
     disableHostCheck: true
+  },
+  configureWebpack: {
+    mode: 'production'
   }
 }
