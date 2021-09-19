@@ -31,10 +31,22 @@ class Api::V1::UsersController < ApplicationController
     render json: { data: @skills }
   end
 
+  def get_user_skill_ids
+    @user = User.find(params[:id])
+    @user_skill_ids = @user.skill_ids
+    render json: @user_skill_ids
+  end
+
   def edit_user_info
     @user = User.find(params[:id])
     @user.name = params[:name]
     @user.email = params[:email]
+    @user.save!
+  end
+
+  def edit_user_skills
+    @user = User.find(params[:id])
+    @user.skill_ids = edit_user_skills_params[:skill_ids]
     @user.save!
   end
 
@@ -49,6 +61,10 @@ class Api::V1::UsersController < ApplicationController
     #issue96で直したところ
     def edit_user_info_params
       params.permit(user_id, :name, :email)
+    end
+
+    def edit_user_skills_params
+      params.permit(skill_ids: [])
     end
 
     def reset_password_params

@@ -20,6 +20,9 @@ Rails.application.routes.draw do
       get "users/show" => "users#show"
       post "users/edit_user_info" => "users#edit_user_info"
       post "users/reset_password" => "users#reset_password"
+      put "edit_user_skills/:id" => "users#edit_user_skills"
+      get "get_user_skill_ids/:id" => 'users#get_user_skill_ids'
+
 
       #api周り
       get "get_client_issue/:id" => "client_issue_api#get_client_issue"
