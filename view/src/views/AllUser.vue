@@ -1,16 +1,15 @@
 <template>
 	<div id="app" class="container-fluid">
 		<div class="panel panel-default">
-		<h1 style="color:#333333">ALL User information</h1>
+		<h1 style="color:#333333">ALL User Information</h1>
 		<v-row>
 			<v-col cols ="1" />
-				<v-col cols = "9" >
+				<v-col cols = "10" >
 					<v-data-table
 						:headers="headers"
 						:items="this.userDetails"
 						:items-per-page="10"
 						:search="search"
-					
 					>
 						<template v-slot:top>
 							<v-text-field
@@ -59,14 +58,14 @@ export default {
 					align: 'start',
 					sortable: 'false',
 					value: 'skills',
-					width: `25%`
+					width: `40%`
 				},
 				{
 					text: 'Userproject',
 					align: 'start',
 					sortable: 'false',
 					value: 'projects',
-					width: `60%`
+					width: `45%`
 				}
 
 			]

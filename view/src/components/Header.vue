@@ -53,26 +53,31 @@
             </v-menu>
       </v-app-bar>
 
-      <v-dialog v-model="logout" max-width="600">
-        <v-card>
-          <v-card-title
-            class="text-h4 justify-center light-green lighten-2 lighten-2"
-            >logout</v-card-title
-          >
-          <v-container class="justify-content-center">
+      <v-dialog v-model="logout" max-width="500">
+          <v-card>
+            <v-row no-gutters class="justify-center my-3 light-green--text">
+              <v-card-title class="text-h4 lighten-2">logout</v-card-title>
+            </v-row>
             <v-card-actions>
-              <v-layout align-center justify-center>
-                <v-spacer />
-                <v-btn class="error" flat @click="logout = false"
-                  >取り消し</v-btn>
-                <v-spacer />
-                <v-btn class="primary" flat @click="ok">決定</v-btn>
-                <v-spacer />
-              </v-layout>
+              <v-spacer />
+                <v-tooltip left>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn v-bind="attrs" v-on="on" color="blue" class="ma-2" outlined @click="logout = false">calcel</v-btn>
+                  </template>
+                  <div>取り消しする</div>
+                </v-tooltip>
+              <v-spacer />
+                <v-tooltip right>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn v-bind="attrs" v-on="on" color="red" class="ma-2" outlined @click="ok">logout</v-btn>
+                  </template>
+                  <div>ログアウトする</div>
+                </v-tooltip>
+              <v-spacer />
             </v-card-actions>
-          </v-container>
-        </v-card>
+          </v-card>
       </v-dialog>
+
     </v-container>
   </div>
 </template>
