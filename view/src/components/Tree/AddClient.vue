@@ -6,7 +6,7 @@
           <v-col cols="3" />
           <v-col cols="6" class="my-3 light-green--text"> Add Client </v-col>
           <v-col cols="3" class="text-end my-3">
-            <v-btn text @click="addClientDialog = false">
+            <v-btn text @click="closeDialog()">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-col>
@@ -21,12 +21,7 @@
           <v-text-field v-model="clientName" label="client name" solo>
           </v-text-field>
           <v-card-actions>
-            <v-btn
-              class="ma-2"
-              outlined
-              color="red"
-              @click="addClientDialog = false"
-            >
+            <v-btn class="ma-2" outlined color="red" @click="closeDialog()">
               cancel
             </v-btn>
             <v-spacer></v-spacer>
@@ -84,6 +79,10 @@ export default {
           console.log(error.response);
         });
       await this.$emit("addClient");
+    },
+    closeDialog: function () {
+      this.addClientDialog = false;
+      this.$emit("closeDialog", this.addClientDialog);
     },
   },
 };
