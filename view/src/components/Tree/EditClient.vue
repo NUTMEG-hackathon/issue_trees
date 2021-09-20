@@ -26,13 +26,8 @@
           <v-text-field v-model="clientName" label="client name" solo>
           </v-text-field>
           <v-card-actions>
-            <v-btn
-              class="ma-2"
-              outlined
-              color="red"
-              @click="editClientDialog = false"
-            >
-              cancel
+            <v-btn class="ma-2" outlined color="red" @click="deleteClient()">
+              delete
             </v-btn>
             <v-spacer></v-spacer>
             <v-btn class="ma-2" outlined color="blue" @click="editClient()">
@@ -90,8 +85,18 @@ export default {
       this.editClientDialog = false;
       this.$emit("editClient");
     },
+    deleteClient: function () {
+      const url = process.env.VUE_APP_URL;
+      console.log(this.clientId);
+      axios.delete(url + "/clients/" + this.clientId);
+      this.editClientDialog = false;
+    },
     changeClientDialog: function () {
       this.$emit("changeClientDialog");
+    },
+    closeDialog: function () {
+      this.editClientDialog = false;
+      this.$emit("closeDialog", this.editClientDialog);
     },
   },
 };
