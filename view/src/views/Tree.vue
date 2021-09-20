@@ -77,6 +77,11 @@
           </tree>
         </v-col>
       </v-row>
+      <AddClient
+        :addClientDialog="addClientDialog"
+        :projectId="userProjectId"
+        @addClient="addClient"
+      />
       <v-dialog persistent v-model="addIssueDialog" width="700">
         <v-card>
           <v-card-title class="text-h4 lighten-2">
@@ -420,6 +425,7 @@
 </template>
 
 <script>
+import AddClient from "@/components/Tree/AddClient.vue";
 import { tree } from "vued3tree";
 import axios from "axios";
 let currentId = 500;
@@ -481,6 +487,9 @@ export default {
       // Node
       newNode: [],
       // Dialog
+      addClientDialog: false,
+      editClientDialog: false,
+      deleteClientDialog: false,
       addIssueDialog: false,
       deleteIssueDialog: false,
       issueDetailsDialog: false,
@@ -531,6 +540,7 @@ export default {
   },
   components: {
     tree,
+    AddClient,
   },
   mounted() {
     const url = process.env.VUE_APP_URL;
@@ -677,6 +687,9 @@ export default {
       } else if (!data.children[0].children) {
         this.addIssueDialog = true;
         console.log(this.issueId);
+      } else {
+        console.log(this.userProjectId);
+        this.addClientDialog = true;
       }
     },
     onClickNode(evt) {
@@ -707,6 +720,10 @@ export default {
     remove(data, node) {
       const parent = node.parent.data;
       removeElement(parent.children, data);
+    },
+    addClient: function () {
+      this.selectProject();
+      this.addClientDialog = false;
     },
     addIssue: function () {
       const url = process.env.VUE_APP_URL;

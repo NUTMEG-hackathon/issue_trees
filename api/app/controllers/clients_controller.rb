@@ -23,16 +23,18 @@ class ClientsController < ApplicationController
   # POST /clients or /clients.json
   def create
     @client = Client.new(client_params)
+    @client.save
+    render json: @client
 
-    respond_to do |format|
-      if @client.save
-        format.html { redirect_to @client, notice: "Client was successfully created." }
-        format.json { render :show, status: :created, location: @client }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @client.errors, status: :unprocessable_entity }
-      end
-    end
+    # respond_to do |format|
+    #   if @client.save
+    #     format.html { redirect_to @client, notice: "Client was successfully created." }
+    #     format.json { render :show, status: :created, location: @client }
+    #   else
+    #     format.html { render :new, status: :unprocessable_entity }
+    #     format.json { render json: @client.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # PATCH/PUT /clients/1 or /clients/1.json
