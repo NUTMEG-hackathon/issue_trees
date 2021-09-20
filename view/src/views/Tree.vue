@@ -81,6 +81,15 @@
         :addClientDialog="addClientDialog"
         :projectId="userProjectId"
         @addClient="addClient"
+        @closeDialog="closeAddClientDialog"
+      />
+      <EditClient
+        :editClientDialog="editClientDialog"
+        :clientName="clientName"
+        :projectId="userProjectId"
+        :clientId="clientId"
+        @editClient="editClient"
+        @changeClientDialog="changeClientDialog"
       />
       <v-dialog persistent v-model="addIssueDialog" width="700">
         <v-card>
@@ -89,6 +98,11 @@
               <v-col cols="3" />
               <v-col cols="6" class="my-3 light-green--text">
                 Add issues
+              </v-col>
+              <v-col cols="1" class="text-end my-3">
+                <v-btn text @click="changeClientDialog()">
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
               </v-col>
               <v-col cols="2" class="text-end my-3">
                 <v-btn text @click="addIssueDialog = false">
@@ -201,7 +215,7 @@
                 >issue details
               </v-col>
               <v-col cols="1" class="text-end my-3">
-                <v-btn text @click="changeDialog()">
+                <v-btn text @click="changeIssueDialog()">
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
               </v-col>
@@ -316,7 +330,7 @@
                 Edit issue details
               </v-col>
               <v-col cols="1" class="text-end my-3">
-                <v-btn text @click="changeDialog()">
+                <v-btn text @click="changeIssueDialog()">
                   <v-icon>mdi-arrow-left-top</v-icon>
                 </v-btn>
               </v-col>
@@ -426,6 +440,7 @@
 
 <script>
 import AddClient from "@/components/Tree/AddClient.vue";
+import EditClient from "@/components/Tree/EditClient.vue";
 import { tree } from "vued3tree";
 import axios from "axios";
 let currentId = 500;
@@ -508,6 +523,8 @@ export default {
       projects: [],
       // client
       clients: [],
+      clientId: [],
+      clientName: [],
       // issue
       issue: [],
       issues: [],
@@ -541,6 +558,7 @@ export default {
   components: {
     tree,
     AddClient,
+    EditClient,
   },
   mounted() {
     const url = process.env.VUE_APP_URL;
@@ -617,6 +635,10 @@ export default {
       this.issueUserId = data.user_id;
       this.issueDescription = data.description;
       this.issueLevel = data.level;
+      this.clientId = data.client_id;
+      if (this.clientId) {
+        this.clientName = data.name;
+      }
       if (!this.isChildNode) {
         this.issueDetailsDialog = true;
         this.editIssueDetailsDialog = false;
@@ -686,10 +708,12 @@ export default {
           });
       } else if (!data.children[0].children) {
         this.addIssueDialog = true;
-        console.log(this.issueId);
       } else {
         console.log(this.userProjectId);
         this.addClientDialog = true;
+      }
+      if (this.editClientDialog) {
+        this.editClientDialog = false;
       }
     },
     onClickNode(evt) {
@@ -723,7 +747,14 @@ export default {
     },
     addClient: function () {
       this.selectProject();
-      this.addClientDialog = false;
+    },
+    closeAddClientDialog: function (dialog) {
+      this.addClientDialog = dialog;
+    },
+    editClient: function () {
+      this.selectProject();
+      this.edidClientDialog = false;
+      this.addIssueDialog = false;
     },
     addIssue: function () {
       const url = process.env.VUE_APP_URL;
@@ -852,7 +883,16 @@ export default {
       await this.getIssues();
       await this.setTree();
     },
-    changeDialog: function () {
+    changeClientDialog: function () {
+      if (this.addIssueDialog && !this.editClientDialog) {
+        this.addIssueDialog = false;
+        this.editClientDialog = true;
+      } else if (!this.addIssueDialog && this.editClientDialog) {
+        this.addIssueDialog = true;
+        this.editClientDialog = false;
+      }
+    },
+    changeIssueDialog: function () {
       if (this.issueDetailsDialog == true) {
         this.issueDetailsDialog = false;
         this.editIssueDetailsDialog = true;
