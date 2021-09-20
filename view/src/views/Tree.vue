@@ -708,15 +708,15 @@ export default {
           .then((response) => {
             this.issueSkillIds = response.data;
           });
-      } else if (!data.children[0].children) {
+      } else if (this.clientId) {
         this.addIssueDialog = true;
       } else {
-        console.log(this.userProjectId);
         this.addClientDialog = true;
       }
       if (this.editClientDialog) {
         this.editClientDialog = false;
       }
+      console.log(this.event);
     },
     onClickNode(evt) {
       this.onEvent("clickedNode", evt);
@@ -729,7 +729,7 @@ export default {
     },
     onEvent(eventName, data) {
       this.events.push({ eventName, data: data.data });
-      if (this.events[0].data.children === undefined) {
+      if (this.events[0].data.issue_id) {
         this.isChildNode = false;
       } else {
         this.isChildNode = true;
