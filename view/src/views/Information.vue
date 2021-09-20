@@ -461,7 +461,6 @@ export default {
       this.uname=uname
       this.uemail=uemail
       this.$refs.edit1dialog.edit1 = true
-
     },
   },
 };
