@@ -20,12 +20,12 @@
             <v-row>
               <v-col cols="1" />
               <v-col cols="10">
-                <v-text class="text-left"> Nodeの大きさ:{{ radius }}px </v-text>
+                <v-text> Nodeの大きさ：{{ radius }}px </v-text>
                 <v-form>
                   <v-slider v-model="radius" :max="10" step="1" outlined />
                 </v-form>
                 <br />
-                <v-text class="text-left"> Tree Layout </v-text>
+                <v-text> Tree Layout </v-text>
                 <v-form>
                   <v-select
                     v-model="layoutType"
@@ -34,7 +34,7 @@
                   />
                 </v-form>
                 <br />
-                <v-text class="text-left"> Tree Link Layout </v-text>
+                <v-text> Tree Link Layout </v-text>
                 <v-select
                   v-model="linkLayout"
                   :items="linkLayouts"
@@ -59,23 +59,22 @@
           </div>
         </v-col>
         <v-col cols="8">
-          <div class="panel panel-default">
-            <tree
-              ref="tree"
-              :identifier="getId"
-              :data="tree"
-              :radius="radius"
-              :layout-type="layoutType"
-              :linkLayout="linkLayout"
-              contextMenuPlacement="bottom-start"
-              class="tree"
-              @clickedText="onClick"
-              @expand="onExpand"
-              @retract="onRetract"
-              @clickedNode="onClickNode"
-            >
-            </tree>
-          </div>
+          <tree
+            ref="tree"
+            :identifier="getId"
+            :data="tree"
+            :radius="radius"
+            :layout-type="layoutType"
+            :linkLayout="linkLayout"
+            contextMenuPlacement="bottom-start"
+            class="tree"
+            v-bind:style="{ 'font-size': fontSize + 'px' }"
+            @clickedText="onClick"
+            @expand="onExpand"
+            @retract="onRetract"
+            @clickedNode="onClickNode"
+          >
+          </tree>
         </v-col>
       </v-row>
       <v-dialog persistent v-model="addIssueDialog" width="700">
@@ -913,8 +912,11 @@ export default {
 .text {
   font-size: 30px;
 }
+.treeclass .nodetree text {
+  font-size: 15px;
+  cursor: pointer;
+}
 .tree {
-  font-size: 10px;
   height: 500px;
 }
 .graph-root {
