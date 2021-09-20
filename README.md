@@ -1,14 +1,20 @@
-# efficientree
+# 概要
+「プロジェクト管理とタスク管理をもっと簡単に！」をコンセプトに、ツリー構造でプロジェクトを簡単に管理し、自分の持ってるタスク一覧を確認できるWebアプリ。
 
-## ローカルで開発するための手順
-1. `git clone git@github.com:NUTMEG-hackathon/issue_trees.git`
-2. `docker-compose build`
-3. `docker-compose run --rm api bundle install`
-4. `docker-compose run --rm view npm install`
-5. `docker-compose run --rm api rails db:create`
-6. `docker-compose run --rm api rails db:migrate` \
-これらのコマンドを実行する
+# 背景・目的
+プロジェクトが大規模になる・複数のプロジェクトに関わる ことで、
+- プロジェクトの全体像が分からない
+- だれがどのプロジェクトに関わってるか管理しきれない
+- だれがどの技術スタックがあるか、把握しきれない
+- 自分の持っているタスクを把握しきれない  
 
-## 環境構築できているか確認する
-`docker-ccompose up`をターミナル上で実行して、\
-Webブラウザから`localhost:3000`でRailsの画面、`localhost:8080`でVueの画面が表示されればOK
+などの問題が発生する。  
+そこで、ツリー構造によってプロジェクトの全体像を把握することと、自分の持っているタスクを確認できるようにした。  
+これによって、プロジェクト管理をこれまでより簡単にできるようになり、より多くのプロジェクトを管理できるようになる。  
+
+
+# 使い方
+
+
+# モデル図
+![image](https://user-images.githubusercontent.com/71711872/133971611-29b2d691-0b9f-4afd-8bc1-30074f681e4f.png)
