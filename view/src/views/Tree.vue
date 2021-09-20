@@ -89,7 +89,9 @@
         :projectId="userProjectId"
         :clientId="clientId"
         @editClient="editClient"
+        @deleteClient="deleteClient"
         @changeClientDialog="changeClientDialog"
+        @closeDialog="closeEditClientDialog"
       />
       <v-dialog persistent v-model="addIssueDialog" width="700">
         <v-card>
@@ -749,9 +751,19 @@ export default {
       this.selectProject();
     },
     closeAddClientDialog: function (dialog) {
+      this.selectProject();
       this.addClientDialog = dialog;
     },
+    closeEditClientDialog: function (dialog) {
+      this.selectProject();
+      this.editClientDialog = dialog;
+    },
     editClient: function () {
+      this.selectProject();
+      this.edidClientDialog = false;
+      this.addIssueDialog = false;
+    },
+    deleteClient: function () {
       this.selectProject();
       this.edidClientDialog = false;
       this.addIssueDialog = false;
