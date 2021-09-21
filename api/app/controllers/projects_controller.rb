@@ -9,11 +9,15 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1 or /projects/1.json
   def show
+    @project = Project.find(params[:id])
+    render json: @project
   end
 
   # GET /projects/new
   def new
     @project = Project.new
+    client = @project.build_client
+    client.issues.build
   end
 
   # GET /projects/1/edit
@@ -22,8 +26,8 @@ class ProjectsController < ApplicationController
 
   # POST /projects or /projects.json
   def create
-    @project = Project.new(project_params)
-
+    #@project = Project.new(project_params)
+    @project = Project.create(project_params)
     respond_to do |format|
       if @project.save
         format.html { redirect_to @project, notice: "Project was successfully created." }
@@ -37,15 +41,8 @@ class ProjectsController < ApplicationController
 
   # PATCH/PUT /projects/1 or /projects/1.json
   def update
-    respond_to do |format|
-      if @project.update(project_params)
-        format.html { redirect_to @project, notice: "Project was successfully updated." }
-        format.json { render :show, status: :ok, location: @project }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
-      end
-    end
+    @project.update(project_params)
+    render json: @project
   end
 
   # DELETE /projects/1 or /projects/1.json
