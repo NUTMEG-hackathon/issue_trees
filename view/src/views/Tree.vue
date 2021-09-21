@@ -173,7 +173,7 @@
               <v-card-title class="text-left">
                 <v-icon class="mr-3">mdi-tag-text-outline</v-icon> issue Name
               </v-card-title>
-              <v-text-field v-model="IssueName" label="issue name" solo>
+              <v-text-field v-model="issueName" label="issue name" solo>
               </v-text-field>
               <v-card-title class="text-left">
                 <v-icon class="mr-3">mdi-message-reply-text-outline</v-icon>
@@ -690,17 +690,13 @@ export default {
       const url = process.env.VUE_APP_URL;
       this.event = data;
       this.events = [];
-      this.issueId = data.issue_id;
-      this.issueName = data.name;
-      this.issueClientId = data.client_id;
-      this.issueUserId = data.user_id;
-      this.issueDescription = data.description;
-      this.issueLevel = data.level;
-      this.clientId = data.client_id;
-      if (this.clientId) {
-        this.clientName = data.name;
-      }
       if (!this.isChildNode) {
+        this.issueId = data.issue_id;
+        this.issueName = data.name;
+        this.issueClientId = data.client_id;
+        this.issueUserId = data.user_id;
+        this.issueDescription = data.description;
+        this.issueLevel = data.level;
         this.issueDetailsDialog = true;
         this.editIssueDetailsDialog = false;
 
@@ -767,13 +763,12 @@ export default {
           .then((response) => {
             this.issueSkillIds = response.data;
           });
-      } else if (this.clientId) {
+      } else if (data.client_id) {
+        this.clientId = data.client_id;
+        this.clientName = data.name;
         this.addIssueDialog = true;
       } else {
         this.addClientDialog = true;
-      }
-      if (this.editClientDialog) {
-        this.editClientDialog = false;
       }
     },
     onClickNode(evt) {
@@ -868,7 +863,7 @@ export default {
     addIssue: function () {
       const url = process.env.VUE_APP_URL;
       var params = {
-        name: this.IssueName,
+        name: this.issueName,
         client_id: this.issueClientId,
         user_id: this.issueUser,
         description: this.issueDescription,
@@ -895,7 +890,9 @@ export default {
           console.log(error.response);
         });
       this.addFor(this.event);
+      this.issueName = [];
       this.issueUser = [];
+      this.issueSkillIds = [];
       this.issueSkills = [];
       this.selectProject();
       this.addIssueDialog = false;
