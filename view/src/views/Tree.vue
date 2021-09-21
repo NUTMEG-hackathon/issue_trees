@@ -173,14 +173,14 @@
               <v-card-title class="text-left">
                 <v-icon class="mr-3">mdi-tag-text-outline</v-icon> issue Name
               </v-card-title>
-              <v-text-field v-model="issueName" label="issue name" solo>
+              <v-text-field v-model="addIssueName" label="issue name" solo>
               </v-text-field>
               <v-card-title class="text-left">
                 <v-icon class="mr-3">mdi-message-reply-text-outline</v-icon>
                 issue descriptions
               </v-card-title>
               <v-textarea
-                v-model="issueDescription"
+                v-model="addIssueDescription"
                 label="issue descriptions"
                 solo
                 name="input-7-4"
@@ -190,7 +190,7 @@
               </v-card-title>
               <v-form>
                 <v-select
-                  v-model="issueSkillIds"
+                  v-model="addIssueSkillIds"
                   multiple
                   :reduce="(options) => options.id"
                   key="id"
@@ -210,7 +210,7 @@
               </v-card-title>
               <v-form>
                 <v-select
-                  v-model="issueLevel"
+                  v-model="addIssueLevel"
                   :reduce="(options) => options.id"
                   key="id"
                   label="issue level"
@@ -230,6 +230,7 @@
               </v-card-title>
               <v-form>
                 <v-select
+                  v-model="addIssueUser"
                   :reduce="(options) => options.id"
                   key="id"
                   label="member"
@@ -241,7 +242,6 @@
                   item-text="name"
                   item-value="id"
                   outlined
-                  @change="setUser"
                 />
               </v-form>
               <v-card-actions>
@@ -608,6 +608,13 @@ export default {
       // client_issue
       clientIssue: [],
       clientIssues: [],
+      // add issue
+      addIssueName: [],
+      addIssueDescription: [],
+      addIssueLevel: [],
+      addIssueClientId: [],
+      addIssueUser: [],
+      addIssueSkillIds: [],
       // issue_details
       issueDetails: [],
       issueSkill: [],
@@ -843,11 +850,9 @@ export default {
       this.addClientDialog = false;
     },
     closeAddClientDialog: function () {
-      this.selectProject();
       this.addClientDialog = false;
     },
     closeEditClientDialog: function () {
-      this.selectProject();
       this.editClientDialog = false;
     },
     editClient: function () {
@@ -863,12 +868,12 @@ export default {
     addIssue: function () {
       const url = process.env.VUE_APP_URL;
       var params = {
-        name: this.issueName,
-        client_id: this.issueClientId,
-        user_id: this.issueUser,
-        description: this.issueDescription,
-        level: this.issueLevel,
-        skill_ids: this.issueSkillIds,
+        name: this.addIssueName,
+        client_id: this.clientId,
+        user_id: this.addIssueUser,
+        description: this.addIssueDescription,
+        level: this.addIssueLevel,
+        skill_ids: this.addIssueSkillIds,
       };
       axios.defaults.headers.common["Content-Type"] = "application/json";
       axios
@@ -890,10 +895,11 @@ export default {
           console.log(error.response);
         });
       this.addFor(this.event);
-      this.issueName = [];
-      this.issueUser = [];
-      this.issueSkillIds = [];
-      this.issueSkills = [];
+      this.addIssueName = [];
+      this.addIssueUser = [];
+      this.addIssueDescription = [];
+      this.addIssueLevel = [];
+      this.addIssueSkillIds = [];
       this.selectProject();
       this.addIssueDialog = false;
     },
@@ -1055,9 +1061,6 @@ export default {
       axios.delete(url + "/issues/" + this.issueId);
       this.deleteIssueDialog = false;
       this.selectProject();
-    },
-    setUser: function (event) {
-      this.issueUser = event;
     },
   },
 };
