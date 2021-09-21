@@ -118,18 +118,17 @@
 								<br />
 								<br />
 							</v-form>
-					
-						<br>
-						<v-btn 
-							text 
-							rounded
-							large 
-							color="btn"
-							class="pr-4 font-weight-bold"
-							to = /tree
-							@click="register"
-							>登録
-			</v-btn>
+						<br>						
+					<v-btn 
+						text 
+						rounded
+						large 
+						color="btn"
+						class="pr-4 font-weight-bold"
+						to = /tree
+						@click="register"
+						>登録
+					</v-btn>
 					</v-col>
 				</v-row>
 			</v-container>

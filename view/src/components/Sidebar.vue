@@ -3,7 +3,8 @@
     v-if="
       this.$route.path === '/tree' ||
       this.$route.path === '/information' ||
-      this.$route.path === '/about' 
+      this.$route.path === '/about' ||
+      this.$route.path === '/projectregist'
     "
   >
     <v-container>information
