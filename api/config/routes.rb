@@ -31,9 +31,11 @@ Rails.application.routes.draw do
       get "get_issue_skills/:id" => "issue_skill_api#get_issue_skills"
       get "get_project_client/:id" => "project_client_api#get_project_client"
       get "get_project_user" => "project_user_api#get_project_user"
+      get "get_project_users/:id" => "project_user_api#get_project_users"
       get "get_user_project/:id" => "project_user_api#get_user_project"
       get "get_user_issue" => "user_issue_api#get_user_issue"
       get "get_user_skill" => "user_skill_api#get_user_skills"
+      get "get_user_skill_details/:id" => "user_skill_api#get_user_skill_details"
       get "get_issue_details/:id" => "issue_detail_api#get_issue_detail"
       get "get_issue_user/:id" => "issue_detail_api#get_issue_user"
 

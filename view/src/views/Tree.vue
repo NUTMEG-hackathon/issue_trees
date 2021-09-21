@@ -13,10 +13,10 @@
             @input="selectProject"
           >
           </v-select>
-          <v-card>
-            <v-card-title class="text-h6 justify-center lighten-2"
-              >options</v-card-title
-            >
+          <v-card elevation="5">
+            <v-card-title class="text-h6 justify-center lighten-2">
+              Tree options
+            </v-card-title>
             <v-row>
               <v-col cols="1" />
               <v-col cols="10">
@@ -24,7 +24,12 @@
                 <v-form>
                   <v-slider v-model="radius" :max="10" step="1" outlined />
                 </v-form>
-                <br />
+              </v-col>
+              <v-col cols="1" />
+            </v-row>
+            <v-row>
+              <v-col cols="1" />
+              <v-col cols="5">
                 <v-text> Tree Layout </v-text>
                 <v-form>
                   <v-select
@@ -33,7 +38,8 @@
                     item-text="name"
                   />
                 </v-form>
-                <br />
+              </v-col>
+              <v-col cols="5">
                 <v-text> Tree Link Layout </v-text>
                 <v-select
                   v-model="linkLayout"
@@ -41,6 +47,54 @@
                   item-text="name"
                 >
                 </v-select>
+              </v-col>
+              <v-col cols="1" />
+            </v-row>
+          </v-card>
+          <br />
+          <v-card elevation="5">
+            <v-card-title class="text-h6 justify-center lighten-2">
+              members
+            </v-card-title>
+            <v-row>
+              <v-col cols="1" />
+              <v-col cols="10">
+                <v-row>
+                  <v-col cols="5">
+                    <v-text solo class="text-subtitle-2"> user_name</v-text>
+                  </v-col>
+                  <v-col cols="7">
+                    <v-text solo class="text-subtitle-2"> skill_name </v-text>
+                  </v-col>
+                </v-row>
+                <v-divider />
+                <v-divider />
+                <br />
+                <div
+                  v-for="(user, i) in usersSkills"
+                  :key="i"
+                  item-text="user_name"
+                >
+                  <v-card elevation="0" solo>
+                    <v-row>
+                      <v-col cols="5">
+                        {{ user.user_name }}
+                      </v-col>
+                      <v-col cols="7">
+                        <v-text
+                          solo
+                          v-for="skill in usersSkills[i].skill_names"
+                          :key="skill"
+                          item-text="user_name"
+                        >
+                          {{ skill.skill_name }}
+                        </v-text>
+                      </v-col>
+                    </v-row>
+                    <v-divider />
+                    <br />
+                  </v-card>
+                </div>
               </v-col>
               <v-col cols="1" />
             </v-row>
@@ -521,8 +575,13 @@ export default {
       skillNum: 1,
       // user
       users: [],
+      userSkills: [],
+      usersSkills: [],
+      maxUserSkillNum: 0,
       // project
       projects: [],
+      projectUsers: [],
+      projectUserIds: [],
       // client
       clients: [],
       clientId: [],
@@ -716,7 +775,6 @@ export default {
       if (this.editClientDialog) {
         this.editClientDialog = false;
       }
-      console.log(this.event);
     },
     onClickNode(evt) {
       this.onEvent("clickedNode", evt);
@@ -746,6 +804,44 @@ export default {
     remove(data, node) {
       const parent = node.parent.data;
       removeElement(parent.children, data);
+    },
+    fetchProjectUsers: async function () {
+      var url = process.env.VUE_APP_URL;
+      this.projectUsers = [];
+      this.projectUserIds = [];
+      await axios
+        .get(url + "/api/v1/get_project_users/" + this.userProjectId, {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then((response) => {
+          this.projectUsers = response.data;
+        });
+      for (let i = 0; i < this.projectUsers.length; i++) {
+        this.projectUserIds.push(this.projectUsers[i].user_id);
+      }
+    },
+    fetchUserSkills: async function (user_id) {
+      var url = process.env.VUE_APP_URL;
+      await axios
+        .get(url + "/api/v1/get_user_skill_details/" + user_id, {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then((response) => {
+          this.userSkills = response.data[0];
+          if (this.maxUserSkillNum < this.userSkills.skill_names.length) {
+            this.maxUserSkillNum = this.userSkills.skill_names.length;
+          }
+        });
     },
     addClient: function () {
       this.selectProject();
@@ -894,6 +990,12 @@ export default {
       await this.getClients();
       await this.getIssues();
       await this.setTree();
+      await this.fetchProjectUsers();
+      this.usersSkills = [];
+      for (let i = 0; i < this.projectUserIds.length; i++) {
+        await this.fetchUserSkills(this.projectUserIds[i]);
+        this.usersSkills.push(this.userSkills);
+      }
     },
     changeClientDialog: function () {
       if (this.addIssueDialog && !this.editClientDialog) {

@@ -18,6 +18,21 @@ class Api::V1::ProjectUserApiController < ApplicationController
     render json:projects
   end
 
+  def get_project_users
+    @project= Project.find(params[:id])
+    users = @project.users
+    project_users = []
+    for project_user in users
+      user_id = project_user.id
+      name = project_user.name
+      project_users <<{
+        user_id: user_id,
+        name:name,
+    }
+    end
+    render json: project_users
+  end
+
   def get_user_project
     @project= Project.find(params[:id])
     user_project = []
