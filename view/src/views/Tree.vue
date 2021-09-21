@@ -56,36 +56,45 @@
             <v-card-title class="text-h6 justify-center lighten-2">
               members
             </v-card-title>
-            {{ maxUserSkillNum }}
             <v-row>
               <v-col cols="1" />
               <v-col cols="10">
-                <v-simple-table fixed-header height="300px">
-                  <template v-slot:default>
-                    <thead>
-                      <tr>
-                        <th class="text-center">Name</th>
-                        <th class="text-center" :colspan="maxUserSkillNum">
-                          Skills
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr
-                        v-for="(user, index) in usersSkills"
-                        :key="user.user_name"
-                      >
-                        <td>{{ user.user_name }}</td>
-                        <td
-                          v-for="skill in usersSkills[index].skill_names"
-                          :key="skill.skill_name"
+                <v-row>
+                  <v-col cols="5">
+                    <v-text solo class="text-subtitle-2"> user_name</v-text>
+                  </v-col>
+                  <v-col cols="7">
+                    <v-text solo class="text-subtitle-2"> skill_name </v-text>
+                  </v-col>
+                </v-row>
+                <v-divider />
+                <v-divider />
+                <br />
+                <div
+                  v-for="(user, i) in usersSkills"
+                  :key="i"
+                  item-text="user_name"
+                >
+                  <v-card elevation="0" solo>
+                    <v-row>
+                      <v-col cols="5">
+                        {{ user.user_name }}
+                      </v-col>
+                      <v-col cols="7">
+                        <v-text
+                          solo
+                          v-for="skill in usersSkills[i].skill_names"
+                          :key="skill"
+                          item-text="user_name"
                         >
                           {{ skill.skill_name }}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </template>
-                </v-simple-table>
+                        </v-text>
+                      </v-col>
+                    </v-row>
+                    <v-divider />
+                    <br />
+                  </v-card>
+                </div>
               </v-col>
               <v-col cols="1" />
             </v-row>
@@ -798,6 +807,7 @@ export default {
     },
     fetchProjectUsers: async function () {
       var url = process.env.VUE_APP_URL;
+      this.projectUsers = [];
       this.projectUserIds = [];
       await axios
         .get(url + "/api/v1/get_project_users/" + this.userProjectId, {
@@ -981,6 +991,7 @@ export default {
       await this.getIssues();
       await this.setTree();
       await this.fetchProjectUsers();
+      this.usersSkills = [];
       for (let i = 0; i < this.projectUserIds.length; i++) {
         await this.fetchUserSkills(this.projectUserIds[i]);
         this.usersSkills.push(this.userSkills);
