@@ -3,23 +3,30 @@
     v-if="
       this.$route.path === '/tree' ||
       this.$route.path === '/information' ||
-      this.$route.path === '/about'
+      this.$route.path === '/about' ||
+      this.$route.path === '/projectregist'
     "
   >
-    <v-container>
+    <v-container>information
       <v-navigation-drawer fixed permanent clipped app color="#FFF">
         <v-sheet>
           <v-list>
-            <v-list-item @click="dialog = true" class="font-weight-bold py-1">
+            <v-list-item to= /tree class="font-weight-bold py-1">
+              <v-icon class="pr-3" color="#7da453"> mdi-family-tree </v-icon>
+                ProjectTree
+            </v-list-item>
+            <v-list-item class="font-weight-bold py-1">
+              <v-icon class="pr-3" color="#7da453"> mdi-account </v-icon>
+                AllUser
+            </v-list-item>
+            <v-list-item to=/projectregist class="font-weight-bold py-1">
               <v-icon class="pr-3" color="#7da453">
                 mdi-text-box-plus-outline
               </v-icon>
               Add Project
             </v-list-item>
-            <v-list-item class="font-weight-bold py-1">
-              <v-icon class="pr-3" color="#7da453"> mdi-account </v-icon>
-              Member
-            </v-list-item>
+            
+            
           </v-list>
         </v-sheet>
       </v-navigation-drawer>
@@ -32,7 +39,7 @@
           >
           <v-container class="justify-content-center">
             <v-card-title class="text-h5 justify-center"
-              >puroject名</v-card-title
+              >project名</v-card-title
             >
             <v-row>
               <v-col cols="2"></v-col>
@@ -100,6 +107,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      i : 0,
       dialog: false,
       member: [
         { id: 1, name: "yushiro" },
@@ -113,7 +121,7 @@ export default {
     };
   },
   mounted() {
-    const url = process.env.VUE_APP_URL + "/api/v1/users/show";
+    const url = process.env.VUE_APP_URL + "/api/v1/users/index";
     axios
       .get(url, {
         headers: {

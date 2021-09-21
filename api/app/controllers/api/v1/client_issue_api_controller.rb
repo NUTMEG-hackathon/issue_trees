@@ -6,11 +6,19 @@ class Api::V1::ClientIssueApiController < ApplicationController
     issues = @client.issues
     clientissues = []
     for issue in issues do
+      id = issue.id
       name = issue.name
+      client_id = issue.client_id
+      user_id = issue.user_id
       description = issue.description
+      level = issue.level
       clientissues<< {
+        id: id,
         name: name,
-        description: description
+        client_id: client_id,
+        user_id: user_id,
+        description: description,
+        level: level
       }
     end
     render json:clientissues

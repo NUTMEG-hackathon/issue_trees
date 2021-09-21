@@ -48,5 +48,10 @@ ProjectUser.seed( :id,
   id:10,
   user_id:5,
   project_id:2
+},
+{
+  id:11,
+  user_id:1,
+  project_id:3
 }
 )

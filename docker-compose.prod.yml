@@ -1,0 +1,65 @@
+version: "3"
+services:
+  db:
+    image: mysql:8.0
+    container_name: "efficientree-DB"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mysql-data:/var/lib/mysql
+    tty: true
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile_prod
+    container_name: "efficientree-API"
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec pumactl start"
+    volumes:
+      - ./api:/myapp
+      - ./certs:/certs
+    ports:
+      - "3000:9292"
+    environment:
+      RAILS_ENV: production
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+
+  view:
+    build:
+      context: ./view
+      dockerfile: Dockerfile_prod
+    container_name: "efficientree-VIEW"
+    volumes:
+      - ./view:/app
+
+  https-portal:
+    image: steveltn/https-portal:1
+    container_name: 'https-portal'
+    ports:
+      - '80:80'
+      - '443:443'
+    links:
+      - api
+    environment:
+      DOMAINS: ' efficientree.o2srv.net  , efficientree-api.o2srv.net -> http://api:3000'
+      STAGE: 'production' # Don't use production until staging works
+      #FORCE_RENEW: 'true'
+    volumes:
+      - ./certs:/var/lib/https-portal
+      - ./view/dist:/var/www/vhosts/efficientree.o2srv.net
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # - ./nginx/efficientree.o2srv.net.conf.erb:/var/lib/nginx-conf/efficientree.o2srv.net.conf.erb:ro
+      # - ./nginx/efficientree.o2srv.net.ssl.conf.erb:/var/lib/nginx-conf/efficientree.o2srv.net.ssl.conf.erb:ro
+
+volumes:
+  mysql-data:
+    driver: local
+  html:
+  vhost:
+  dhparam:

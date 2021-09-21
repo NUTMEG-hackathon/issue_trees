@@ -7,12 +7,14 @@
     "
   >
     <v-container>
-      <v-app-bar app color="#91BA58" dark clipped-left>
-        <v-row>
-          <v-col cols="11"></v-col>
-          <v-col cols="1">
+      <v-app-bar app color="#91BA58" dark clipped-left> 
+              <v-btn x-large to = "/tree" fab text v-bind="attrs" v-on="on">
+                 <v-icon large >mdi-family-tree</v-icon>        
+              </v-btn>
+              <v-spacer>
+              </v-spacer>
             <v-menu open-on-hover offset-y>
-              <template v-slot:activator="{ on, attrs }">
+              <template v-slot:activator="{ on, attrs }">  
                 <v-btn x-large fab text v-bind="attrs" v-on="on">
                   <v-icon large>mdi-account-circle</v-icon>
                 </v-btn>
@@ -47,8 +49,6 @@
                 </v-list-item>
               </v-list>
             </v-menu>
-          </v-col>
-        </v-row>
       </v-app-bar>
 
       <v-dialog v-model="logout" max-width="600">
@@ -62,8 +62,7 @@
               <v-layout align-center justify-center>
                 <v-spacer />
                 <v-btn class="error" flat @click="logout = false"
-                  >取り消し</v-btn
-                >
+                  >取り消し</v-btn>
                 <v-spacer />
                 <v-btn class="primary" flat @click="ok">決定</v-btn>
                 <v-spacer />
@@ -102,8 +101,9 @@ export default {
   },
   methods: {
     ok: function () {
+      const url = process.env.VUE_APP_URL + "/api/auth/sign_out";
       axios
-        .delete("http://localhost:3000/api/auth/sign_out", {
+        .delete(url, {
           headers: {
             "Content-Type": "application/json",
             "access-token": localStorage.getItem("access-token"),

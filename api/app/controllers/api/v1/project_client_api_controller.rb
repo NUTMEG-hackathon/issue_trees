@@ -6,8 +6,10 @@ class Api::V1::ProjectClientApiController < ApplicationController
     clients = @project.clients
     projectclients = []
     for client in clients do
+      client_id = client.id
       name = client.name
       projectclients<< {
+        client_id: client_id,
         name: name
       }
     end

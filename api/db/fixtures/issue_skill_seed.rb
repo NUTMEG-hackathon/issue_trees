@@ -48,5 +48,10 @@ IssueSkill.seed(:id,
   id:10,
   issue_id: 10,
   skill_id: 2
+},
+{
+  id:11,
+  issue_id: 1,
+  skill_id: 2
 }
 )

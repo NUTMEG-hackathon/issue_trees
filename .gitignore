@@ -3,6 +3,8 @@
 /api/tmp
 .DS_Store
 /view/dist
+# certs
+/certs/
 
 # Log files
 /view/npm-debug.log*
