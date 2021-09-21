@@ -9,6 +9,8 @@ class ClientsController < ApplicationController
 
   # GET /clients/1 or /clients/1.json
   def show
+    @client = Client.find(params[:id])
+    render json: @client
   end
 
   # GET /clients/new
@@ -37,15 +39,18 @@ class ClientsController < ApplicationController
 
   # PATCH/PUT /clients/1 or /clients/1.json
   def update
-    respond_to do |format|
-      if @client.update(client_params)
-        format.html { redirect_to @client, notice: "Client was successfully updated." }
-        format.json { render :show, status: :ok, location: @client }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @client.errors, status: :unprocessable_entity }
-      end
-    end
+    @client.update(client_params)
+    render json: @client
+
+    # respond_to do |format|
+    #   if @client.update(client_params)
+    #     format.html { redirect_to @client, notice: "Client was successfully updated." }
+    #     format.json { render :show, status: :ok, location: @client }
+    #   else
+    #     format.html { render :edit, status: :unprocessable_entity }
+    #     format.json { render json: @client.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # DELETE /clients/1 or /clients/1.json
