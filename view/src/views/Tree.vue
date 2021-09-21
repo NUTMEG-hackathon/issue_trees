@@ -845,23 +845,24 @@ export default {
     },
     addClient: function () {
       this.selectProject();
+      this.addClientDialog = false;
     },
-    closeAddClientDialog: function (dialog) {
+    closeAddClientDialog: function () {
       this.selectProject();
-      this.addClientDialog = dialog;
+      this.addClientDialog = false;
     },
-    closeEditClientDialog: function (dialog) {
+    closeEditClientDialog: function () {
       this.selectProject();
-      this.editClientDialog = dialog;
+      this.editClientDialog = false;
     },
     editClient: function () {
       this.selectProject();
-      this.edidClientDialog = false;
+      this.editClientDialog = false;
       this.addIssueDialog = false;
     },
     deleteClient: function () {
       this.selectProject();
-      this.edidClientDialog = false;
+      this.editClientDialog = false;
       this.addIssueDialog = false;
     },
     addIssue: function () {

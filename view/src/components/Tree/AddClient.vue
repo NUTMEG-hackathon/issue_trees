@@ -79,10 +79,11 @@ export default {
           console.log(error.response);
         });
       await this.$emit("addClient");
+      this.clientName = [];
     },
     closeDialog: function () {
       this.addClientDialog = false;
-      this.$emit("closeDialog", this.addClientDialog);
+      this.$emit("closeDialog");
     },
   },
 };
