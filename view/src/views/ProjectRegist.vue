@@ -287,6 +287,7 @@ methods : {
 					}
 				await this.addClient(clientparams);
 
+			if(i==1){
 				for(let j =0; j < this.issueNum1; j++){
 					if (j==0){
 						var issueparams11 ={
@@ -339,6 +340,8 @@ methods : {
 						await this.addIssue(issueparams15)
 					}
 				}
+			}
+			else if(i == 2){ 
 				for(let j =0; j < this.issueNum2; j++){
 					if (j==0){
 						var issueparams21 ={
@@ -391,6 +394,8 @@ methods : {
 						await this.addIssue(issueparams25)
 					}
 				}
+			}
+			else if (i==3){
 				for(let j =0; j < this.issueNum3; j++){
 					if (j==0){
 						var issueparams31 ={
@@ -443,6 +448,8 @@ methods : {
 						await this.addIssue(issueparams35)
 					}
 				}
+			}
+			else if (i==4){
 				for(let j =0; j < this.issueNum4; j++){
 					if (j==0){
 						var issueparams41 ={
@@ -495,6 +502,8 @@ methods : {
 						await this.addIssue(issueparams45)
 					}
 				}
+			}
+			else if(i==5){
 				for(let j =0; j < this.issueNum5; j++){
 					if (j==0){
 						var issueparams51 ={
@@ -547,6 +556,7 @@ methods : {
 						await this.addIssue(issueparams55)
 					}
 				}
+			}
 		}
 	},
 
