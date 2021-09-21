@@ -126,6 +126,7 @@
 							large 
 							color="btn"
 							class="pr-4 font-weight-bold"
+							to = /tree
 							@click="register"
 							>登録
 			</v-btn>
