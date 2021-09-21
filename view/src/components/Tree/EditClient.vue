@@ -11,7 +11,7 @@
             </v-btn>
           </v-col>
           <v-col cols="2" class="text-end my-3">
-            <v-btn text @click="editClientDialog = false">
+            <v-btn text @click="closeDialog()">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-col>
@@ -90,13 +90,14 @@ export default {
       console.log(this.clientId);
       axios.delete(url + "/clients/" + this.clientId);
       this.editClientDialog = false;
+      this.$emit("deleteClient");
     },
     changeClientDialog: function () {
       this.$emit("changeClientDialog");
     },
     closeDialog: function () {
       this.editClientDialog = false;
-      this.$emit("closeDialog", this.editClientDialog);
+      this.$emit("closeDialog");
     },
   },
 };
