@@ -90,6 +90,7 @@ export default {
       console.log(this.clientId);
       axios.delete(url + "/clients/" + this.clientId);
       this.editClientDialog = false;
+      this.$emit("deleteClient");
     },
     changeClientDialog: function () {
       this.$emit("changeClientDialog");
