@@ -2,12 +2,12 @@
 	<div id="app" class="container-fluid">
     <div class="panel panel-default">
 			<v-btn @click="displayUsers">
-				うんち
+				ボタン
 			</v-btn>
-			<v-card v-for="(user, i) in users" :key=i>
-				{{ users.length }}
+			<!-- <v-card v-for="(user, i) in users" :key=i>
+				{{ this.userName }}
 				{{ userSkills.skillnames }}
-			</v-card>
+			</v-card> -->
 			<br />
 		</div>
 	</div>
@@ -20,6 +20,8 @@ export default {
 		return{
 			users: [],
 			user:[],
+			userDetails: [],
+			tmpUserDetails:[],
 			userSkills: [],
 			skillName: [],
 			projectName: [],
@@ -29,12 +31,12 @@ export default {
 		}
 	},
 	methods :{
-		displayUsers: async function(){
-			for(let i=0 ;i < this.users.length; i++){
-				this.user.push(this.users[i])
-			}
-			this.fetchUserSkills(1);
-		},
+		// displayUsers: async function(){
+		// 	for(let i=0 ;i < this.users.length; i++){
+		// 		this.user.push(this.users[i])
+		// 	}
+		// 	this.fetchUserSkills(1);
+		// },
 		
 		// fetchUserSkills: async function (user_id) {
     //   var url = process.env.VUE_APP_URL;
@@ -91,23 +93,41 @@ export default {
 				this.userLength = (response.data.length)
 				console.log(response.data)
 				for(let i =0; i < this.userLength; i++){
+					this.projectName =[]
+					this.skillName =[]
+					this.tmpUserDetails=[]
 					this.projectLength = response.data[i].projects.length
 					this.skillLength = response.data[i].skills.length
 					this.userName = response.data[i].user_name
-					this.userName += " "
 					console.log(this.userName)
 					for(let j =0; j < this.projectLength; j++ ){
-						this.projectName = response.data[i].projects[j].project_name
-						this.projectName += " " 
-						console.log(this.projectName)
+						if(j != this.projectLength -1 ){
+							this.projectName += response.data[i].projects[j].project_name
+							this.projectName += ", " 
+						}
+						else{
+							this.projectName += response.data[i].projects[j].project_name
+						}
 					}
+					console.log(this.projectName)
 					for(let k=0; k < this.skillLength; k++){
-						this.skillName = response.data[i].skills[k].skill_name
-						this.skillName += " "
-						console.log(this.skillName)
+						if(k != this.skillLength-1){
+							this.skillName += response.data[i].skills[k].skill_name
+							this.skillName += ", "
+						}
+						else{
+							this.skillName += response.data[i].skills[k].skill_name
+						}
 					}
+					console.log(this.skillName)
+					this.tmpUserDetails.push(this.userName)
+					this.tmpUserDetails.push(this.projectName)
+					this.tmpUserDetails.push(this.skillName)
+					this.userDetails.push(this.tmpUserDetails)
 				}
-		});
+				console.log(this.userDetails)
+			}
+		);
 	},
 };
 
