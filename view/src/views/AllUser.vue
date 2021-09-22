@@ -1,24 +1,30 @@
 <template>
 	<div id="app" class="container-fluid">
-    <div class="panel panel-default">
-			<v-data-table
-				:headers="headers"
-				:items="this.userDetails"
-				:items-per-page="5"
-				:search="search"
-				class="elevation-1"
-			>
-			<template v-slot:top>
-				<v-text-field
-				v-model="search"
-				label="Search (UPPER CASE ONLY)"
-				class="mx-4"
-				></v-text-field>
-			</template>
-			
-			</v-data-table>
-			<br />
-		</div>
+		<div class="panel panel-default">
+		<h1 style="color:#333333">ALL User information</h1>
+		<v-row>
+			<v-col cols ="1" />
+				<v-col cols = "9" >
+					<v-data-table
+						:headers="headers"
+						:items="this.userDetails"
+						:items-per-page="10"
+						:search="search"
+					
+					>
+						<template v-slot:top>
+							<v-text-field
+							append-icon="mdi-magnify"
+							v-model="search"
+							label="Search"
+							class="mx-1"
+							></v-text-field>
+						</template>
+					</v-data-table>
+				</v-col>
+			<v-col cols ="1" />
+		</v-row>				
+	</div>
 	</div>
 </template>
 
@@ -28,6 +34,7 @@ import axios from 'axios'
 export default {
 	data() {
 		return{
+			search: '',
 			users: [],
 			user:[],
 			userDetails: [],
@@ -44,55 +51,29 @@ export default {
 					text: 'Username',
 					align: 'start',
 					sortable: 'false',
-					value: 'user_name'
+					value: 'user_name',
+					width: `15%`
 				},
 				{
 					text: 'Userskills',
 					align: 'start',
 					sortable: 'false',
-					value: 'skills'
+					value: 'skills',
+					width: `25%`
 				},
 				{
 					text: 'Userproject',
 					align: 'start',
 					sortable: 'false',
-					value: 'projects'
+					value: 'projects',
+					width: `60%`
 				}
 
 			]
 		}
 	},
 	methods :{
-		// displayUsers: async function(){
-		// 	for(let i=0 ;i < this.users.length; i++){
-		// 		this.user.push(this.users[i])
-		// 	}
-		// 	this.fetchUserSkills(1);
-		// },
 		
-		// fetchUserSkills: async function (user_id) {
-    //   var url = process.env.VUE_APP_URL;
-		// 	this.skillName = "";
-    //   await axios
-    //     .get(url + "/api/v1/get_user_skill_details/" + user_id, {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         "access-token": localStorage.getItem("access-token"),
-    //         client: localStorage.getItem("client"),
-    //         uid: localStorage.getItem("uid"),
-    //       },
-    //     })
-    //     .then((response) => {
-    //       this.userSkills = response.data[0];
-		// 			console.log(this.userSkills.skill_names);
-		// 			for(let i = 0; i < this.userSkills.skill_names.length; i++){
-		// 				this.skillName += this.userSkills.skill_names[i].skill_name;
-		// 				this.skillName += " "
-		// 			}
-		// 			this.userSkills.skillnames = this.skillName;
-		// 			console.log(this.userSkills.skillnames);
-    //     });
-    // },
 	},
 	mounted() {
 		const url = process.env.VUE_APP_URL + "/api/v1/users/index";
@@ -107,7 +88,6 @@ export default {
 			})
 			.then((response) => {
 				this.users = response.data.data;
-				// console.log(this.users)
 		});
 
 		const userurl = process.env.VUE_APP_URL + "/api/v1/get_details";
@@ -121,44 +101,8 @@ export default {
 				},
 			})
 			.then((response) => {
-				// console.log(response.data.length)
-				// this.userLength = (response.data.length)
 				console.log(response.data)
 				this.userDetails = response.data
-			// 	for(let i =0; i < this.userLength; i++){
-			// 		this.projectName =[]
-			// 		this.skillName =[]
-			// 		this.tmpUserDetails=[]
-			// 		this.projectLength = response.data[i].projects.length
-			// 		this.skillLength = response.data[i].skills.length
-			// 		this.userName = response.data[i].user_name
-			// 		console.log(this.userName)
-			// 		for(let j =0; j < this.projectLength; j++ ){
-			// 			if(j != this.projectLength -1 ){
-			// 				this.projectName += response.data[i].projects[j].project_name
-			// 				this.projectName += ", " 
-			// 			}
-			// 			else{
-			// 				this.projectName += response.data[i].projects[j].project_name
-			// 			}
-			// 		}
-			// 		console.log(this.projectName)
-			// 		for(let k=0; k < this.skillLength; k++){
-			// 			if(k != this.skillLength-1){
-			// 				this.skillName += response.data[i].skills[k].skill_name
-			// 				this.skillName += ", "
-			// 			}
-			// 			else{
-			// 				this.skillName += response.data[i].skills[k].skill_name
-			// 			}
-			// 		}
-			// 		console.log(this.skillName)
-			// 		this.tmpUserDetails.push(this.userName)
-			// 		this.tmpUserDetails.push(this.projectName)
-			// 		this.tmpUserDetails.push(this.skillName)
-			// 		this.userDetails.push(this.tmpUserDetails)
-			// 	}
-			// 	console.log(this.userDetails)
 			}
 		);
 	},

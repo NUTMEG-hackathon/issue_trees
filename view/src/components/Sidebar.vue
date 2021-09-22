@@ -18,7 +18,7 @@
             </v-list-item>
             <v-list-item to=/alluser class="font-weight-bold py-1">
               <v-icon class="pr-3" color="#7da453"> mdi-account </v-icon>
-                AllUser
+                All User Information
             </v-list-item>
             <v-list-item to=/projectregist class="font-weight-bold py-1">
               <v-icon class="pr-3" color="#7da453">
