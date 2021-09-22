@@ -168,7 +168,6 @@ export default {
       notAssignedUserIds: [],
       notAssignedUsers: [],
       // user infomation
-      userName: [],
       userId: [],
     };
   },
@@ -216,7 +215,7 @@ export default {
           console.log(error.response);
         });
       await this.$emit("addUser");
-      this.userName = [];
+      this.addProjectUserIds = [];
     },
     openRemoveProjectUserDialog: function (userId) {
       const url = process.env.VUE_APP_URL;
