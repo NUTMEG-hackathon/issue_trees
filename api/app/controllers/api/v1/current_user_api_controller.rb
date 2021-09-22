@@ -14,7 +14,34 @@ class Api::V1::CurrentUserApiController < ApplicationController
     render json: user_detail
   end
 
-  
+  def get_details
+    @users = User.all
+    user_details = []
+    for i in (0...@users.length)
+      @user=@users[i]
+      user_skills = @user.skills
+      user_projects = @user.project_users
+      projects = []
+      skills = []
+      for user_skill in user_skills
+        skill_name = user_skill.name
+        skills << 
+          skill_name
+      end
+      for user_project in user_projects
+        project_name = user_project.project.name
+        projects << 
+          project_name
+      end
+      user_name = @user.name
+      user_details << {
+        user_name: user_name,
+        skills: skills,
+        projects: projects
+      }
+   end
+   render json: user_details
+  end
 
   def password_reset 
     @user = current_api_user

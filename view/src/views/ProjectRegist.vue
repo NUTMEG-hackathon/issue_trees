@@ -125,7 +125,7 @@
 						large 
 						color="btn"
 						class="pr-4 font-weight-bold"
-						to = /tree
+						
 						@click="register"
 						>登録
 					</v-btn>
@@ -558,6 +558,7 @@ methods : {
 				}
 			}
 		}
+		window.location.href = '/tree';
 	},
 
 	addProject: async function (params) {
