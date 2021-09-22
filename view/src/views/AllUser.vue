@@ -1,17 +1,27 @@
 <template>
 	<div id="app" class="container-fluid">
     <div class="panel panel-default">
-			<v-btn @click="displayUsers">
-				ボタン
-			</v-btn>
-			<!-- <v-card v-for="(user, i) in users" :key=i>
-				{{ this.userName }}
-				{{ userSkills.skillnames }}
-			</v-card> -->
+			<v-data-table
+				:headers="headers"
+				:items="this.userDetails"
+				:items-per-page="5"
+				:search="search"
+				class="elevation-1"
+			>
+			<template v-slot:top>
+				<v-text-field
+				v-model="search"
+				label="Search (UPPER CASE ONLY)"
+				class="mx-4"
+				></v-text-field>
+			</template>
+			
+			</v-data-table>
 			<br />
 		</div>
 	</div>
 </template>
+
 
 <script>
 import axios from 'axios'
@@ -28,6 +38,28 @@ export default {
 			userName: [],
 			userLength: [],
 			projectLength: [],
+
+			headers :[
+				{
+					text: 'Username',
+					align: 'start',
+					sortable: 'false',
+					value: 'user_name'
+				},
+				{
+					text: 'Userskills',
+					align: 'start',
+					sortable: 'false',
+					value: 'skills'
+				},
+				{
+					text: 'Userproject',
+					align: 'start',
+					sortable: 'false',
+					value: 'projects'
+				}
+
+			]
 		}
 	},
 	methods :{
@@ -89,43 +121,44 @@ export default {
 				},
 			})
 			.then((response) => {
-				console.log(response.data.length)
-				this.userLength = (response.data.length)
+				// console.log(response.data.length)
+				// this.userLength = (response.data.length)
 				console.log(response.data)
-				for(let i =0; i < this.userLength; i++){
-					this.projectName =[]
-					this.skillName =[]
-					this.tmpUserDetails=[]
-					this.projectLength = response.data[i].projects.length
-					this.skillLength = response.data[i].skills.length
-					this.userName = response.data[i].user_name
-					console.log(this.userName)
-					for(let j =0; j < this.projectLength; j++ ){
-						if(j != this.projectLength -1 ){
-							this.projectName += response.data[i].projects[j].project_name
-							this.projectName += ", " 
-						}
-						else{
-							this.projectName += response.data[i].projects[j].project_name
-						}
-					}
-					console.log(this.projectName)
-					for(let k=0; k < this.skillLength; k++){
-						if(k != this.skillLength-1){
-							this.skillName += response.data[i].skills[k].skill_name
-							this.skillName += ", "
-						}
-						else{
-							this.skillName += response.data[i].skills[k].skill_name
-						}
-					}
-					console.log(this.skillName)
-					this.tmpUserDetails.push(this.userName)
-					this.tmpUserDetails.push(this.projectName)
-					this.tmpUserDetails.push(this.skillName)
-					this.userDetails.push(this.tmpUserDetails)
-				}
-				console.log(this.userDetails)
+				this.userDetails = response.data
+			// 	for(let i =0; i < this.userLength; i++){
+			// 		this.projectName =[]
+			// 		this.skillName =[]
+			// 		this.tmpUserDetails=[]
+			// 		this.projectLength = response.data[i].projects.length
+			// 		this.skillLength = response.data[i].skills.length
+			// 		this.userName = response.data[i].user_name
+			// 		console.log(this.userName)
+			// 		for(let j =0; j < this.projectLength; j++ ){
+			// 			if(j != this.projectLength -1 ){
+			// 				this.projectName += response.data[i].projects[j].project_name
+			// 				this.projectName += ", " 
+			// 			}
+			// 			else{
+			// 				this.projectName += response.data[i].projects[j].project_name
+			// 			}
+			// 		}
+			// 		console.log(this.projectName)
+			// 		for(let k=0; k < this.skillLength; k++){
+			// 			if(k != this.skillLength-1){
+			// 				this.skillName += response.data[i].skills[k].skill_name
+			// 				this.skillName += ", "
+			// 			}
+			// 			else{
+			// 				this.skillName += response.data[i].skills[k].skill_name
+			// 			}
+			// 		}
+			// 		console.log(this.skillName)
+			// 		this.tmpUserDetails.push(this.userName)
+			// 		this.tmpUserDetails.push(this.projectName)
+			// 		this.tmpUserDetails.push(this.skillName)
+			// 		this.userDetails.push(this.tmpUserDetails)
+			// 	}
+			// 	console.log(this.userDetails)
 			}
 		);
 	},

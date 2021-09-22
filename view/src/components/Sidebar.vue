@@ -4,10 +4,11 @@
       this.$route.path === '/tree' ||
       this.$route.path === '/information' ||
       this.$route.path === '/about' ||
-      this.$route.path === '/projectregist'
+      this.$route.path === '/projectregist' ||
+      this.$route.path === '/alluser'
     "
   >
-    <v-container>information
+    <v-container>
       <v-navigation-drawer fixed permanent clipped app color="#FFF">
         <v-sheet>
           <v-list>

@@ -25,15 +25,13 @@ class Api::V1::CurrentUserApiController < ApplicationController
       skills = []
       for user_skill in user_skills
         skill_name = user_skill.name
-        skills << {
-          skill_name: skill_name,
-        }
+        skills << 
+          skill_name
       end
       for user_project in user_projects
         project_name = user_project.project.name
-        projects << {
-          project_name: project_name
-        }
+        projects << 
+          project_name
       end
       user_name = @user.name
       user_details << {
