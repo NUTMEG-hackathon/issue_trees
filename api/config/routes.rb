@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       post "users/edit_user_info" => "users#edit_user_info"
       post "users/reset_password" => "users#reset_password"
       put "edit_user_skills/:id" => "users#edit_user_skills"
+      get "user_details/:id" => "users#get_user_details"
       get "get_user_skill_ids/:id" => 'users#get_user_skill_ids'
 
 
@@ -32,6 +33,7 @@ Rails.application.routes.draw do
       get "get_project_client/:id" => "project_client_api#get_project_client"
       get "get_project_user" => "project_user_api#get_project_user"
       get "get_project_users/:id" => "project_user_api#get_project_users"
+      get "get_user_project_ids/:id" => 'project_user_api#get_user_project_ids'
       get "get_user_project/:id" => "project_user_api#get_user_project"
       get "get_user_issue" => "user_issue_api#get_user_issue"
       get "get_user_skill" => "user_skill_api#get_user_skills"
@@ -45,11 +47,11 @@ Rails.application.routes.draw do
 
       #編集api
       put "current_user/edit_user_info" => "current_user_api#edit_user_info"
-      put "project_user/edit_user_project" => "project_user_api#edit_user_project"
+      put "project_user/edit_user_projects/:id" => "project_user_api#edit_user_projects"
+      post "project_user/edit_project_users/:id" => "project_user_api#edit_project_users"
       put "userskill/edit_user_skill" => "user_skill_api#edit_user_skill"
       put "userissue/edituserissue" => "user_issue_api#edit_user_issue"
       get "current_user/get_user_detail" => "current_user_api#get_user_detail"
-      #get "project_user/get_edit_user_project" => "project_user_api#get_edit_user_project"
       #post "current_user/password_reset" => "current_user_api#password_reset"
     end
   end

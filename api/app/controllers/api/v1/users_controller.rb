@@ -31,6 +31,11 @@ class Api::V1::UsersController < ApplicationController
     render json: { data: @skills }
   end
 
+  def get_user_details
+    @user = User.find(params[:id])
+    render json: @user
+  end
+
   def get_user_skill_ids
     @user = User.find(params[:id])
     @user_skill_ids = @user.skill_ids

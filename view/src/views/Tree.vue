@@ -100,17 +100,27 @@
             </v-row>
           </v-card>
           <br />
-          <div class="light-green lighten-2 events_title panel-heading">
-            Events
-          </div>
-          <div class="events panel-body log">
-            <div v-for="(event, index) in events" :key="index">
-              <p>
-                <b>Name:</b> {{ event.eventName }} <b>Data:</b
-                >{{ event.data.name }}
-              </p>
-            </div>
-          </div>
+          <v-btn
+            class="light-green--text"
+            @click="openProjectUserDialog()"
+            outlined
+          >
+            Management members
+          </v-btn>
+          <AddProjectUser
+            :addUserDialog="addUserDialog"
+            :removeUserDialog="removeUserDialog"
+            :projectId="userProjectId"
+            :projectUserIds="projectUserIds"
+            :usersSkills="usersSkills"
+            :userIds="userIds"
+            :notAssignedUsers="notAssignedUsers"
+            :notAssignedUserIds="notAssignedUserIds"
+            @addUser="addUser"
+            @removeProjectUser="removeProjectUser"
+            @closeAddDialog="closeAddUserDialog"
+            @closeRemoveDialog="closeRemoveUserDialog"
+          />
         </v-col>
         <v-col cols="8">
           <tree
@@ -362,7 +372,7 @@
                   class="ma-2"
                   outlined
                   color="blue"
-                  @click="addIssueDialog = false"
+                  @click="deleteIssueDialog = false"
                 >
                   cancel
                 </v-btn>
@@ -495,22 +505,15 @@
 </template>
 
 <script>
+import AddProjectUser from "@/components/Tree/AddProjectUser.vue";
 import AddClient from "@/components/Tree/AddClient.vue";
 import EditClient from "@/components/Tree/EditClient.vue";
 import { tree } from "vued3tree";
 import axios from "axios";
-let currentId = 500;
-const removeElement = (arr, element) => {
-  const index = arr.indexOf(element);
-  if (index === -1) {
-    return;
-  }
-  arr.splice(index, 1);
-};
 Object.assign(tree, {
   type: "tree",
   layoutType: "vertical",
-  radius: 6,
+  radius: 5,
   linkLayout: "bezier",
   events: [],
 });
@@ -523,7 +526,7 @@ export default {
         name: "",
         children: [],
       },
-      radius: 6,
+      radius: 5,
       layoutType: "vertical",
       layoutTypes: [
         { name: "vertical" },
@@ -555,9 +558,8 @@ export default {
           name: 5,
         },
       ],
-      // Node
-      newNode: [],
       // Dialog
+      addUserDialog: false,
       addClientDialog: false,
       editClientDialog: false,
       deleteClientDialog: false,
@@ -575,9 +577,11 @@ export default {
       skillNum: 1,
       // user
       users: [],
+      userIds: [],
       userSkills: [],
       usersSkills: [],
-      maxUserSkillNum: 0,
+      notAssignedUserIds: [],
+      notAssignedUsers: [],
       // project
       projects: [],
       projectUsers: [],
@@ -625,6 +629,7 @@ export default {
   },
   components: {
     tree,
+    AddProjectUser,
     AddClient,
     EditClient,
   },
@@ -795,18 +800,6 @@ export default {
         this.isChildNode = true;
       }
     },
-    addFor(data) {
-      const newData = {
-        id: currentId++,
-        children: [],
-        name: data.name,
-      };
-      this.newNode.push(newData);
-    },
-    remove(data, node) {
-      const parent = node.parent.data;
-      removeElement(parent.children, data);
-    },
     fetchProjectUsers: async function () {
       var url = process.env.VUE_APP_URL;
       this.projectUsers = [];
@@ -840,20 +833,62 @@ export default {
         })
         .then((response) => {
           this.userSkills = response.data[0];
-          if (this.maxUserSkillNum < this.userSkills.skill_names.length) {
-            this.maxUserSkillNum = this.userSkills.skill_names.length;
-          }
         });
+    },
+    addUser: function () {
+      this.selectProject();
+      this.addUserDialog = false;
+    },
+    removeProjectUser: function () {
+      this.selectProject();
+      this.removeUserDialog = false;
     },
     addClient: function () {
       this.selectProject();
       this.addClientDialog = false;
+    },
+    openProjectUserDialog: function () {
+      const url = process.env.VUE_APP_URL;
+      this.userIds = [];
+      this.notAssignedUsers = [];
+      this.notAssignedUserIds = [];
+      for (let i = 0; i < this.users.length; i++) {
+        this.userIds.push(this.users[i].id);
+      }
+      this.notAssignedUserIds = this.userIds;
+      for (let i = 0; i < this.projectUserIds.length; i++) {
+        this.notAssignedUserIds = this.notAssignedUserIds.filter(
+          (n) => n != this.projectUserIds[i]
+        );
+      }
+      for (let i = 0; i < this.notAssignedUserIds.length; i++) {
+        axios
+          .get(url + "/api/v1/user_details/" + this.notAssignedUserIds[i], {
+            headers: {
+              "Content-Type": "application/json",
+              "access-token": localStorage.getItem("access-token"),
+              client: localStorage.getItem("client"),
+              uid: localStorage.getItem("uid"),
+            },
+          })
+          .then((response) => {
+            this.notAssignedUsers.push(response.data);
+          });
+      }
+      this.addUserDialog = true;
     },
     closeAddClientDialog: function () {
       this.addClientDialog = false;
     },
     closeEditClientDialog: function () {
       this.editClientDialog = false;
+    },
+    closeAddUserDialog: function () {
+      this.addUserDialog = false;
+    },
+    closeRemoveUserDialog: function () {
+      this.selectProject();
+      this.removeUserDialog = false;
     },
     editClient: function () {
       this.selectProject();
@@ -876,25 +911,17 @@ export default {
         skill_ids: this.addIssueSkillIds,
       };
       axios.defaults.headers.common["Content-Type"] = "application/json";
-      axios
-        .post(
-          url + "/issues/",
-          { issue: params },
-          {
-            headers: {
-              "access-token": localStorage.getItem("access-token"),
-              client: localStorage.getItem("client"),
-              uid: localStorage.getItem("uid"),
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error.response);
-        });
-      this.addFor(this.event);
+      axios.post(
+        url + "/issues/",
+        { issue: params },
+        {
+          headers: {
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        }
+      );
       this.addIssueName = [];
       this.addIssueUser = [];
       this.addIssueDescription = [];
@@ -1043,12 +1070,8 @@ export default {
             },
           }
         )
-        .then((response) => {
-          console.log(response.data);
+        .then(() => {
           this.editIssueDetailsDialog = false;
-        })
-        .catch((error) => {
-          console.log(error.response);
         });
       this.selectProject();
     },
