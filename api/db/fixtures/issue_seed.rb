@@ -4,8 +4,8 @@ Issue.seed( :id,
     name: "aboutの作成",
     client_id: 1,
     user_id: 3,
-    description: "nobitaの仕事,バックエンド",
-    level: 3
+    description: "ouraの仕事,バックエンド",
+    level: 2
   },
   {
   id:2, 
@@ -20,7 +20,7 @@ Issue.seed( :id,
   name: "login機能の作成",
   client_id: 2,
   user_id: 1,
-  description: "nobitaの仕事,バックエンド",
+  description: "dodoの仕事,バックエンド",
   level: 3
   },
   {
@@ -28,7 +28,7 @@ Issue.seed( :id,
   name: "Tree構造の作成",
   client_id: 2,
   user_id: 1,
-  description: "doraemonの仕事,フロントエンド",
+  description: "fujisakiの仕事,フロントエンド",
   level: 3 
   },
   {
@@ -60,7 +60,7 @@ Issue.seed( :id,
   name: "Apiを飛ばす",
   client_id: 2,
   user_id: 2,
-  description: "doraemonの仕事,backend",
+  description: "dodoの仕事,backend",
   level: 3
   },
   {
@@ -68,7 +68,7 @@ Issue.seed( :id,
   name: "tree画面作成",
   client_id: 1,
   user_id: 3,
-  description: "nobitaの仕事,backend",
+  description: "ouraの仕事,fromtend",
   level: 3
   },
   {
@@ -76,7 +76,15 @@ Issue.seed( :id,
   name: "ログイン画面作成",
   client_id: 1,
   user_id: 3,
-  description: "nobitaの仕事,backend",
+  description: "ouraの仕事,fromtend",
+  level: 3
+  },
+  {
+  id:10,
+  name: "機械学習",
+  client_id: 2,
+  user_id: 6,
+  description: "moriの仕事,backend",
   level: 3
   }
 )
