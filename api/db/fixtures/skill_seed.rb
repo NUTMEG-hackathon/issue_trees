@@ -148,5 +148,6 @@ Skill.seed( :id,
   name: "others",
   status: "none",
   level:3
-}
+},
+
 )
