@@ -29,6 +29,7 @@ class Api::V1::UserSkillApiController < ApplicationController
       }
     end
     user_skill_details << {
+      user_id: @user.id,
       user_name: @user.name,
       skill_names: skill_details,
     }

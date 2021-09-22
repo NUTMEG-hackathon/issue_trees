@@ -45,12 +45,22 @@ class Api::V1::ProjectUserApiController < ApplicationController
     render json:user_project
   end
 
-  def edit_user_project
-    @project_users = ProjectUser.find(params[:id])
-    @project_users.id = edit_user_project_params[:id]
-    @project_users.name = edit_user_project_params[:name]
-    p @project_users
-    @project_users.save!
+  def get_user_project_ids
+    @user = User.find(params[:id])
+    @user_project_ids = @user.project_ids
+    render json: @user_project_ids
+  end
+
+  def edit_user_projects
+    @user = User.find(params[:id])
+    @user.project_ids = edit_user_projects_params[:project_ids]
+    @user.save!
+  end
+
+  def edit_project_users
+    @project = Project.find(params[:id])
+    @project.user_ids = edit_project_users_params[:user_ids]
+    @project.save!
   end
 
 
@@ -59,4 +69,11 @@ class Api::V1::ProjectUserApiController < ApplicationController
       params.require(:project_user_api).permit(:id ,:name)
     end
 
+    def edit_user_projects_params
+      params.require(:project_user_api).permit(project_ids: [])
+    end
+
+    def edit_project_users_params
+      params.require(:project_user_api).permit(user_ids: [])
+    end
 end

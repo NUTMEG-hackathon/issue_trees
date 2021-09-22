@@ -100,17 +100,21 @@
             </v-row>
           </v-card>
           <br />
-          <div class="light-green lighten-2 events_title panel-heading">
-            Events
-          </div>
-          <div class="events panel-body log">
-            <div v-for="(event, index) in events" :key="index">
-              <p>
-                <b>Name:</b> {{ event.eventName }} <b>Data:</b
-                >{{ event.data.name }}
-              </p>
-            </div>
-          </div>
+          <v-btn
+            class="light-green--text"
+            @click="addUserDialog = true"
+            outlined
+          >
+            Add members
+          </v-btn>
+          <AddProjectUser
+            :addUserDialog="addUserDialog"
+            :projectId="userProjectId"
+            :projectUserIds="projectUserIds"
+            :usersSkills="usersSkills"
+            @addUser="addUser"
+            @closeDialog="closeAddUserDialog"
+          />
         </v-col>
         <v-col cols="8">
           <tree
@@ -362,7 +366,7 @@
                   class="ma-2"
                   outlined
                   color="blue"
-                  @click="addIssueDialog = false"
+                  @click="deleteIssueDialog = false"
                 >
                   cancel
                 </v-btn>
@@ -495,6 +499,7 @@
 </template>
 
 <script>
+import AddProjectUser from "@/components/Tree/AddProjectUser.vue";
 import AddClient from "@/components/Tree/AddClient.vue";
 import EditClient from "@/components/Tree/EditClient.vue";
 import { tree } from "vued3tree";
@@ -558,6 +563,7 @@ export default {
       // Node
       newNode: [],
       // Dialog
+      addUserDialog: false,
       addClientDialog: false,
       editClientDialog: false,
       deleteClientDialog: false,
@@ -625,6 +631,7 @@ export default {
   },
   components: {
     tree,
+    AddProjectUser,
     AddClient,
     EditClient,
   },
@@ -840,10 +847,14 @@ export default {
         })
         .then((response) => {
           this.userSkills = response.data[0];
-          if (this.maxUserSkillNum < this.userSkills.skill_names.length) {
-            this.maxUserSkillNum = this.userSkills.skill_names.length;
-          }
+          // if (this.maxUserSkillNum < this.userSkills.skill_names.length) {
+          //   this.maxUserSkillNum = this.userSkills.skill_names.length;
+          // }
         });
+    },
+    addUser: function () {
+      this.selectProject();
+      this.addUserDialog = false;
     },
     addClient: function () {
       this.selectProject();
