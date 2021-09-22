@@ -4,19 +4,19 @@
       <v-dialog v-model="addUserDialog" width="700">
         <v-card>
           <v-card-title class="text-h4 lighten-2">
-            <v-row>
+            <v-row no-gutters>
               <v-col cols="2" />
               <v-col cols="8" class="my-3 light-green--text">
                 Management members
               </v-col>
               <v-col cols="2" class="text-end my-3">
-                <v-btn text @click="closeDialog()">
+                <v-btn text @click="closeAddDialog()">
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
               </v-col>
             </v-row>
           </v-card-title>
-          <v-row>
+          <v-row no-gutters>
             <v-col cols="1" />
             <v-col cols="10">
               <v-form>
@@ -84,7 +84,12 @@
             <v-col cols="1" />
             <v-col cols="10">
               <v-card-actions>
-                <v-btn class="ma-2" outlined color="red" @click="closeDialog()">
+                <v-btn
+                  class="ma-2"
+                  outlined
+                  color="red"
+                  @click="closeAddDialog()"
+                >
                   cancel
                 </v-btn>
                 <v-spacer></v-spacer>
@@ -149,6 +154,9 @@ export default {
     addUserDialog: Boolean,
     removeUserDialog: Boolean,
     projectId: Number,
+    userIds: { type: [Array], default: () => [] },
+    notAssignedUsers: { type: [Array], default: () => [] },
+    notAssignedUserIds: { type: [Array], default: () => [] },
     usersSkills: { type: [Array], default: () => [] },
     projectUserIds: { type: [Array], default: () => [] },
   },
@@ -164,9 +172,10 @@ export default {
       userSkills: [],
       // users
       users: [],
-      userIds: [],
-      notAssignedUserIds: [],
-      notAssignedUsers: [],
+      // userIds: [],
+      // notAssignedUserIds: [],
+      // notAssignedUsers: [],
+
       // user infomation
       userId: [],
     };
@@ -218,36 +227,8 @@ export default {
       this.addProjectUserIds = [];
     },
     openRemoveProjectUserDialog: function (userId) {
-      const url = process.env.VUE_APP_URL;
-      this.userIds = [];
-      this.notAssignedUserIds = [];
-      for (let i = 0; i < this.users.length; i++) {
-        this.userIds.push(this.users[i].id);
-      }
-      this.notAssignedUserIds = this.userIds;
-      for (let i = 0; i < this.projectUserIds.length; i++) {
-        this.notAssignedUserIds = this.notAssignedUserIds.filter(
-          (n) => n != this.projectUserIds[i]
-        );
-        console.log(this.notAssignedUserIds);
-      }
-      for (let i = 0; i < this.notAssignedUserIds.length; i++) {
-        axios
-          .get(url + "/api/v1/user_details/" + this.notAssignedUserIds[i], {
-            headers: {
-              "Content-Type": "application/json",
-              "access-token": localStorage.getItem("access-token"),
-              client: localStorage.getItem("client"),
-              uid: localStorage.getItem("uid"),
-            },
-          })
-          .then((response) => {
-            this.notAssignedUsers.push(response.data);
-          });
-      }
       this.userId = userId;
       this.removeUserDialog = true;
-      this.$emit("closeRemoveDialog");
     },
     removeProjectUser: async function () {
       const url = process.env.VUE_APP_URL;
@@ -277,11 +258,17 @@ export default {
       );
       this.addUserDialog = false;
       this.removeUserDialog = false;
+      this.$emit("removeProjectUser");
     },
-    closeDialog: function () {
+    closeAddDialog: function () {
       this.addUserDialog = false;
       this.removeUserDialog = false;
       this.$emit("closeAddDialog");
+    },
+    closeRemoveDialog: function () {
+      this.addUserDialog = false;
+      this.removeUserDialog = false;
+      this.$emit("closeRemoveDialog");
     },
   },
 };
