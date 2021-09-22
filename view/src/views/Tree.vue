@@ -109,11 +109,13 @@
           </v-btn>
           <AddProjectUser
             :addUserDialog="addUserDialog"
+            :removeUserDialog="removeUserDialog"
             :projectId="userProjectId"
             :projectUserIds="projectUserIds"
             :usersSkills="usersSkills"
             @addUser="addUser"
-            @closeDialog="closeAddUserDialog"
+            @closeAddDialog="closeAddUserDialog"
+            @closeRemoveDialog="closeRemoveUserDialog"
           />
         </v-col>
         <v-col cols="8">
@@ -865,6 +867,12 @@ export default {
     },
     closeEditClientDialog: function () {
       this.editClientDialog = false;
+    },
+    closeAddUserDialog: function () {
+      this.addUserDialog = false;
+    },
+    closeRemoveUserDialog: function () {
+      this.removeUserDialog = false;
     },
     editClient: function () {
       this.selectProject();

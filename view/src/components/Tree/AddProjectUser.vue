@@ -6,7 +6,7 @@
           <v-card-title class="text-h4 lighten-2">
             <v-row>
               <v-col cols="2" />
-              <v-col cols="10" class="my-3 light-green--text">
+              <v-col cols="8" class="my-3 light-green--text">
                 Management members
               </v-col>
               <v-col cols="2" class="text-end my-3">
@@ -55,7 +55,7 @@
                 <v-card
                   elevation="0"
                   solo
-                  @click="openDeleteProjectUserDialog(user.user_id)"
+                  @click="openRemoveProjectUserDialog(user.user_id)"
                 >
                   <v-row>
                     <v-col cols="5">
@@ -96,27 +96,30 @@
           </v-row>
         </v-card>
       </v-dialog>
-      <v-dialog v-model="deleteUserDialog" width="500">
+      <v-dialog v-model="removeUserDialog" width="500">
         <v-card>
           <v-card-title class="text-h4 lighten-2">
             <v-row no-gutters>
-              <v-col cols="3" />
-              <v-col cols="6" class="my-3 light-green--text">
-                Finish issue
+              <v-col cols="2" />
+              <v-col cols="8" class="my-3 light-green--text">
+                Remove member
               </v-col>
-              <v-col cols="3" />
+              <v-col cols="2" />
             </v-row>
           </v-card-title>
           <v-row no-gutters>
             <v-col cols="1" />
             <v-col cols="10" class="my-3 text-h5">
-              <v-card-text> 完了したissueを削除してもよいですか？ </v-card-text>
+              <v-card-text>
+                選択したユーザをこのプロジェクトから<br />
+                削除してもよいですか？
+              </v-card-text>
               <v-card-actions>
                 <v-btn
                   class="ma-2"
                   outlined
                   color="blue"
-                  @click="deleteUserDialog = false"
+                  @click="removeUserDialog = false"
                 >
                   cancel
                 </v-btn>
@@ -125,9 +128,9 @@
                   class="ma-2"
                   outlined
                   color="red"
-                  @click="deleteProjectUser()"
+                  @click="removeProjectUser()"
                 >
-                  Delete
+                  Remove
                 </v-btn>
               </v-card-actions>
             </v-col>
@@ -144,6 +147,7 @@ import axios from "axios";
 export default {
   props: {
     addUserDialog: Boolean,
+    removeUserDialog: Boolean,
     projectId: Number,
     usersSkills: { type: [Array], default: () => [] },
     projectUserIds: { type: [Array], default: () => [] },
@@ -151,8 +155,6 @@ export default {
   name: "App",
   data() {
     return {
-      // dialog
-      deleteUserDialog: false,
       // project users
       projectUsers: [],
       addProjectUserIds: [],
@@ -216,7 +218,7 @@ export default {
       await this.$emit("addUser");
       this.userName = [];
     },
-    openDeleteProjectUserDialog: function (userId) {
+    openRemoveProjectUserDialog: function (userId) {
       const url = process.env.VUE_APP_URL;
       this.userIds = [];
       this.notAssignedUserIds = [];
@@ -245,9 +247,10 @@ export default {
           });
       }
       this.userId = userId;
-      this.deleteUserDialog = true;
+      this.removeUserDialog = true;
+      this.$emit("closeRemoveDialog");
     },
-    deleteProjectUser: async function () {
+    removeProjectUser: async function () {
       const url = process.env.VUE_APP_URL;
       await axios
         .get(url + "/api/v1/get_user_project_ids/" + this.userId, {
@@ -274,10 +277,12 @@ export default {
         }
       );
       this.addUserDialog = false;
+      this.removeUserDialog = false;
     },
     closeDialog: function () {
       this.addUserDialog = false;
-      this.$emit("closeDialog");
+      this.removeUserDialog = false;
+      this.$emit("closeAddDialog");
     },
   },
 };
