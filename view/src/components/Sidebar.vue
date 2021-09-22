@@ -15,7 +15,7 @@
               <v-icon class="pr-3" color="#7da453"> mdi-family-tree </v-icon>
                 ProjectTree
             </v-list-item>
-            <v-list-item class="font-weight-bold py-1">
+            <v-list-item to=/alluser class="font-weight-bold py-1">
               <v-icon class="pr-3" color="#7da453"> mdi-account </v-icon>
                 AllUser
             </v-list-item>

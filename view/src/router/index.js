@@ -6,6 +6,7 @@ import Tree from '../views/Tree'
 import Welcome from '../views/Welcome.vue'
 import MyPage from '../views/MyPage.vue'
 import ProjectRegist from '../views/ProjectRegist.vue'
+import AllUser from '../views/AllUser.vue'
 
 Vue.use(VueRouter)
 
@@ -47,6 +48,11 @@ const routes = [
     path: '/projectregist',
     name: 'ProjectRegist',
     component: ProjectRegist
+  },
+  {
+    path: '/alluser',
+    name: 'AllUser',
+    component: AllUser
   }
 ]
 

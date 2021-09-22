@@ -38,6 +38,7 @@ Rails.application.routes.draw do
       get "get_user_skill_details/:id" => "user_skill_api#get_user_skill_details"
       get "get_issue_details/:id" => "issue_detail_api#get_issue_detail"
       get "get_issue_user/:id" => "issue_detail_api#get_issue_user"
+      get "get_details" => "current_user_api#get_details"
 
       get "current_user/show" => "current_user_api#show"
 
