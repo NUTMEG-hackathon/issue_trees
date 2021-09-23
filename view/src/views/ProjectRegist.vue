@@ -17,6 +17,24 @@
           <br />
           <v-form>
             <v-select
+              v-model="projectUserIds"
+              multiple
+              :reduce="(optjions) => options.id"
+              key="id"
+              label="Projectに参加するメンバー選択"
+              :items="users"
+              :menu-props="{
+                top: true,
+                offsetY: true,
+              }"
+              item-text="name"
+              item-value="id"
+              outlined
+              @change="fetchProjectUsers()"
+            />
+          </v-form>
+          <v-form>
+            <v-select
               v-model="clientNum"
               :reduce="(optjions) => options.id"
               key="id"
@@ -121,6 +139,20 @@
                             item-value="id"
                             outlined
                           />
+                          <v-select
+                            v-model="$data['projectUser' + i + j]"
+                            :reduce="(optjions) => options.id"
+                            key="id"
+                            label="行うuserの選択"
+                            :items="projectUsers"
+                            :menu-props="{
+                              top: true,
+                              offsetY: true,
+                            }"
+                            item-text="name"
+                            item-value="id"
+                            outlined
+                          />
                         </v-col>
                         <v-col cols="2" />
                       </v-row>
@@ -156,8 +188,11 @@ import axios from "axios";
 export default {
   data() {
     return {
-      user: [],
+      users: [],
+      userName: [],
       userId: [],
+      projectUsers: [],
+      projectUserIds: [],
       projectName: [],
       projectId: [],
       clientNum: [],
@@ -293,6 +328,36 @@ export default {
       addIssueSkillIds53: [],
       addIssueSkillIds54: [],
       addIssueSkillIds55: [],
+
+      projectUser11: [],
+      projectUser12: [],
+      projectUser13: [],
+      projectUser14: [],
+      projectUser15: [],
+
+      projectUser21: [],
+      projectUser22: [],
+      projectUser23: [],
+      projectUser24: [],
+      projectUser25: [],
+
+      projectUser31: [],
+      projectUser32: [],
+      projectUser33: [],
+      projectUser34: [],
+      projectUser35: [],
+
+      projectUser41: [],
+      projectUser42: [],
+      projectUser43: [],
+      projectUser44: [],
+      projectUser45: [],
+
+      projectUser51: [],
+      projectUser52: [],
+      projectUser53: [],
+      projectUser54: [],
+      projectUser55: [],
     };
   },
 
@@ -305,20 +370,30 @@ export default {
         };
         await this.addProject(projectParams);
       }
+      console.log(this.projectId);
 
-      const url = process.env.VUE_APP_URL + "/project_users";
+      const url =
+        process.env.VUE_APP_URL +
+        "/api/v1/project_user/edit_project_users/" +
+        this.projectId;
       var params = {
-        project_id: this.projectId,
-        user_id: this.userId,
+        user_ids: this.projectUserIds,
       };
-      await axios.post(url, params, {
-        headers: {
-          "Content-Type": "application/json",
-          "access-token": localStorage.getItem("access-token"),
-          client: localStorage.getItem("client"),
-          uid: localStorage.getItem("uid"),
-        },
-      });
+      await axios
+        .post(url, params, {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then((response) => {
+          console.log("=====");
+          console.log(this.projectId);
+          console.log(response);
+          console.log("=====");
+        });
 
       for (let i = 1; i < this.clients.length; i++) {
         console.log(this.clients[i]);
@@ -334,7 +409,7 @@ export default {
               var issueparams11 = {
                 name: this.issueName11,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser11,
                 description: this.issueDescription11,
                 level: this.issueLevel11,
                 skill_ids: this.addIssueSkillIds11,
@@ -344,7 +419,7 @@ export default {
               var issueparams12 = {
                 name: this.issueName12,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser12,
                 description: this.issueDescription12,
                 level: this.issueLevel12,
                 skill_ids: this.addIssueSkillIds12,
@@ -354,7 +429,7 @@ export default {
               var issueparams13 = {
                 name: this.issueName13,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser13,
                 description: this.issueDescription13,
                 level: this.issueLevel13,
                 skill_ids: this.addIssueSkillIds13,
@@ -364,7 +439,7 @@ export default {
               var issueparams14 = {
                 name: this.issueName14,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser14,
                 description: this.issueDescription14,
                 level: this.issueLevel14,
                 skill_ids: this.addIssueSkillIds14,
@@ -374,7 +449,7 @@ export default {
               var issueparams15 = {
                 name: this.issueName15,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser15,
                 description: this.issueDescription115,
                 level: this.issueLevel15,
                 skill_ids: this.addIssueSkillIds15,
@@ -388,7 +463,7 @@ export default {
               var issueparams21 = {
                 name: this.issueName21,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser21,
                 description: this.issueDescription21,
                 level: this.issueLevel21,
                 skill_ids: this.addIssueSkillIds21,
@@ -398,7 +473,7 @@ export default {
               var issueparams22 = {
                 name: this.issueName22,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser22,
                 description: this.issueDescription22,
                 level: this.issueLevel22,
                 skill_ids: this.addIssueSkillIds22,
@@ -408,7 +483,7 @@ export default {
               var issueparams23 = {
                 name: this.issueName23,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser23,
                 description: this.issueDescription23,
                 level: this.issueLevel23,
                 skill_ids: this.addIssueSkillIds23,
@@ -418,7 +493,7 @@ export default {
               var issueparams24 = {
                 name: this.issueName24,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser24,
                 description: this.issueDescription24,
                 level: this.issueLevel24,
                 skill_ids: this.addIssueSkillIds24,
@@ -428,7 +503,7 @@ export default {
               var issueparams25 = {
                 name: this.issueName25,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser25,
                 description: this.issueDescription25,
                 level: this.issueLevel25,
                 skill_ids: this.addIssueSkillIds25,
@@ -442,7 +517,7 @@ export default {
               var issueparams31 = {
                 name: this.issueName31,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser31,
                 description: this.issueDescription31,
                 level: this.issueLevel31,
                 skill_ids: this.addIssueSkillIds31,
@@ -452,7 +527,7 @@ export default {
               var issueparams32 = {
                 name: this.issueName32,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser32,
                 description: this.issueDescription32,
                 level: this.issueLevel32,
                 skill_ids: this.addIssueSkillIds32,
@@ -462,7 +537,7 @@ export default {
               var issueparams33 = {
                 name: this.issueName33,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser33,
                 description: this.issueDescription33,
                 level: this.issueLevel33,
                 skill_ids: this.addIssueSkillIds33,
@@ -472,7 +547,7 @@ export default {
               var issueparams34 = {
                 name: this.issueName34,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser34,
                 description: this.issueDescription34,
                 level: this.issueLevel34,
                 skill_ids: this.addIssueSkillIds34,
@@ -482,7 +557,7 @@ export default {
               var issueparams35 = {
                 name: this.issueName35,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser35,
                 description: this.issueDescription35,
                 level: this.issueLevel35,
                 skill_ids: this.addIssueSkillIds35,
@@ -496,7 +571,7 @@ export default {
               var issueparams41 = {
                 name: this.issueName41,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser41,
                 description: this.issueDescription41,
                 level: this.issueLevel41,
                 skill_ids: this.addIssueSkillIds41,
@@ -506,7 +581,7 @@ export default {
               var issueparams42 = {
                 name: this.issueName42,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser42,
                 description: this.issueDescription42,
                 level: this.issueLevel42,
                 skill_ids: this.addIssueSkillIds42,
@@ -516,7 +591,7 @@ export default {
               var issueparams43 = {
                 name: this.issueName43,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser43,
                 description: this.issueDescription43,
                 level: this.issueLevel43,
                 skill_ids: this.addIssueSkillIds43,
@@ -526,7 +601,7 @@ export default {
               var issueparams44 = {
                 name: this.issueName44,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser44,
                 description: this.issueDescription44,
                 level: this.issueLevel44,
                 skill_ids: this.addIssueSkillIds44,
@@ -536,7 +611,7 @@ export default {
               var issueparams45 = {
                 name: this.issueName45,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser45,
                 description: this.issueDescription45,
                 level: this.issueLevel45,
                 skill_ids: this.addIssueSkillIds45,
@@ -550,7 +625,7 @@ export default {
               var issueparams51 = {
                 name: this.issueName51,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser51,
                 description: this.issueDescription51,
                 level: this.issueLevel51,
                 skill_ids: this.addIssueSkillIds51,
@@ -560,7 +635,7 @@ export default {
               var issueparams52 = {
                 name: this.issueName52,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser52,
                 description: this.issueDescription52,
                 level: this.issueLevel52,
                 skill_ids: this.addIssueSkillIds52,
@@ -570,7 +645,7 @@ export default {
               var issueparams53 = {
                 name: this.issueName53,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser52,
                 description: this.issueDescription53,
                 level: this.issueLevel53,
                 skill_ids: this.addIssueSkillIds53,
@@ -580,7 +655,7 @@ export default {
               var issueparams54 = {
                 name: this.issueName54,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser54,
                 description: this.issueDescription54,
                 level: this.issueLevel54,
                 skill_ids: this.addIssueSkillIds54,
@@ -590,7 +665,7 @@ export default {
               var issueparams55 = {
                 name: this.issueName55,
                 client_id: this.clientId,
-                user_id: this.userId,
+                user_id: this.projectUser55,
                 description: this.issueDescription55,
                 level: this.issueLevel55,
                 skill_ids: this.addIssueSkillIds55,
@@ -600,7 +675,7 @@ export default {
           }
         }
       }
-      window.location.href = "/tree";
+      //window.location.href = "/tree";
     },
 
     addProject: async function (params) {
@@ -669,6 +744,26 @@ export default {
           console.log(this.issueId);
         });
     },
+    fetchProjectUsers: async function () {
+      console.log(this.projectUserIds);
+      var url = process.env.VUE_APP_URL;
+      this.projectUsers = [];
+      for (let i = 0; i < this.projectUserIds.length; i++) {
+        await axios
+          .get(url + "/api/v1/user_details/" + this.projectUserIds[i], {
+            headers: {
+              "Content-Type": "application/json",
+              "access-token": localStorage.getItem("access-token"),
+              client: localStorage.getItem("client"),
+              uid: localStorage.getItem("uid"),
+            },
+          })
+          .then((response) => {
+            this.projectUsers.push(response.data);
+          });
+      }
+      console.log(this.projectUsers);
+    },
   },
   mounted() {
     const url = process.env.VUE_APP_URL;
@@ -714,7 +809,26 @@ export default {
         for (let i = 0; i < this.skills.length; i++) {
           this.skillName.push(this.skills[i].name);
         }
+        console.log(this.sskills);
         console.log(this.skillName);
+      });
+    axios
+      .get(url + "/api/v1/users/index", {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("access-token"),
+          client: localStorage.getItem("client"),
+          uid: localStorage.getItem("uid"),
+        },
+      })
+      .then((response) => {
+        this.users = response.data.data;
+        this.userName = [];
+        this.projectUserIds = [];
+        for (let i = 0; i < this.users.length; i++) {
+          this.userName.push(this.users[i].name);
+        }
+        console.log(this.projectUserIds);
       });
   },
 };
