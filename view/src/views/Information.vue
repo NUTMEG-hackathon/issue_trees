@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card-title class="text-center justify-center py-6">
-      <h1 id="maintitle" class="display-1 font-weight-bold">Personal</h1>
+      <h1 id="maintitle" class="display-1 font-weight-bold">Personal Information</h1>
     </v-card-title>
 
     <v-tabs grow color="green darken-3">
@@ -24,30 +24,29 @@
         <br />
         <v-row>
           <v-col cols="2"></v-col>
-          <v-col cols="4" class="green lighten-5 pa-3 ma-3">
+          <v-col cols="4" class="green lighten-4 pa-3 ma-3">
             <h3>{{ users.name }}</h3>
           </v-col>
-          <v-col cols="4" class="green lighten-5 pa-3 ma-3">
+          <v-col cols="4" class="green lighten-4 pa-3 ma-3">
             <h3>{{ users.email }}</h3>
           </v-col>
           <v-col cols="2"></v-col>
         </v-row>
         <br /><br />
-        <v-row>
-          <v-col cols="3"></v-col>
-          <v-col cols="3">
+        <v-card-actions>
+          <v-spacer>
             <v-tooltip left>
               <template v-slot:activator="{ on, attrs }">
-                <v-btn rounded v-bind="attrs" v-on="on" @click="edit" large>
-                  編集
+                <v-btn class="green lighten-2" v-bind="attrs" v-on="on" @click="edit(users.name,users.email)" large>
+                  <h2>編集</h2>
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
               </template>
               <div>ユーザー情報を編集する</div>
             </v-tooltip>
-          </v-col>
-          <v-col cols="3">
-            <v-tooltip right>
+          </v-spacer>
+        </v-card-actions>
+            <!-- <v-tooltip right>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   rounded
@@ -61,10 +60,8 @@
                 </v-btn>
               </template>
               <div>パスワードの変更</div>
-            </v-tooltip>
-          </v-col>
-          <v-col cols="3"></v-col>
-        </v-row>
+            </v-tooltip> -->
+
         <EditUser
           ref="edit1dialog"
           :userId="users.id"
@@ -93,7 +90,7 @@
         <div v-for="skill in skills" :key="skill.id">
           <v-row>
 
-            <v-col cols="6" class="green lighten-5 pa-3">
+            <v-col cols="6" class="green lighten-4 pa-3">
               <h3>{{ skill.name }}</h3>
             </v-col>
             <v-col cols="6" class="green lighten-5 pa-3">
@@ -104,7 +101,7 @@
           <hr />
           <br />
         </div>
-        <v-tooltip right>
+        <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               @click="addskill = true"
@@ -114,8 +111,7 @@
               class="green lighten-2"
             >
               <v-icon>mdi-text-box-plus</v-icon>
-              <h2>追加</h2></v-btn
-            >
+              <h2>追加</h2></v-btn>
           </template>
           <div>スキルの複数登録</div>
         </v-tooltip>
@@ -136,7 +132,7 @@
         <div v-for="project in projects" :key="project.id">
           <v-row>
             <v-col cols="4"></v-col>
-            <v-col cols="4" class="green lighten-5 pa-3 ma-3">
+            <v-col cols="4" class="green lighten-4 pa-3 ma-3">
               <h3>{{ project.name }}</h3>
             </v-col>
             <v-col cols="4"></v-col>
@@ -164,10 +160,10 @@
         <br />
         <div v-for="issue in issues" :key="issue.id">
           <v-row>
-            <v-col cols="4" class="green lighten-5 pa-3">
+            <v-col cols="4" class="green lighten-3 pa-3">
               <h3>{{ issue.name }}</h3>
             </v-col>
-            <v-col cols="4" class="green lighten-5 pa-3">
+            <v-col cols="4" class="green lighten-4 pa-3">
               <h3>{{ issue.description }}</h3>
             </v-col>
             <v-col cols="4" class="green lighten-5 pa-3">
@@ -182,77 +178,77 @@
     </v-tabs>
 
     <!-- パスワードの変更コンポーネント -->
-    <v-dialog v-model="password" max-width="600" persistent>
+    <v-dialog v-model="password" max-width="700" persistent>
       <v-card>
-        <v-card-title
-          class="text-h4 justify-center light-green lighten-2 lighten-2"
-          >パスワードの変更</v-card-title
-        >
-        <v-container class="justify-content-center">
-          <v-row>
-            <v-col cols="2"></v-col>
-            <v-col cols="8">
+        <v-card-title class="text-h4 lighten-2 justify-center my-3 light-green--text">パスワードの変更</v-card-title>
+          <v-row no-gutters>
+            <v-col cols="1"></v-col>
+            <v-col cols="10">
               <v-text-field
-                label="現在のパスワード"
+                label="current password"
                 v-model="name"
                 text
                 outlined
                 clearable
               />
             </v-col>
-            <v-col cols="2"></v-col>
+            <v-col cols="1"></v-col>
           </v-row>
 
-          <v-row>
-            <v-col cols="2"></v-col>
-            <v-col cols="8">
+          <v-row no-gutters>
+            <v-col cols="1"></v-col>
+            <v-col cols="10">
               <v-text-field
-                label="新しいパスワード"
+                label="new password"
                 v-model="name"
                 text
                 outlined
                 clearable
               />
             </v-col>
-            <v-col cols="2"></v-col>
+            <v-col cols="1"></v-col>
           </v-row>
 
-          <v-row>
-            <v-col cols="2"></v-col>
-            <v-col cols="8">
+          <v-row no-gutters>
+            <v-col cols="1"></v-col>
+            <v-col cols="10">
               <v-text-field
-                label="新しいパスワードの確認"
+                label="again"
                 v-model="name"
                 text
                 outlined
                 clearable
               />
             </v-col>
-            <v-col cols="2"></v-col>
+            <v-col cols="1"></v-col>
           </v-row>
-        </v-container>
+
         <v-card-actions>
-          <v-layout align-center justify-center>
             <v-spacer />
-            <v-btn class="error" flat @click="password = false">取り消し</v-btn>
+              <v-tooltip left>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn v-bind="attrs" v-on="on" class="ma-2" color="blue" outlined @click="password = false">cancel</v-btn>
+                </template>
+                <div>編集を取り消しする</div>
+              </v-tooltip>
             <v-spacer />
-            <v-btn class="primary" flat @click="regist">登録</v-btn>
+              <v-tooltip right>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn v-bind="attrs" v-on="on" class="ma-2" color="red" outlined @click="regist">edit</v-btn>
+                </template>
+                <div>編集を決定する</div>
+              </v-tooltip>
             <v-spacer />
-          </v-layout>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="addskill" max-width="600" persistent>
+    <v-dialog v-model="addskill" max-width="700">
       <v-card>
-        <v-card-title
-          class="text-h4 justify-center light-green lighten-2 lighten-2"
-          >新しいスキルの追加</v-card-title
-        >
-        <v-container class="justify-content-center">
-          <v-row>
-            <v-col cols="2"></v-col>
-            <v-col cols="8">
+        <v-card-title class="text-h4 lighten-2 justify-center my-3 light-green--text">add new skill</v-card-title>
+          <v-row no-gutters>
+            <v-col cols="1"></v-col>
+            <v-col cols="10">
               <v-select
                 multiple
                 :key="id"
@@ -268,18 +264,25 @@
                 outlined
               />
             </v-col>
-            <v-col cols="2"></v-col>
+            <v-col cols="1"></v-col>
           </v-row>
 
-        </v-container>
         <v-card-actions>
-          <v-layout align-center justify-center>
             <v-spacer />
-            <v-btn class="error" flat @click="addskill = false">取り消し</v-btn>
+              <v-tooltip left>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn v-bind="attrs" v-on="on" class="ma-2" color="blue" outlined @click="addskill = false">cancel</v-btn>
+                </template>
+                <div>編集を取り消しする</div>
+              </v-tooltip>
             <v-spacer />
-            <v-btn class="primary" flat @click="registskill">登録</v-btn>
+              <v-tooltip right>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn v-bind="attrs" v-on="on" class="ma-2" color="red" outlined @click="registskill">edit</v-btn>
+                </template>
+                <div>編集を決定する</div>
+              </v-tooltip>
             <v-spacer />
-          </v-layout>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -309,6 +312,8 @@ export default {
       skillstatus: [],
       skilllevel: [],
       userSkills: [],
+      uname: [],
+      umail: [],
     };
   },
   mounted() {
@@ -452,7 +457,13 @@ export default {
           location.reload();
         });
       },
+    edit(uname,uemail) {
+      this.uname=uname
+      this.uemail=uemail
+      this.$refs.edit1dialog.edit1 = true
+
     },
+  },
 };
 </script>
 

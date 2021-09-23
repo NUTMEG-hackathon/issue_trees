@@ -157,7 +157,7 @@
         @changeClientDialog="changeClientDialog"
         @closeDialog="closeEditClientDialog"
       />
-      <v-dialog persistent v-model="addIssueDialog" width="700">
+      <v-dialog v-model="addIssueDialog" width="700">
         <v-card>
           <v-card-title class="text-h4 lighten-2">
             <v-row>
@@ -166,14 +166,38 @@
                 Add issues
               </v-col>
               <v-col cols="1" class="text-end my-3">
-                <v-btn text @click="changeClientDialog()">
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="mx-2"
+                      fab
+                      text
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="changeClientDialog()"
+                    >
+                      <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>このClientの情報を編集</span>
+                </v-tooltip>
               </v-col>
               <v-col cols="2" class="text-end my-3">
-                <v-btn text @click="addIssueDialog = false">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="mx-2"
+                      fab
+                      text
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="addIssueDialog = false"
+                    >
+                      <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>ダイアログを閉じる</span>
+                </v-tooltip>
               </v-col>
             </v-row>
           </v-card-title>
@@ -255,18 +279,39 @@
                 />
               </v-form>
               <v-card-actions>
-                <v-btn
-                  class="ma-2"
-                  outlined
-                  color="red"
-                  @click="addIssueDialog = false"
-                >
-                  cancel
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="ma-2"
+                      text
+                      outlined
+                      color="red"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="addIssueDialog = false"
+                    >
+                      cancel
+                    </v-btn>
+                  </template>
+                  <span>追加せずにダイアログを閉じる</span>
+                </v-tooltip>
                 <v-spacer></v-spacer>
-                <v-btn class="ma-2" outlined color="blue" @click="addIssue()">
-                  add
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="ma-2"
+                      text
+                      outlined
+                      color="blue"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="addIssue()"
+                    >
+                      add
+                    </v-btn>
+                  </template>
+                  <span>このissueを追加する</span>
+                </v-tooltip>
               </v-card-actions>
             </v-col>
           </v-row>
@@ -281,14 +326,38 @@
                 >issue details
               </v-col>
               <v-col cols="1" class="text-end my-3">
-                <v-btn text @click="changeIssueDialog()">
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="mx-2"
+                      fab
+                      text
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="changeIssueDialog()"
+                    >
+                      <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>このissueの情報を編集する</span>
+                </v-tooltip>
               </v-col>
               <v-col cols="2" class="text-end my-3">
-                <v-btn text @click="issueDetailsDialog = false">
-                  <v-icon class="my-3">mdi-close</v-icon>
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="mx-2"
+                      fab
+                      text
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="issueDetailsDialog = false"
+                    >
+                      <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>ダイアログを閉じる</span>
+                </v-tooltip>
               </v-col>
             </v-row>
           </v-card-title>
@@ -338,15 +407,23 @@
               </v-text>
               <br />
               <br />
-              <v-btn
-                class="ma-2"
-                outlined
-                large
-                color="light-green"
-                @click="openDeleteIssueDialog"
-              >
-                Done
-              </v-btn>
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    class="ma-2"
+                    text
+                    outlined
+                    large
+                    color="light-green"
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="openDeleteIssueDialog()"
+                  >
+                    Done
+                  </v-btn>
+                </template>
+                <span>完了したissueを削除する</span>
+              </v-tooltip>
             </v-col>
           </v-row>
         </v-card>
@@ -368,18 +445,39 @@
             <v-col cols="10" class="my-3 text-h5">
               <v-card-text> 完了したissueを削除してもよいですか？ </v-card-text>
               <v-card-actions>
-                <v-btn
-                  class="ma-2"
-                  outlined
-                  color="blue"
-                  @click="deleteIssueDialog = false"
-                >
-                  cancel
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="ma-2"
+                      text
+                      outlined
+                      color="blue"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="deleteIssueDialog = false"
+                    >
+                      cancel
+                    </v-btn>
+                  </template>
+                  <span>削除せずにダイアログを閉じる</span>
+                </v-tooltip>
                 <v-spacer></v-spacer>
-                <v-btn class="ma-2" outlined color="red" @click="deleteIssue()">
-                  Delete
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="ma-2"
+                      text
+                      outlined
+                      color="red"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="deleteIssue()"
+                    >
+                      Delete
+                    </v-btn>
+                  </template>
+                  <span>このissueを削除する</span>
+                </v-tooltip>
               </v-card-actions>
             </v-col>
             <v-col cols="1" />
@@ -396,14 +494,38 @@
                 Edit issue details
               </v-col>
               <v-col cols="1" class="text-end my-3">
-                <v-btn text @click="changeIssueDialog()">
-                  <v-icon>mdi-arrow-left-top</v-icon>
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="mx-2"
+                      fab
+                      text
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="changeIssueDialog()"
+                    >
+                      <v-icon>mdi-arrow-left-top</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>このissueの情報を編集する</span>
+                </v-tooltip>
               </v-col>
               <v-col cols="2" class="text-end my-3">
-                <v-btn text @click="editIssueDetailsDialog = false">
-                  <v-icon class="my-3">mdi-close</v-icon>
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="mx-2"
+                      fab
+                      text
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="editIssueDetailsDialog = false"
+                    >
+                      <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>ダイアログを閉じる</span>
+                </v-tooltip>
               </v-col>
             </v-row>
           </v-card-title>
@@ -487,15 +609,23 @@
                   outlined
                 />
               </v-form>
-              <v-btn
-                class="ma-2"
-                outlined
-                large
-                color="light-green"
-                @click="editIssueDetails"
-              >
-                Edit
-              </v-btn>
+
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    class="ma-2"
+                    outlined
+                    large
+                    color="light-green"
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="editIssueDetails()"
+                  >
+                    edit
+                  </v-btn>
+                </template>
+                <span>このClientを編集する</span>
+              </v-tooltip>
             </v-col>
           </v-row>
         </v-card>
