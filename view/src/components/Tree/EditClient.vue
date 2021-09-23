@@ -7,7 +7,7 @@
           <v-col cols="6" class="my-3 light-green--text"> Edit Client </v-col>
           <v-col cols="1" class="text-end my-3">
             <v-btn text @click="changeClientDialog()">
-              <v-icon>mdi-pencil</v-icon>
+              <v-icon>mdi-arrow-left-top</v-icon>
             </v-btn>
           </v-col>
           <v-col cols="2" class="text-end my-3">
