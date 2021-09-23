@@ -6,9 +6,21 @@
           <v-col cols="3" />
           <v-col cols="6" class="my-3 light-green--text"> Add Client </v-col>
           <v-col cols="3" class="text-end my-3">
-            <v-btn text @click="closeDialog()">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  class="mx-2"
+                  fab
+                  text
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="closeDialog()"
+                >
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </template>
+              <span>ダイアログを閉じる</span>
+            </v-tooltip>
           </v-col>
         </v-row>
       </v-card-title>
@@ -21,13 +33,39 @@
           <v-text-field v-model="clientName" label="client name" solo>
           </v-text-field>
           <v-card-actions>
-            <v-btn class="ma-2" outlined color="red" @click="closeDialog()">
-              cancel
-            </v-btn>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  class="ma-2"
+                  text
+                  outlined
+                  color="red"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="closeDialog()"
+                >
+                  cancel
+                </v-btn>
+              </template>
+              <span>追加せずにダイアログを閉じる</span>
+            </v-tooltip>
             <v-spacer></v-spacer>
-            <v-btn class="ma-2" outlined color="blue" @click="addClient()">
-              add
-            </v-btn>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  class="ma-2"
+                  text
+                  outlined
+                  color="blue"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="addClient()"
+                >
+                  add
+                </v-btn>
+              </template>
+              <span>このClientを追加する</span>
+            </v-tooltip>
           </v-card-actions>
         </v-col>
       </v-row>
