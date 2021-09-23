@@ -244,13 +244,13 @@
                   :reduce="(options) => options.id"
                   key="id"
                   label="member"
-                  :items="users"
+                  :items="projectUsers"
                   :menu-props="{
                     top: true,
                     offsetY: true,
                   }"
                   item-text="name"
-                  item-value="id"
+                  item-value="user_id"
                   outlined
                 />
               </v-form>
@@ -473,17 +473,17 @@
               </v-card-title>
               <v-form>
                 <v-select
-                  v-model="issueUser"
+                  v-model="issueUser.id"
                   :reduce="(options) => options.id"
                   key="id"
                   label="member"
-                  :items="users"
+                  :items="projectUsers"
                   :menu-props="{
                     top: true,
                     offsetY: true,
                   }"
                   item-text="name"
-                  item-value="id"
+                  item-value="user_id"
                   outlined
                 />
               </v-form>
@@ -598,9 +598,9 @@ export default {
       issueDescription: [],
       issueLevel: [],
       issueClientId: [],
-      issueUser: [],
       issueUserId: [],
       issueUserName: [],
+      issueUser: [],
       // user_project
       userProject: [],
       userProjects: [],
@@ -841,6 +841,7 @@ export default {
     },
     removeProjectUser: function () {
       this.selectProject();
+      this.addUserDialog = false;
       this.removeUserDialog = false;
     },
     addClient: function () {
@@ -888,6 +889,7 @@ export default {
     },
     closeRemoveUserDialog: function () {
       this.selectProject();
+      this.addUserDialog = false;
       this.removeUserDialog = false;
     },
     editClient: function () {
@@ -902,6 +904,7 @@ export default {
     },
     addIssue: function () {
       const url = process.env.VUE_APP_URL;
+      console.log(this.addIssueUser);
       var params = {
         name: this.addIssueName,
         client_id: this.clientId,
@@ -1052,7 +1055,7 @@ export default {
       var issueParams = {
         name: this.issueName,
         client_id: this.issueClientId,
-        user_id: this.issueUser,
+        user_id: this.issueUser.id,
         description: this.issueDescription,
         level: this.issueLevel,
         skill_ids: this.issueSkillIds,
