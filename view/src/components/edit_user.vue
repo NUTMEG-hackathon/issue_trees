@@ -1,15 +1,20 @@
 <template>
   <v-container>
-    <v-dialog v-model="edit1" max-width="600" persistent>
+    <v-dialog v-model="edit1" max-width="700">
       <v-card>
-        <v-card-title class="text-h4 justify-center light-green lighten-2">
-          個人情報の編集
+        <v-card-title class="text-h4 lighten-2">
+          <v-row no-gutters>
+            <v-col cols="3" />
+            <v-col cols="6" class="my-3 light-green--text">
+              Edit User Info
+            </v-col>
+            <v-col cols="3" class="text-end my-3"></v-col>
+          </v-row>
         </v-card-title>
-        <v-container class="justify-content-center">
 
-          <v-row>
-            <v-col cols="2"></v-col>
-            <v-col cols="8">
+          <v-row no-gutters>
+            <v-col cols="1" />
+            <v-col cols="10">
               <v-text-field
                 label="name"
                 v-model="name"
@@ -18,12 +23,12 @@
                 clearable
               />
             </v-col>
-            <v-col cols="2"></v-col>
+            <v-col cols="1" />
           </v-row>
 
-          <v-row>
-            <v-col cols="2"></v-col>
-            <v-col cols="8">
+          <v-row no-gutters>
+            <v-col cols="1"></v-col>
+            <v-col cols="10">
               <v-text-field
                 label="email"
                 v-model="email"
@@ -32,18 +37,25 @@
                 clearable
               />
             </v-col>
-            <v-col cols="2"></v-col>
+            <v-col cols="1"></v-col>
           </v-row>
 
-        </v-container>
         <v-card-actions>
-          <v-layout align-center justify-center>
             <v-spacer />
-            <v-btn class="error" flat="flat" @click="edit1 = false">取り消し</v-btn>
+            <v-tooltip left>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn v-bind="attrs" v-on="on" color="red" class="ma-2" outlined @click="edit1 = false">cancel</v-btn>
+              </template>
+              <div>編集を取り消しする</div>
+            </v-tooltip>
             <v-spacer />
-            <v-btn class="primary" flat="flat" @click="submit">登録</v-btn>
+            <v-tooltip right>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn v-bind="attrs" v-on="on" color="blue" class="ma-2" outlined @click="submit">edit</v-btn>
+              </template>
+              <div>編集を決定する</div>
+            </v-tooltip>
             <v-spacer />
-          </v-layout>
         </v-card-actions>
       </v-card>
     </v-dialog>

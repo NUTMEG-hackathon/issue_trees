@@ -100,17 +100,27 @@
             </v-row>
           </v-card>
           <br />
-          <div class="light-green lighten-2 events_title panel-heading">
-            Events
-          </div>
-          <div class="events panel-body log">
-            <div v-for="(event, index) in events" :key="index">
-              <p>
-                <b>Name:</b> {{ event.eventName }} <b>Data:</b
-                >{{ event.data.name }}
-              </p>
-            </div>
-          </div>
+          <v-btn
+            class="light-green--text"
+            @click="openProjectUserDialog()"
+            outlined
+          >
+            Management members
+          </v-btn>
+          <AddProjectUser
+            :addUserDialog="addUserDialog"
+            :removeUserDialog="removeUserDialog"
+            :projectId="userProjectId"
+            :projectUserIds="projectUserIds"
+            :usersSkills="usersSkills"
+            :userIds="userIds"
+            :notAssignedUsers="notAssignedUsers"
+            :notAssignedUserIds="notAssignedUserIds"
+            @addUser="addUser"
+            @removeProjectUser="removeProjectUser"
+            @closeAddDialog="closeAddUserDialog"
+            @closeRemoveDialog="closeRemoveUserDialog"
+          />
         </v-col>
         <v-col cols="8">
           <tree
@@ -147,7 +157,7 @@
         @changeClientDialog="changeClientDialog"
         @closeDialog="closeEditClientDialog"
       />
-      <v-dialog persistent v-model="addIssueDialog" width="700">
+      <v-dialog v-model="addIssueDialog" width="700">
         <v-card>
           <v-card-title class="text-h4 lighten-2">
             <v-row>
@@ -156,14 +166,38 @@
                 Add issues
               </v-col>
               <v-col cols="1" class="text-end my-3">
-                <v-btn text @click="changeClientDialog()">
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="mx-2"
+                      fab
+                      text
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="changeClientDialog()"
+                    >
+                      <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>このClientの情報を編集</span>
+                </v-tooltip>
               </v-col>
               <v-col cols="2" class="text-end my-3">
-                <v-btn text @click="addIssueDialog = false">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="mx-2"
+                      fab
+                      text
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="addIssueDialog = false"
+                    >
+                      <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>ダイアログを閉じる</span>
+                </v-tooltip>
               </v-col>
             </v-row>
           </v-card-title>
@@ -173,14 +207,14 @@
               <v-card-title class="text-left">
                 <v-icon class="mr-3">mdi-tag-text-outline</v-icon> issue Name
               </v-card-title>
-              <v-text-field v-model="IssueName" label="issue name" solo>
+              <v-text-field v-model="addIssueName" label="issue name" solo>
               </v-text-field>
               <v-card-title class="text-left">
                 <v-icon class="mr-3">mdi-message-reply-text-outline</v-icon>
                 issue descriptions
               </v-card-title>
               <v-textarea
-                v-model="issueDescription"
+                v-model="addIssueDescription"
                 label="issue descriptions"
                 solo
                 name="input-7-4"
@@ -190,7 +224,7 @@
               </v-card-title>
               <v-form>
                 <v-select
-                  v-model="issueSkillIds"
+                  v-model="addIssueSkillIds"
                   multiple
                   :reduce="(options) => options.id"
                   key="id"
@@ -210,7 +244,7 @@
               </v-card-title>
               <v-form>
                 <v-select
-                  v-model="issueLevel"
+                  v-model="addIssueLevel"
                   :reduce="(options) => options.id"
                   key="id"
                   label="issue level"
@@ -230,33 +264,54 @@
               </v-card-title>
               <v-form>
                 <v-select
+                  v-model="addIssueUser"
                   :reduce="(options) => options.id"
                   key="id"
                   label="member"
-                  :items="users"
+                  :items="projectUsers"
                   :menu-props="{
                     top: true,
                     offsetY: true,
                   }"
                   item-text="name"
-                  item-value="id"
+                  item-value="user_id"
                   outlined
-                  @change="setUser"
                 />
               </v-form>
               <v-card-actions>
-                <v-btn
-                  class="ma-2"
-                  outlined
-                  color="red"
-                  @click="addIssueDialog = false"
-                >
-                  cancel
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="ma-2"
+                      text
+                      outlined
+                      color="red"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="addIssueDialog = false"
+                    >
+                      cancel
+                    </v-btn>
+                  </template>
+                  <span>追加せずにダイアログを閉じる</span>
+                </v-tooltip>
                 <v-spacer></v-spacer>
-                <v-btn class="ma-2" outlined color="blue" @click="addIssue()">
-                  add
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="ma-2"
+                      text
+                      outlined
+                      color="blue"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="addIssue()"
+                    >
+                      add
+                    </v-btn>
+                  </template>
+                  <span>このissueを追加する</span>
+                </v-tooltip>
               </v-card-actions>
             </v-col>
           </v-row>
@@ -271,14 +326,38 @@
                 >issue details
               </v-col>
               <v-col cols="1" class="text-end my-3">
-                <v-btn text @click="changeIssueDialog()">
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="mx-2"
+                      fab
+                      text
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="changeIssueDialog()"
+                    >
+                      <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>このissueの情報を編集する</span>
+                </v-tooltip>
               </v-col>
               <v-col cols="2" class="text-end my-3">
-                <v-btn text @click="issueDetailsDialog = false">
-                  <v-icon class="my-3">mdi-close</v-icon>
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="mx-2"
+                      fab
+                      text
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="issueDetailsDialog = false"
+                    >
+                      <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>ダイアログを閉じる</span>
+                </v-tooltip>
               </v-col>
             </v-row>
           </v-card-title>
@@ -328,15 +407,23 @@
               </v-text>
               <br />
               <br />
-              <v-btn
-                class="ma-2"
-                outlined
-                large
-                color="light-green"
-                @click="openDeleteIssueDialog"
-              >
-                Done
-              </v-btn>
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    class="ma-2"
+                    text
+                    outlined
+                    large
+                    color="light-green"
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="openDeleteIssueDialog()"
+                  >
+                    Done
+                  </v-btn>
+                </template>
+                <span>完了したissueを削除する</span>
+              </v-tooltip>
             </v-col>
           </v-row>
         </v-card>
@@ -358,18 +445,39 @@
             <v-col cols="10" class="my-3 text-h5">
               <v-card-text> 完了したissueを削除してもよいですか？ </v-card-text>
               <v-card-actions>
-                <v-btn
-                  class="ma-2"
-                  outlined
-                  color="blue"
-                  @click="addIssueDialog = false"
-                >
-                  cancel
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="ma-2"
+                      text
+                      outlined
+                      color="blue"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="deleteIssueDialog = false"
+                    >
+                      cancel
+                    </v-btn>
+                  </template>
+                  <span>削除せずにダイアログを閉じる</span>
+                </v-tooltip>
                 <v-spacer></v-spacer>
-                <v-btn class="ma-2" outlined color="red" @click="deleteIssue()">
-                  Delete
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="ma-2"
+                      text
+                      outlined
+                      color="red"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="deleteIssue()"
+                    >
+                      Delete
+                    </v-btn>
+                  </template>
+                  <span>このissueを削除する</span>
+                </v-tooltip>
               </v-card-actions>
             </v-col>
             <v-col cols="1" />
@@ -386,14 +494,38 @@
                 Edit issue details
               </v-col>
               <v-col cols="1" class="text-end my-3">
-                <v-btn text @click="changeIssueDialog()">
-                  <v-icon>mdi-arrow-left-top</v-icon>
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="mx-2"
+                      fab
+                      text
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="changeIssueDialog()"
+                    >
+                      <v-icon>mdi-arrow-left-top</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>このissueの情報を編集する</span>
+                </v-tooltip>
               </v-col>
               <v-col cols="2" class="text-end my-3">
-                <v-btn text @click="editIssueDetailsDialog = false">
-                  <v-icon class="my-3">mdi-close</v-icon>
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="mx-2"
+                      fab
+                      text
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="editIssueDetailsDialog = false"
+                    >
+                      <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>ダイアログを閉じる</span>
+                </v-tooltip>
               </v-col>
             </v-row>
           </v-card-title>
@@ -463,29 +595,37 @@
               </v-card-title>
               <v-form>
                 <v-select
-                  v-model="issueUser"
+                  v-model="issueUser.id"
                   :reduce="(options) => options.id"
                   key="id"
                   label="member"
-                  :items="users"
+                  :items="projectUsers"
                   :menu-props="{
                     top: true,
                     offsetY: true,
                   }"
                   item-text="name"
-                  item-value="id"
+                  item-value="user_id"
                   outlined
                 />
               </v-form>
-              <v-btn
-                class="ma-2"
-                outlined
-                large
-                color="light-green"
-                @click="editIssueDetails"
-              >
-                Edit
-              </v-btn>
+
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    class="ma-2"
+                    outlined
+                    large
+                    color="light-green"
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="editIssueDetails()"
+                  >
+                    edit
+                  </v-btn>
+                </template>
+                <span>このClientを編集する</span>
+              </v-tooltip>
             </v-col>
           </v-row>
         </v-card>
@@ -495,22 +635,15 @@
 </template>
 
 <script>
+import AddProjectUser from "@/components/Tree/AddProjectUser.vue";
 import AddClient from "@/components/Tree/AddClient.vue";
 import EditClient from "@/components/Tree/EditClient.vue";
 import { tree } from "vued3tree";
 import axios from "axios";
-let currentId = 500;
-const removeElement = (arr, element) => {
-  const index = arr.indexOf(element);
-  if (index === -1) {
-    return;
-  }
-  arr.splice(index, 1);
-};
 Object.assign(tree, {
   type: "tree",
   layoutType: "vertical",
-  radius: 6,
+  radius: 5,
   linkLayout: "bezier",
   events: [],
 });
@@ -523,7 +656,7 @@ export default {
         name: "",
         children: [],
       },
-      radius: 6,
+      radius: 5,
       layoutType: "vertical",
       layoutTypes: [
         { name: "vertical" },
@@ -555,9 +688,8 @@ export default {
           name: 5,
         },
       ],
-      // Node
-      newNode: [],
       // Dialog
+      addUserDialog: false,
       addClientDialog: false,
       editClientDialog: false,
       deleteClientDialog: false,
@@ -575,9 +707,11 @@ export default {
       skillNum: 1,
       // user
       users: [],
+      userIds: [],
       userSkills: [],
       usersSkills: [],
-      maxUserSkillNum: 0,
+      notAssignedUserIds: [],
+      notAssignedUsers: [],
       // project
       projects: [],
       projectUsers: [],
@@ -594,9 +728,9 @@ export default {
       issueDescription: [],
       issueLevel: [],
       issueClientId: [],
-      issueUser: [],
       issueUserId: [],
       issueUserName: [],
+      issueUser: [],
       // user_project
       userProject: [],
       userProjects: [],
@@ -608,6 +742,13 @@ export default {
       // client_issue
       clientIssue: [],
       clientIssues: [],
+      // add issue
+      addIssueName: [],
+      addIssueDescription: [],
+      addIssueLevel: [],
+      addIssueClientId: [],
+      addIssueUser: [],
+      addIssueSkillIds: [],
       // issue_details
       issueDetails: [],
       issueSkill: [],
@@ -618,6 +759,7 @@ export default {
   },
   components: {
     tree,
+    AddProjectUser,
     AddClient,
     EditClient,
   },
@@ -690,17 +832,13 @@ export default {
       const url = process.env.VUE_APP_URL;
       this.event = data;
       this.events = [];
-      this.issueId = data.issue_id;
-      this.issueName = data.name;
-      this.issueClientId = data.client_id;
-      this.issueUserId = data.user_id;
-      this.issueDescription = data.description;
-      this.issueLevel = data.level;
-      this.clientId = data.client_id;
-      if (this.clientId) {
-        this.clientName = data.name;
-      }
       if (!this.isChildNode) {
+        this.issueId = data.issue_id;
+        this.issueName = data.name;
+        this.issueClientId = data.client_id;
+        this.issueUserId = data.user_id;
+        this.issueDescription = data.description;
+        this.issueLevel = data.level;
         this.issueDetailsDialog = true;
         this.editIssueDetailsDialog = false;
 
@@ -767,13 +905,12 @@ export default {
           .then((response) => {
             this.issueSkillIds = response.data;
           });
-      } else if (this.clientId) {
+      } else if (data.client_id) {
+        this.clientId = data.client_id;
+        this.clientName = data.name;
         this.addIssueDialog = true;
       } else {
         this.addClientDialog = true;
-      }
-      if (this.editClientDialog) {
-        this.editClientDialog = false;
       }
     },
     onClickNode(evt) {
@@ -792,18 +929,6 @@ export default {
       } else {
         this.isChildNode = true;
       }
-    },
-    addFor(data) {
-      const newData = {
-        id: currentId++,
-        children: [],
-        name: data.name,
-      };
-      this.newNode.push(newData);
-    },
-    remove(data, node) {
-      const parent = node.parent.data;
-      removeElement(parent.children, data);
     },
     fetchProjectUsers: async function () {
       var url = process.env.VUE_APP_URL;
@@ -838,64 +963,103 @@ export default {
         })
         .then((response) => {
           this.userSkills = response.data[0];
-          if (this.maxUserSkillNum < this.userSkills.skill_names.length) {
-            this.maxUserSkillNum = this.userSkills.skill_names.length;
-          }
         });
+    },
+    addUser: function () {
+      this.selectProject();
+      this.addUserDialog = false;
+    },
+    removeProjectUser: function () {
+      this.selectProject();
+      this.addUserDialog = false;
+      this.removeUserDialog = false;
     },
     addClient: function () {
       this.selectProject();
+      this.addClientDialog = false;
     },
-    closeAddClientDialog: function (dialog) {
-      this.selectProject();
-      this.addClientDialog = dialog;
-    },
-    closeEditClientDialog: function (dialog) {
-      this.selectProject();
-      this.editClientDialog = dialog;
-    },
-    editClient: function () {
-      this.selectProject();
-      this.edidClientDialog = false;
-      this.addIssueDialog = false;
-    },
-    deleteClient: function () {
-      this.selectProject();
-      this.edidClientDialog = false;
-      this.addIssueDialog = false;
-    },
-    addIssue: function () {
+    openProjectUserDialog: function () {
       const url = process.env.VUE_APP_URL;
-      var params = {
-        name: this.IssueName,
-        client_id: this.issueClientId,
-        user_id: this.issueUser,
-        description: this.issueDescription,
-        level: this.issueLevel,
-        skill_ids: this.issueSkillIds,
-      };
-      axios.defaults.headers.common["Content-Type"] = "application/json";
-      axios
-        .post(
-          url + "/issues/",
-          { issue: params },
-          {
+      this.userIds = [];
+      this.notAssignedUsers = [];
+      this.notAssignedUserIds = [];
+      for (let i = 0; i < this.users.length; i++) {
+        this.userIds.push(this.users[i].id);
+      }
+      this.notAssignedUserIds = this.userIds;
+      for (let i = 0; i < this.projectUserIds.length; i++) {
+        this.notAssignedUserIds = this.notAssignedUserIds.filter(
+          (n) => n != this.projectUserIds[i]
+        );
+      }
+      for (let i = 0; i < this.notAssignedUserIds.length; i++) {
+        axios
+          .get(url + "/api/v1/user_details/" + this.notAssignedUserIds[i], {
             headers: {
+              "Content-Type": "application/json",
               "access-token": localStorage.getItem("access-token"),
               client: localStorage.getItem("client"),
               uid: localStorage.getItem("uid"),
             },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error.response);
-        });
-      this.addFor(this.event);
-      this.issueUser = [];
-      this.issueSkills = [];
+          })
+          .then((response) => {
+            this.notAssignedUsers.push(response.data);
+          });
+      }
+      this.addUserDialog = true;
+    },
+    closeAddClientDialog: function () {
+      this.addClientDialog = false;
+    },
+    closeEditClientDialog: function () {
+      this.editClientDialog = false;
+    },
+    closeAddUserDialog: function () {
+      this.addUserDialog = false;
+    },
+    closeRemoveUserDialog: function () {
+      this.selectProject();
+      this.addUserDialog = false;
+      this.removeUserDialog = false;
+    },
+    editClient: function () {
+      this.selectProject();
+      this.editClientDialog = false;
+      this.addIssueDialog = false;
+    },
+    deleteClient: function () {
+      this.selectProject();
+      this.editClientDialog = false;
+      this.addIssueDialog = false;
+    },
+    addIssue: function () {
+      const url = process.env.VUE_APP_URL;
+      console.log(this.addIssueUser);
+      var params = {
+        name: this.addIssueName,
+        client_id: this.clientId,
+        user_id: this.addIssueUser,
+        description: this.addIssueDescription,
+        level: this.addIssueLevel,
+        skill_ids: this.addIssueSkillIds,
+      };
+      axios.defaults.headers.common["Content-Type"] = "application/json";
+      axios.post(
+        url + "/issues/",
+        { issue: params },
+        {
+          headers: {
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        }
+      );
+      this.addIssueName = [];
+      this.addIssueUser = [];
+      this.addIssueDescription = [];
+      this.addIssueLevel = [];
+      this.addIssueSkillIds = [];
       this.selectProject();
       this.addIssueDialog = false;
     },
@@ -1021,7 +1185,7 @@ export default {
       var issueParams = {
         name: this.issueName,
         client_id: this.issueClientId,
-        user_id: this.issueUser,
+        user_id: this.issueUser.id,
         description: this.issueDescription,
         level: this.issueLevel,
         skill_ids: this.issueSkillIds,
@@ -1039,12 +1203,8 @@ export default {
             },
           }
         )
-        .then((response) => {
-          console.log(response.data);
+        .then(() => {
           this.editIssueDetailsDialog = false;
-        })
-        .catch((error) => {
-          console.log(error.response);
         });
       this.selectProject();
     },
@@ -1057,9 +1217,6 @@ export default {
       axios.delete(url + "/issues/" + this.issueId);
       this.deleteIssueDialog = false;
       this.selectProject();
-    },
-    setUser: function (event) {
-      this.issueUser = event;
     },
   },
 };

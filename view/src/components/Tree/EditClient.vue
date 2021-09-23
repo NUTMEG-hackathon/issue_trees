@@ -6,14 +6,38 @@
           <v-col cols="3" />
           <v-col cols="6" class="my-3 light-green--text"> Edit Client </v-col>
           <v-col cols="1" class="text-end my-3">
-            <v-btn text @click="changeClientDialog()">
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  class="mx-2"
+                  fab
+                  text
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="changeClientDialog()"
+                >
+                  <v-icon>mdi-arrow-left-top</v-icon>
+                </v-btn>
+              </template>
+              <span>issueを追加する</span>
+            </v-tooltip>
           </v-col>
           <v-col cols="2" class="text-end my-3">
-            <v-btn text @click="editClientDialog = false">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  class="mx-2"
+                  fab
+                  text
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="closeDialog()"
+                >
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </template>
+              <span>ダイアログを閉じる</span>
+            </v-tooltip>
           </v-col>
         </v-row>
       </v-card-title>
@@ -26,13 +50,39 @@
           <v-text-field v-model="clientName" label="client name" solo>
           </v-text-field>
           <v-card-actions>
-            <v-btn class="ma-2" outlined color="red" @click="deleteClient()">
-              delete
-            </v-btn>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  class="ma-2"
+                  text
+                  outlined
+                  color="red"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="deleteClient()"
+                >
+                  delete
+                </v-btn>
+              </template>
+              <span>このClientを削除する</span>
+            </v-tooltip>
             <v-spacer></v-spacer>
-            <v-btn class="ma-2" outlined color="blue" @click="editClient()">
-              edit
-            </v-btn>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  class="ma-2"
+                  text
+                  outlined
+                  color="blue"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="editClient()"
+                >
+                  edit
+                </v-btn>
+              </template>
+              <span>このClientを編集する</span>
+            </v-tooltip>
           </v-card-actions>
         </v-col>
       </v-row>
@@ -90,13 +140,14 @@ export default {
       console.log(this.clientId);
       axios.delete(url + "/clients/" + this.clientId);
       this.editClientDialog = false;
+      this.$emit("deleteClient");
     },
     changeClientDialog: function () {
       this.$emit("changeClientDialog");
     },
     closeDialog: function () {
       this.editClientDialog = false;
-      this.$emit("closeDialog", this.editClientDialog);
+      this.$emit("closeDialog");
     },
   },
 };

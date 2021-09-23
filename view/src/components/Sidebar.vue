@@ -4,10 +4,11 @@
       this.$route.path === '/tree' ||
       this.$route.path === '/information' ||
       this.$route.path === '/about' ||
-      this.$route.path === '/projectregist'
+      this.$route.path === '/projectregist' ||
+      this.$route.path === '/alluser'
     "
   >
-    <v-container>information
+    <v-container>
       <v-navigation-drawer fixed permanent clipped app color="#FFF">
         <v-sheet>
           <v-list>
@@ -15,9 +16,9 @@
               <v-icon class="pr-3" color="#7da453"> mdi-family-tree </v-icon>
                 ProjectTree
             </v-list-item>
-            <v-list-item class="font-weight-bold py-1">
+            <v-list-item to=/alluser class="font-weight-bold py-1">
               <v-icon class="pr-3" color="#7da453"> mdi-account </v-icon>
-                AllUser
+                All User Information
             </v-list-item>
             <v-list-item to=/projectregist class="font-weight-bold py-1">
               <v-icon class="pr-3" color="#7da453">
