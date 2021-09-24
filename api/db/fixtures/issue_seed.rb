@@ -4,7 +4,7 @@ Issue.seed( :id,
     name: "aboutの作成",
     client_id: 1,
     user_id: 3,
-    description: "ouraの仕事,バックエンド",
+    description: "gikutaroの仕事,バックエンド",
     level: 2
   },
   {
@@ -12,7 +12,7 @@ Issue.seed( :id,
   name: "Homeの作成",
   client_id: 1,
   user_id: 1,
-  description: "fujisakiの仕事,バックエンド",
+  description: "gikutaroの仕事,バックエンド",
   level: 3
   },
   {
@@ -20,7 +20,7 @@ Issue.seed( :id,
   name: "login機能の作成",
   client_id: 2,
   user_id: 1,
-  description: "dodoの仕事,バックエンド",
+  description: "gikuziroの仕事,バックエンド",
   level: 3
   },
   {
@@ -28,7 +28,7 @@ Issue.seed( :id,
   name: "Tree構造の作成",
   client_id: 2,
   user_id: 1,
-  description: "fujisakiの仕事,フロントエンド",
+  description: "gikutaroの仕事,フロントエンド",
   level: 3 
   },
   {
@@ -36,7 +36,7 @@ Issue.seed( :id,
   name: "サーバー管理",
   client_id: 3,
   user_id: 4,
-  description: "ouraの仕事,サーバー",
+  description: "gikuhanakoの仕事,サーバー",
   level: 3
   },
   {
@@ -44,7 +44,7 @@ Issue.seed( :id,
   name: "Face Trackingの導入",
   client_id: 2,
   user_id: 1,
-  description: "fujisakiの仕事,backend",
+  description: "gikusaburoの仕事,backend",
   level: 3
   },
   {
@@ -52,7 +52,7 @@ Issue.seed( :id,
   name: "機械学習",
   client_id: 1,
   user_id: 1,
-  description: "fujisakiの仕事,backend",
+  description: "gikukoziroの仕事,backend",
   level: 3
   },
   {
@@ -60,7 +60,7 @@ Issue.seed( :id,
   name: "Apiを飛ばす",
   client_id: 2,
   user_id: 2,
-  description: "dodoの仕事,backend",
+  description: "gikurokuroの仕事の仕事,backend",
   level: 3
   },
   {
@@ -68,7 +68,7 @@ Issue.seed( :id,
   name: "tree画面作成",
   client_id: 1,
   user_id: 3,
-  description: "ouraの仕事,fromtend",
+  description: "gikutaroの仕事,fromtend",
   level: 3
   },
   {
@@ -76,7 +76,7 @@ Issue.seed( :id,
   name: "ログイン画面作成",
   client_id: 1,
   user_id: 3,
-  description: "ouraの仕事,fromtend",
+  description: "gikushirouの仕事,fromtend",
   level: 3
   },
   {
@@ -84,7 +84,7 @@ Issue.seed( :id,
   name: "機械学習",
   client_id: 2,
   user_id: 6,
-  description: "moriの仕事,backend",
+  description: "gikuzirouの仕事,backend",
   level: 3
   }
 )
