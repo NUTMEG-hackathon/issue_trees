@@ -1,50 +1,50 @@
 User.seed(:id,
 {
   id:1,
-  name: "ryuseifujisaki",
-  email: "fujisaki@email.com",
+  name: "gikutaro",
+  email: "gikutaro@email.com",
   password: "password"
 },
  {
    id:2,
-   name: "dodoyushiro",
-   email: "dodo@email.com",
+   name: "gikugiro",
+   email: "gikugiro@email.com",
    password: "password"
  },
  {
   id:3,
-  name: "oura",
-  email: "oura@email.com",
+  name: "gikusaburo",
+  email: "gikusaburo@email.com",
   password: "password"
  },
  {
   id:4,
-  name: "yasuda",
-  email: "yasuda@email.com",
+  name: "gikukoziro",
+  email: "gikukoziro@email.com",
   password: "password"
  },
  {
   id:5,
-  name: "tamura",
-  email: "tamura@email.com",
+  name: "gikurokurou",
+  email: "gikurokurou@email.com",
   password: "password"
  },
  {
   id:6,
-  name: "mori",
-  email: "mori@email.com",
+  name: "gikuhanako",
+  email: "gikuhanako@email.com",
   password: "password"
  },
  {
   id:7,
-  name: "oba",
-  email: "oba@email.com",
+  name: "gikumike",
+  email: "gikumike@email.com",
   password: "password"
  },
  {
   id:8,
-  name: "kugue",
-  email: "kugue@email.com",
+  name: "gikuichiro",
+  email: "gikuichiro@email.com",
   password: "password"
  },
 )

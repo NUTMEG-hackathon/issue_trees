@@ -675,7 +675,7 @@ export default {
           }
         }
       }
-      //window.location.href = "/tree";
+      window.location.href = "/tree";
     },
 
     addProject: async function (params) {
