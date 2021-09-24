@@ -47,4 +47,5 @@ User.seed(:id,
   email: "gikuichiro@email.com",
   password: "password"
  },
+ 
 )
