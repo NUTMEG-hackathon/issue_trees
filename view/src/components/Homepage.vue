@@ -1,47 +1,35 @@
 <template>
-  <v-card max-width="375">
-    <v-img src="../assets/Tree3.png" height="250px">
-      <v-row>
-        <v-layout align-center justify-center>
-          <v-card-title class="white--text text-h5 font-weight-bold">
-            長岡技大-学園祭実行委員会（通称NUTMEG）
-          </v-card-title>
-        </v-layout>
-      </v-row>
-    </v-img>
-
-    <v-list>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title>参加団体管理アプリ ユーザー用</v-list-item-title>
-          <v-list-item-subtitle
-            >https://group-manager.nutfes.net</v-list-item-subtitle
-          >
-        </v-list-item-content>
-      </v-list-item>
-      <!-- 
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title>参加団体管理アプリ 管理者用</v-list-item-title>
-          <v-list-item-subtitle
-            >http://133.125.44.106:8000</v-list-item-subtitle
-          >
-        </v-list-item-content>
-      </v-list-item> -->
-
-      <!-- <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title>Record</v-list-item-title>
-          <v-list-item-subtitle>?????????????????????</v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title>Tracking Support</v-list-item-title>
-          <v-list-item-subtitle>?????????????????????</v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item> -->
-    </v-list>
-  </v-card>
+  <v-container>
+    <v-dialog v-model="openh" max-width="700">
+      <v-card>
+        <v-img src="../assets/Tree2.png" class="logo" >
+          <v-row no-gutters>
+            <v-card-title class="my-3 text-h3">
+              <h4 class="logo1">長岡技大-学園祭実行委員会（通称NUTMEG）</h4>
+            </v-card-title>
+          </v-row>
+        </v-img>
+      </v-card>
+    </v-dialog>
+  </v-container>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      openh: false,
+    }
+  }
+}
+</script>
+<style scoped>
+  .logo{
+    max-height: 250px;
+    opacity: 80%;
+  }
+  .logo1{
+    font-weight: bold;
+    color: black;
+  }
+</style>

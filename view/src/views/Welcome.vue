@@ -1,155 +1,117 @@
 <template>
-  <v-container class="terget">
-    <v-parallax src="../assets/Tree1.png">
-      <v-row align="center" justify="center">
-        <v-col cols="12">
-          <br />
-          <h1 class="text-h1 font-weight-bold mb-4">Efficientree</h1>
-          <br />
-          <h3 class="text-h2 font-weight-bold mb-4">Streamline development</h3>
+  <v-img src="../assets/Tree3.png" class="logo">
+    <v-container>
+      <v-row no-gutters>
+        <v-col cols="6">
+          <p class="logo1">Efficientree</p>
+          <p class="logo2">Tree for All Engineers</p>
+        </v-col>
+        <v-col cols="6">
+          <v-card class="logo3">
+            <br />
+            <h2 class="logo4">WELCOME</h2>
+            <v-tooltip right>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                  class="ma-2"
+                  color="green"
+                  outlined
+                  large
+                  @click="openIn"
+                  >Sign In</v-btn
+                >
+              </template>
+              <div>サインインする</div>
+            </v-tooltip>
+            <SignIn ref="opendialogi" />
+
+            <v-tooltip right>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                  class="ma-2"
+                  color="green"
+                  outlined
+                  large
+                  @click="openUp"
+                  >Sign Up</v-btn
+                >
+              </template>
+              <div>サインアップ(新規登録)する</div>
+            </v-tooltip>
+            <SignUp ref="opendialogu" />
+          </v-card>
         </v-col>
       </v-row>
-    </v-parallax>
-
-    <v-row justify="center">
-      <v-col cols="4">
-        <!-- <v-menu
-          open-on-hover
-          offset-y
-          bottom
-          disable-keys
-          :close-on-content-click="false"
-          :close-on-click="false"
-        > -->
-        <template
-          v-slot:activator="{ on, attrs }"
-          :close-on-content-click="false"
-          :close-on-click="false"
-        >
-          <v-card
-            rounded
-            v-bind="attrs"
-            v-on="on"
-            :close-on-content-click="false"
-            :close-on-click="false"
-          >
-            <br /><br />
-            <v-card-title
-              class="text-h4 justify-center light-green lighten-2 lighten-2"
-            >
-              <v-icon x-large>mdi-text-box-plus</v-icon>
-              SignUp
-            </v-card-title>
-            <br /><br />
-          </v-card>
-        </template>
-        <v-list>
-          <v-list-item>
-            <v-list-item-title>
-              <Signup />
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-        <!-- </v-menu> -->
-      </v-col>
-
-      <v-col cols="4">
-        <!-- <v-menu
-          open-on-hover
-          offset-y
-          bottom
-          disable-keys
-          :close-on-content-click="false"
-          :close-on-click="false"
-        > -->
-        <template
-          v-slot:activator="{ on, attrs }"
-          :close-on-content-click="false"
-          :close-on-click="false"
-        >
-          <v-card
-            rounded
-            v-bind="attrs"
-            v-on="on"
-            :close-on-content-click="false"
-            :close-on-click="false"
-          >
-            <br /><br />
-            <v-card-title
-              class="text-h4 justify-center light-green lighten-2 lighten-2"
-            >
-              <v-icon x-large>mdi-login</v-icon>
-              SignIn
-            </v-card-title>
-            <br /><br />
-          </v-card>
-        </template>
-        <v-list>
-          <v-list-item>
-            <v-list-item-title>
-              <Signin />
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-        <!-- </v-menu> -->
-      </v-col>
-
-      <v-col cols="4">
-        <!-- <v-menu
-          open-on-hover
-          offset-y
-          bottom
-          :close-on-content-click="false"
-          :close-on-click="false"
-          disable-keys
-        > -->
-        <template
-          v-slot:activator="{ on, attrs }"
-          :close-on-content-click="false"
-          :close-on-click="false"
-        >
-          <v-card
-            rounded
-            v-bind="attrs"
-            v-on="on"
-            :close-on-content-click="false"
-            :close-on-click="false"
-          >
-            <br /><br />
-            <v-card-title
-              class="text-h4 justify-center light-green lighten-2 lighten-2"
-            >
-              <v-icon x-large>mdi-book-open-page-variant</v-icon>
-              instruction manual
-            </v-card-title>
-            <br /><br />
-          </v-card>
-        </template>
-        <v-list>
-          <v-list-item>
-            <v-list-item-title>
-              <Homepage />
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-        <!-- </v-menu> -->
-      </v-col>
-    </v-row>
-  </v-container>
+    </v-container>
+  </v-img>
 </template>
 
 <script>
-import Signup from "../components/SignUp.vue";
-import Signin from "../components/SignIn.vue";
-import Homepage from "../components/Homepage.vue";
+import SignUp from "../components/SignUp.vue";
+import SignIn from "../components/SignIn.vue";
 export default {
   components: {
-    Signup,
-    Signin,
-    Homepage,
+    SignUp,
+    SignIn,
   },
   data() {
     return {};
   },
+  methods: {
+    openIn() {
+      this.$refs.opendialogi.openi = true;
+    },
+    openUp() {
+      this.$refs.opendialogu.openu = true;
+    },
+  },
 };
 </script>
+
+<style scoped>
+.logo {
+  position: relative;
+  background-position: center;
+  height: 100vh;
+  width: auto;
+}
+.logo1 {
+  font-weight: bold;
+  margin-top: 200px;
+  position: center;
+  top: calc(50% - 0.5em);
+  width: 80%;
+  text-align: center;
+  line-height: 1;
+  font-size: 5vw;
+  font-family: "Montserrat", sans-serif;
+  color: #008800;
+  text-shadow: 7px 7px 0 #fff;
+}
+.logo2 {
+  font-weight: bold;
+  margin-top: 20px;
+  position: center;
+  top: calc(50% - 0.5em);
+  width: 80%;
+  text-align: center;
+  line-height: 1;
+  font-size: 4vw;
+  font-family: "Montserrat", sans-serif;
+  color: #008800;
+  text-shadow: 7px 7px 0 #fff;
+}
+.logo3 {
+  margin-top: 200px;
+  opacity: 90%;
+}
+.logo4 {
+  text-align: center;
+  color: black;
+  margin: 10px;
+}
+</style>
