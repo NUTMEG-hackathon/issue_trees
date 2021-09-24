@@ -1,11 +1,15 @@
 <template>
   <v-container>
     <v-card-title class="text-center justify-center py-6">
-      <h1 id="maintitle" class="display-1 font-weight-bold">Personal Information</h1>
+      <h1 id="maintitle" class="display-1 font-weight-bold">
+        Personal Information
+      </h1>
     </v-card-title>
 
     <v-tabs grow color="green darken-3">
-      <v-tab v-for="title in titles" :key="title" id="subtitle">{{title}}</v-tab>
+      <v-tab v-for="title in titles" :key="title" id="subtitle">{{
+        title
+      }}</v-tab>
 
       <v-tab-item>
         <br /><br />
@@ -37,7 +41,13 @@
           <v-spacer>
             <v-tooltip left>
               <template v-slot:activator="{ on, attrs }">
-                <v-btn class="green lighten-2" v-bind="attrs" v-on="on" @click="edit(users.name,users.email)" large>
+                <v-btn
+                  class="green lighten-2"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="edit(users.name, users.email)"
+                  large
+                >
                   <h2>編集</h2>
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
@@ -46,7 +56,7 @@
             </v-tooltip>
           </v-spacer>
         </v-card-actions>
-            <!-- <v-tooltip right>
+        <!-- <v-tooltip right>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   rounded
@@ -67,6 +77,7 @@
           :userId="users.id"
           :name="users.name"
           :email="users.email"
+          @editUser="editUser"
         >
         </EditUser>
       </v-tab-item>
@@ -89,7 +100,6 @@
         <br />
         <div v-for="skill in skills" :key="skill.id">
           <v-row>
-
             <v-col cols="6" class="green lighten-4 pa-3">
               <h3>{{ skill.name }}</h3>
             </v-col>
@@ -111,7 +121,8 @@
               class="green lighten-2"
             >
               <v-icon>mdi-text-box-plus</v-icon>
-              <h2>追加</h2></v-btn>
+              <h2>追加</h2></v-btn
+            >
           </template>
           <div>スキルの複数登録</div>
         </v-tooltip>
@@ -180,109 +191,147 @@
     <!-- パスワードの変更コンポーネント -->
     <v-dialog v-model="password" max-width="700" persistent>
       <v-card>
-        <v-card-title class="text-h4 lighten-2 justify-center my-3 light-green--text">パスワードの変更</v-card-title>
-          <v-row no-gutters>
-            <v-col cols="1"></v-col>
-            <v-col cols="10">
-              <v-text-field
-                label="current password"
-                v-model="name"
-                text
-                outlined
-                clearable
-              />
-            </v-col>
-            <v-col cols="1"></v-col>
-          </v-row>
+        <v-card-title
+          class="text-h4 lighten-2 justify-center my-3 light-green--text"
+          >パスワードの変更</v-card-title
+        >
+        <v-row no-gutters>
+          <v-col cols="1"></v-col>
+          <v-col cols="10">
+            <v-text-field
+              label="current password"
+              v-model="name"
+              text
+              outlined
+              clearable
+            />
+          </v-col>
+          <v-col cols="1"></v-col>
+        </v-row>
 
-          <v-row no-gutters>
-            <v-col cols="1"></v-col>
-            <v-col cols="10">
-              <v-text-field
-                label="new password"
-                v-model="name"
-                text
-                outlined
-                clearable
-              />
-            </v-col>
-            <v-col cols="1"></v-col>
-          </v-row>
+        <v-row no-gutters>
+          <v-col cols="1"></v-col>
+          <v-col cols="10">
+            <v-text-field
+              label="new password"
+              v-model="name"
+              text
+              outlined
+              clearable
+            />
+          </v-col>
+          <v-col cols="1"></v-col>
+        </v-row>
 
-          <v-row no-gutters>
-            <v-col cols="1"></v-col>
-            <v-col cols="10">
-              <v-text-field
-                label="again"
-                v-model="name"
-                text
-                outlined
-                clearable
-              />
-            </v-col>
-            <v-col cols="1"></v-col>
-          </v-row>
+        <v-row no-gutters>
+          <v-col cols="1"></v-col>
+          <v-col cols="10">
+            <v-text-field
+              label="again"
+              v-model="name"
+              text
+              outlined
+              clearable
+            />
+          </v-col>
+          <v-col cols="1"></v-col>
+        </v-row>
 
         <v-card-actions>
-            <v-spacer />
-              <v-tooltip left>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn v-bind="attrs" v-on="on" class="ma-2" color="blue" outlined @click="password = false">cancel</v-btn>
-                </template>
-                <div>編集を取り消しする</div>
-              </v-tooltip>
-            <v-spacer />
-              <v-tooltip right>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn v-bind="attrs" v-on="on" class="ma-2" color="red" outlined @click="regist">edit</v-btn>
-                </template>
-                <div>編集を決定する</div>
-              </v-tooltip>
-            <v-spacer />
+          <v-spacer />
+          <v-tooltip left>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                class="ma-2"
+                color="blue"
+                outlined
+                @click="password = false"
+                >cancel</v-btn
+              >
+            </template>
+            <div>編集を取り消しする</div>
+          </v-tooltip>
+          <v-spacer />
+          <v-tooltip right>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                class="ma-2"
+                color="red"
+                outlined
+                @click="regist"
+                >edit</v-btn
+              >
+            </template>
+            <div>編集を決定する</div>
+          </v-tooltip>
+          <v-spacer />
         </v-card-actions>
       </v-card>
     </v-dialog>
 
     <v-dialog v-model="addskill" max-width="700">
       <v-card>
-        <v-card-title class="text-h4 lighten-2 justify-center my-3 light-green--text">add new skill</v-card-title>
-          <v-row no-gutters>
-            <v-col cols="1"></v-col>
-            <v-col cols="10">
-              <v-select
-                multiple
-                :key="id"
-                v-model="userSkills"
-                label="skill"
-                :items="this.s_list"
-                :menu-props="{
-                  top: true,
-                  offsetY: true,
-                }"
-                item-text="name"
-                item-value="id"
-                outlined
-              />
-            </v-col>
-            <v-col cols="1"></v-col>
-          </v-row>
+        <v-card-title
+          class="text-h4 lighten-2 justify-center my-3 light-green--text"
+          >add new skill</v-card-title
+        >
+        <v-row no-gutters>
+          <v-col cols="1"></v-col>
+          <v-col cols="10">
+            <v-select
+              multiple
+              :key="id"
+              v-model="userSkills"
+              label="skill"
+              :items="this.s_list"
+              :menu-props="{
+                top: true,
+                offsetY: true,
+              }"
+              item-text="name"
+              item-value="id"
+              outlined
+            />
+          </v-col>
+          <v-col cols="1"></v-col>
+        </v-row>
 
         <v-card-actions>
-            <v-spacer />
-              <v-tooltip left>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn v-bind="attrs" v-on="on" class="ma-2" color="blue" outlined @click="addskill = false">cancel</v-btn>
-                </template>
-                <div>編集を取り消しする</div>
-              </v-tooltip>
-            <v-spacer />
-              <v-tooltip right>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn v-bind="attrs" v-on="on" class="ma-2" color="red" outlined @click="registskill">edit</v-btn>
-                </template>
-                <div>編集を決定する</div>
-              </v-tooltip>
-            <v-spacer />
+          <v-spacer />
+          <v-tooltip left>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                class="ma-2"
+                color="blue"
+                outlined
+                @click="addskill = false"
+                >cancel</v-btn
+              >
+            </template>
+            <div>編集を取り消しする</div>
+          </v-tooltip>
+          <v-spacer />
+          <v-tooltip right>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                class="ma-2"
+                color="red"
+                outlined
+                @click="registskill"
+                >edit</v-btn
+              >
+            </template>
+            <div>編集を決定する</div>
+          </v-tooltip>
+          <v-spacer />
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -329,24 +378,26 @@ export default {
       })
       .then((response) => {
         console.log(url);
-        this.reload
+        this.reload;
         this.users = response.data.data;
-          const skill_ids_url = process.env.VUE_APP_URL + "/api/v1/get_user_skill_ids/" + this.users.id;
-          axios
-            .get(skill_ids_url, {
-              headers: {
-                "Content-Type": "application/json",
-                "access-token": localStorage.getItem("access-token"),
-                client: localStorage.getItem("client"),
-                uid: localStorage.getItem("uid"),
-              },
-            })
-            .then((response) => {
-              this.userSkills = response.data;
-              console.log(this.userSkills)
-              this.addskill=false
-
-            });
+        const skill_ids_url =
+          process.env.VUE_APP_URL +
+          "/api/v1/get_user_skill_ids/" +
+          this.users.id;
+        axios
+          .get(skill_ids_url, {
+            headers: {
+              "Content-Type": "application/json",
+              "access-token": localStorage.getItem("access-token"),
+              client: localStorage.getItem("client"),
+              uid: localStorage.getItem("uid"),
+            },
+          })
+          .then((response) => {
+            this.userSkills = response.data;
+            console.log(this.userSkills);
+            this.addskill = false;
+          });
       });
 
     const issue_url = process.env.VUE_APP_URL + "/api/v1/get_user_issue";
@@ -415,23 +466,20 @@ export default {
   },
 
   methods: {
-      registskill:async function () {
+    registskill: async function () {
       const url = process.env.VUE_APP_URL;
       var params = {
         skill_ids: this.userSkills,
       };
       axios.defaults.headers.common["Content-Type"] = "application/json";
       await axios
-        .put(
-          url + "/api/v1/edit_user_skills/" + this.users.id, params,
-          {
-            headers: {
-              "access-token": localStorage.getItem("access-token"),
-              client: localStorage.getItem("client"),
-              uid: localStorage.getItem("uid"),
-            },
-          }
-        )
+        .put(url + "/api/v1/edit_user_skills/" + this.users.id, params, {
+          headers: {
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
         .then((response) => {
           console.log(response);
           console.log(params);
@@ -440,7 +488,8 @@ export default {
           console.log(error.response);
         });
 
-      const skill_url = process.env.VUE_APP_URL + "/api/v1/get_user_skill_ids/" + this.users.id;
+      const skill_url =
+        process.env.VUE_APP_URL + "/api/v1/get_user_skill_ids/" + this.users.id;
       await axios
         .get(skill_url, {
           headers: {
@@ -452,16 +501,40 @@ export default {
         })
         .then((response) => {
           this.userSkills = response.data;
-          console.log(this.userSkills)
-          this.addskill=false
+          console.log(this.userSkills);
+          this.addskill = false;
           location.reload();
         });
-      },
-    edit(uname,uemail) {
-      this.uname=uname
-      this.uemail=uemail
-      this.$refs.edit1dialog.edit1 = true
-
+    },
+    edit(uname, uemail) {
+      this.uname = uname;
+      this.uemail = uemail;
+      this.$refs.edit1dialog.edit1 = true;
+    },
+    editUser: function () {
+      const get_url =
+        process.env.VUE_APP_URL + "/api/v1/current_user/get_user_detail";
+      axios
+        .get(get_url, {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token"),
+            client: localStorage.getItem("client"),
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then(
+          (response) => {
+            console.log("get");
+            this.users = response.data.user;
+            console.log(this.users);
+            this.edit1 = false;
+          },
+          (error) => {
+            this.edit1 = false;
+            return error;
+          }
+        );
     },
   },
 };
