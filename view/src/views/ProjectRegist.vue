@@ -745,7 +745,6 @@ export default {
         });
     },
     fetchProjectUsers: async function () {
-      console.log(this.projectUserIds);
       var url = process.env.VUE_APP_URL;
       this.projectUsers = [];
       for (let i = 0; i < this.projectUserIds.length; i++) {
@@ -762,7 +761,6 @@ export default {
             this.projectUsers.push(response.data);
           });
       }
-      console.log(this.projectUsers);
     },
   },
   mounted() {
@@ -809,8 +807,6 @@ export default {
         for (let i = 0; i < this.skills.length; i++) {
           this.skillName.push(this.skills[i].name);
         }
-        console.log(this.sskills);
-        console.log(this.skillName);
       });
     axios
       .get(url + "/api/v1/users/index", {
@@ -825,10 +821,10 @@ export default {
         this.users = response.data.data;
         this.userName = [];
         this.projectUserIds = [];
+        this.projectUserIds.push(this.userId);
         for (let i = 0; i < this.users.length; i++) {
           this.userName.push(this.users[i].name);
         }
-        console.log(this.projectUserIds);
       });
   },
 };
