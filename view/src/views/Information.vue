@@ -508,6 +508,7 @@ export default {
           console.log(this.userSkills);
           location.reload();
         });
+
       this.addskill = false;
     },
     edit(uname, uemail) {

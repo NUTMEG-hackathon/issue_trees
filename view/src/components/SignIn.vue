@@ -1,63 +1,77 @@
  <template>
-  <v-row justify="center">
-    <v-col cols="1"></v-col>
-    <v-col cols="10">
-      <v-card flat class="py-5">
-        <v-card-title class="headline font-weight-bold">
-          ログイン
+  <v-container>
+    <v-dialog v-model="openi" max-width="700">
+      <v-card>
+        <v-card-title
+          class="text-h4 lighten-2 justify-center my-3 light-green--text"
+        >
+          Sign in
         </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-form ref="form">
-              <v-text-field
-                label="メールアドレス"
-                ref="email"
-                v-model="email"
-                :rules="[rules.requied, rules.email]"
-                required
-              ></v-text-field>
-              <v-text-field
-                label="パスワード"
-                v-model="password"
-                ref="password"
-                :append-icon="show_pass ? 'mdi-eye-off' : 'mdi-eye'"
-                :rules="[rules.required, rules.min]"
-                :type="show_pass ? 'password' : 'text'"
-                hint="8文字以上"
-                counter
-                @click:append="show_pass = !show_pass"
-                required
-              ></v-text-field>
-            </v-form>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn
-            color="btn"
-            text
-            dark
-            rounded
-            tabindex="-1"
-            class="ml-2"
-            @click="cancel"
-            >パスワードを忘れた場合</v-btn
-          >
-          <v-btn
-            color="btn"
-            depressed
-            absolute
-            right
-            dark
-            rounded
-            class="pl-4 font-weight-bold"
-            @click="submit"
-            >ログイン<v-icon class="ml-n1">mdi-menu-right</v-icon></v-btn
-          >
-        </v-card-actions>
+        <v-row no-gutters>
+          <v-col cols="1"></v-col>
+          <v-col cols="10">
+            <v-card-text>
+              <v-form ref="form">
+                <v-text-field
+                  label="メールアドレス"
+                  ref="email"
+                  v-model="email"
+                  :rules="[rules.requied, rules.email]"
+                  required
+                ></v-text-field>
+                <v-text-field
+                  label="パスワード"
+                  v-model="password"
+                  ref="password"
+                  :append-icon="show_pass ? 'mdi-eye-off' : 'mdi-eye'"
+                  :rules="[rules.required, rules.min]"
+                  :type="show_pass ? 'password' : 'text'"
+                  hint="8文字以上"
+                  counter
+                  @click:append="show_pass = !show_pass"
+                  required
+                ></v-text-field>
+              </v-form>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer />
+              <v-tooltip left>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    v-bind="attrs"
+                    v-on="on"
+                    class="ma-2"
+                    color="red"
+                    outlined
+                    @click="openi = false"
+                    >close</v-btn
+                  >
+                </template>
+                <div>閉じる</div>
+              </v-tooltip>
+              <v-spacer />
+              <v-tooltip right>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    v-bind="attrs"
+                    v-on="on"
+                    class="ma-2"
+                    color="blue"
+                    outlined
+                    @click="submit"
+                    >Sign in</v-btn
+                  >
+                </template>
+                <div>サインインする</div>
+              </v-tooltip>
+              <v-spacer />
+            </v-card-actions>
+          </v-col>
+          <v-col cols="1"></v-col>
+        </v-row>
       </v-card>
-    </v-col>
-    <v-col cols="1"></v-col>
-  </v-row>
+    </v-dialog>
+  </v-container>
 </template>
 
 <script>
@@ -66,6 +80,7 @@ export default {
   name: "SignIn",
   data() {
     return {
+      openi: false,
       show_pass: true,
       formHasErrors: false,
       rules: {
