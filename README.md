@@ -68,6 +68,9 @@ https://efficientree.o2srv.net/
   - Project, Cliantのノード本体（黒い部分）をクリックすることで、クリックしたノード以下のノードが畳まれる。
   - 木構造の左側にある` Tree Options` の各値を変更することで見た目を変更できる。
 
+![tree](https://user-images.githubusercontent.com/71711872/134756995-0179ed5a-516f-4a8d-88cc-d289aaa16a3c.gif)
+
+
 ### 表示しているプロジェクトに関わるメンバーの確認・編集
 - 表示しているプロジェクトに関わるメンバーは、木構造の左側にある`members` に名前、持つ技術スタックの確認が可能
 - メンバーの追加
@@ -78,6 +81,8 @@ https://efficientree.o2srv.net/
   1. 木構造の左側にある`members` の下部にある`MANAGEMENT MEMBERS` をクリック
   2. 表示されたダイアログのセレクトボックスから、プロジェクトから削除したいユーザ名をクリック
   3. 表示されたダイアログの REMOVE ボタンをクリック
+
+![management member](https://user-images.githubusercontent.com/71711872/134757004-4e511ea0-fa28-412d-8a39-086cf64794e0.gif)
 
 
 # モデル図
