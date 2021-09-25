@@ -85,5 +85,14 @@ https://efficientree.o2srv.net/
 ![management member](https://user-images.githubusercontent.com/71711872/134757004-4e511ea0-fa28-412d-8a39-086cf64794e0.gif)
 
 
+---
+---
+# 使用技術等
+Vue.js, Vuetify, Vuex, Node.js, Ruby on Rails, MySQL, docker, docker-compose, Github
+
+## 木構造で使用したNode.jsのパッケージ
+https://github.com/David-Desmaisons/Vue.D3.tree
+
+
 # モデル図
 ![image](https://user-images.githubusercontent.com/71711872/133971611-29b2d691-0b9f-4afd-8bc1-30074f681e4f.png)
